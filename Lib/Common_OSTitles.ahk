@@ -1,81 +1,23 @@
-﻿SetWinDelay(-1)
-SetControlDelay(-1)
-SetMouseDelay(-1)
-; //#MaxThreads 255 ; Allows a maximum of 255 instead of default threads.
-#MaxThreads 100 ; Allows a maximum of 255 instead of default threads.
-#Warn All, OutputDebug
-#SingleInstance Force
-SendMode("Input") ;* Superior speed and reliability.
-SetWorkingDir(A_ScriptDir) ; A consistent starting directory.
-SetTitleMatchMode(2) ; Match = "containing" instead of "exact"
-DetectHiddenText(true)
-DetectHiddenWindows(true)
-CoordMode("Mouse", "Client")
+﻿; SetWinDelay(-1)
+; SetControlDelay(-1)
+; SetMouseDelay(-1)
+; ; //#MaxThreads 255 ; Allows a maximum of 255 instead of default threads.
+; #MaxThreads 100 ; Allows a maximum of 255 instead of default threads.
+; #Warn All, OutputDebug
+; #SingleInstance Force
+; SendMode("Input") ;* Superior speed and reliability.
+; SetWorkingDir(A_ScriptDir) ; A consistent starting directory.
+; SetTitleMatchMode(2) ; Match = "containing" instead of "exact"
+; DetectHiddenText(true)
+; DetectHiddenWindows(true)
+; CoordMode("Mouse", "Client")
 ; --------------------------------------------------------------------------------
-; Name .........: Common_Abbrevations
-; Section ......: CHANGELOG
-; Description ..: This is a hotstring library to call the MakeOSItalic() function [located in personal Lib folder]
-; AHK Version ..: AHK v2
-; Author .......: Overcast (Adam Bacon), and Terry Keatts
-; License ......: WTFPL - http://www.wtfpl.net/txt/copying/
-; Changelog ....: 2/24/2023 ..: v1.0 - First version. 
-; ..............: Status: Published
-; ..............: Notes: Modified to correct a few standard titles and add the "densityf" hotstring with input for the varibles.
-; ..............: Also modified to break this script out into a sub-script to make maintenance easier for users, so they
-; ..............: are not forced to update the starter script with all the personal information, which likely won't change
-; ..............: as much as the sub-scripts.
-; ..............: 
-; ..............: 03/06/2023 ..: v2.0 
-; ..............: Status: Published
-; ..............: Notes: Added the Shift+Ctrl+WIN+O hot key for fast launch of a specific OS.
-; ..............: 
-; ..............: 03/07/2023 ..: v3.0 
-; ..............: Status: Published
-; ..............: Notes: OS Titles now input in italics except for Horizon.
-; ..............: 
-; ..............: ??? .........: v?.?
-; ..............: Status: Published
-; ..............: Notes: OS Titles now input in italics for Horizon.
-; ..............: 
-; ..............: 04/11/2023 ..: v3.1 
-; ..............: Status: Published
-; ..............: Notes: Updated OS 10-1 title. Improved fast launch of OS GUI.
-; ..............: 
-; ..............: 04/27/2023 ..: v3.2 
-; ..............: Status: Published
-; ..............: Notes: Updated OS 7-11 title.
-; ..............: 
-; ..............: 05/03/2023 ..: v3.3 
-; ..............: Status: Published
-; ..............: Notes: Added case specific hot string areas to reduce rework on strange cases.
-; ..............: 
-; ..............: 05/30/2023 ..: v3.4 
-; ..............: Status: Published
-; ..............: Notes: Changed "sgsv" to "sgsvf" based on user feedback. Added "degf" for addeding a degree symbol.
-; ..............: Notes: Added "degf" for addeding a degree symbol..
-; ..............: 
-; ..............: 05/31/2023 ..: v4.0 
-; ..............: Status: Un-Published, Pending review by Terry Keatts
-; ..............: Notes: Added #Hotstring C1 O B0
-; ..............: Notes: #Hotstring EndChars f ; ===> the "f" can be modified to whatever you chose <===
-; ..............: Cont.: ===> TODO <=== Make this an initial input for the user to choose. Currently set to existing "f"
-; ..............: Notes: Added SendLevel 1 - this is to ensure that a hotstring can call another hotstring and/or hotkey
-; ..............: Notes: All OS numbers and titles transferred to OSTitle.ini
-; ..............: Notes: Modified hotstring modifier from :*:#-##:: to ::#-##:: => "*" = ending character not required.  
-; ..............: Cont.: Added B0 to remove any backspacing (e.g., replacement previously used by ":*:")
-; ..............: Notes: Removed "f" from end of hotstring (see above) => ::1-0f:: to ::1-0::
-; ..............: Notes: See MakeOSItalic.ahk for additional details.
-; ..............: Notes: Used this regex to update =>>> MakeOSItalic\("[0-9].*-[0-9].*, [a-z].*[A-Z].*+
-; ..............: 
-; ..............: 06/01/2023 ..: v5.0 
-; ..............: Status: Un-Published, Pending review by Terry Keatts
-; ..............: Notes: Used this regex to update =>>> MakeOSItalic\([A-z].*+\nreturn
-; ..............: 
-; ..............: 00/00/0000 ..: v0.0 
-; ..............: Status: 
-; ..............: Notes: 
+/*
+@Title .........: Common_Abbrevations
+*/
+#Include <Utils\ClipSend>
 ; --------------------------------------------------------------------------------
-return
+
 ; --------------------------------------------------------------------------------
 ; Section .....: Functions
 ; Function ....: Run() script function and scripts
@@ -93,21 +35,24 @@ OSTitle := Map(
     "1-0t", "Safeguards During Construction, Alteration and Demolition",
     "1-1", "1-1, ",
     "1-1t", "Firesafe Building Construction and Materials",
-    )
-
-:*:1-0f::
-{ ; V1toV2: Added bracket
-    SendLevel(1)    
-    Send("1-0," A_Space . "^i" . "Safeguards During Construction, Alteration and Demolition")
-    ; Send("1-0," A_Space)
-    ; SendEvent("^i")
-    ; Sleep(100)
-    ; A_Clipboard := ""
-    ; A_Clipboard := "Safeguards During Construction, Alteration and Demolition" A_Space
-    ; Send("^v")
-    ; SendEvent("^i")
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+)
+i(*){
+    str := StrSplit(SubStr(A_ThisHotkey,4),,'f',1)[1]
+}
 return
+:*:1-0f:: 
+{ ; V1toV2: Added bracket
+    SendLevel(10)
+    Send((StrSplit(SubStr(A_ThisHotkey,4),,'f',1)[1]) ", ")
+    SendLevel(1)
+    Send("^{i}")
+    ClipSend("Safeguards During Construction, Alteration and Demolition")
+    ; Send("{Shift Down}{Insert}{Shift Up}")
+    ControlSend("^{i}",,'A')
+    ; Send("^{i}")
+    Send(A_Space)
+    return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
 :*:1-1f::
 { ; V1toV2: Added bracket
 SendLevel(1)
@@ -629,8 +574,17 @@ return
 } ; V1toV2: Added Bracket before hotkey or Hotstring
 :*:5-19f::
 { ; V1toV2: Added bracket
-SendLevel(1)
-Send("5-19," . "^{i}" . "Switchgear and Circuit Breakers" . "^{i}" . A_Space)
+    Send("5-19, ")
+    SendLevel(1)
+    Send("^{i}")
+    ; SendLevel(0)
+    ; A_Clipboard :="Switchgear and Circuit Breakers"
+    Send("Switchgear and Circuit Breakers")
+    ; Send("{Shift Down}{Insert}{Shift Up}")
+    ; SendLevel(1)
+    Send("^{i}")
+    ; SendLevel(0)
+    Send(A_Space)
 return
 } ; V1toV2: Added Bracket before hotkey or Hotstring
 :*:5-20f::

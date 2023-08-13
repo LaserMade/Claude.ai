@@ -87,11 +87,16 @@ DetectHiddenWindows(true)
 ;---------------------------------------------------------------------------
 #HotString C1 B O *
 #HotString EndChars f
+
 ; ................................................
+::potiential::potential
+::accellerated::accelerated
+::resiliancy::resiliency
+::tendancy::tendency
 ::ds::Data Sheet
 ::gsu::generator step up (GSU)
 ::dga::dissolved gas analysis (DGA)
-::as-built::as-built electrical single-line diagram
+::as-builtf::as-built electrical single-line diagram
 ::delinieation::delineation
 ::agf::Approval Guide
 ::FMDS::FM Global Property Loss Prevention Data Sheet

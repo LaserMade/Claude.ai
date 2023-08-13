@@ -6,7 +6,8 @@
 
 #Requires AutoHotKey v2
 #SingleInstance Force
-DetectHiddenWindows true
+DetectHiddenWindows(1)
+DetectHiddenText(1)
 SendMode "Input"  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir A_ScriptDir  ; Ensures a consistent starting directory.
 
@@ -1509,22 +1510,28 @@ UpdateCtrlList(*){
     win_hwnd := MyGui.win_hwnd
     ogLV_CtrlList.Opt("-Redraw")
     selectedCtrl_hwnd := MyGui.ctrl_hwnd
-    if WinExist("ahk_id " win_hwnd){
-        for n, ctrl_hwnd in WinGetControlsHwnd("ahk_id " win_hwnd){
+    ; if WinExist("ahk_id " win_hwnd){
+    if WinExist(win_hwnd){
+        ; for n, ctrl_hwnd in WinGetControlsHwnd("ahk_id " win_hwnd){
+        for n, ctrl_hwnd in WinGetControlsHwnd(ControlGetFocus("A")){
             if (A_Index=1){
                 Hwnd_selected := ctrl_hwnd
             }
-            ctrl_text := ControlGetText(ctrl_hwnd)
+            ; ctrl_text := ControlGetText(ctrl_hwnd)
+            ctrl_text := ControlGetText(ControlGetFocus("A"))
             ControlGetPos(&ctrl_x, &ctrl_y, &ctrl_w, &ctrl_h, ctrl_hwnd)
-            ctrl_ClassNN := ControlGetClassNN(ctrl_hwnd)
+            ; ctrl_ClassNN := ControlGetClassNN(ctrl_hwnd)
+            ctrl_ClassNN := ControlGetClassNN(ControlGetFocus("A"))
             ; ctrl_AhkName := TranslateClassName(ctrl_ClassNN)
             ; ControlType := ControlGetStyle(ctrl_hwnd) & 0xF
 
-            ctrl_Type := ControlGetType(ctrl_hwnd)
+            ; ctrl_Type := ControlGetType(ctrl_hwnd)
+            ctrl_Type := ControlGetType(ControlGetFocus("A"))
 
-            ctrl_Visible := ControlGetVisible(ctrl_hwnd)
+            ; ctrl_Visible := ControlGetVisible(ctrl_hwnd)
+            ctrl_Visible := ControlGetVisible(ControlGetFocus("A"))
             if ((ogCB_FilterCtrlText.value = 1 and ctrl_text = "") or (ogCB_FilterCtrlVisible.value = 1 and !ctrl_Visible)){
-                 continue
+                continue
             }
             if (ogEdit_ctrl_search.value="" or InStrSuffled(ctrl_ClassNN " " ctrl_hwnd " " ctrl_text,ogEdit_ctrl_search.value)){
                 NewRowNumber:= ogLV_CtrlList.Add((mILControls.Has(ctrl_Type) ? "Icon" mILControls[ctrl_Type] : "" ) , ctrl_ClassNN, oSet.IDHex ? format("{:#x}", ctrl_hwnd) : ctrl_hwnd, ctrl_text, ctrl_Type, ctrl_x, ctrl_y, ctrl_w, ctrl_h, ctrl_Visible ? "Visible" : "Hidden")

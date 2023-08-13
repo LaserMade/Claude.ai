@@ -20,11 +20,17 @@ toggleCapsLock(){
 ^CapsLock::
 +CapsLock::toggleCapsLock()
 
+#HotIf WinActive(A_ScriptName)
+#Include <Abstractions\Script>
+~^s::
+{
+	; ReloadAllAhkScripts()
+	Script.Reload()
+}
+#HotIf
 
-
-UsingMainWorkComputer := A_ComputerName == "xyz" ; Global flag for using main work computer, changes title
-UsingAnyWorkComputer := InStr(A_ComputerName, "xyz") == 1 ; Global flag for using any work computer for select commands
-
+UsingMainWorkComputer := A_ComputerName == A_UserName ; Global flag for using main work computer, changes title
+UsingAnyWorkComputer := InStr(A_ComputerName, A_UserName) == 1 ; Global flag for using any work computer for select commands
 
 ; ______________________________________________________________________________ Globals and Funcs ___________
 
@@ -320,5 +326,3 @@ set_calc_text(result) {
 
 
 Suspend 0 ; re-enable hot keys
-
-

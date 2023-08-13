@@ -7,12 +7,26 @@
 TryRun(s) {
     try {
             run s
-            }
+        }
     catch {
         QuickTrayTip("failed to run:`n" s, tit:="LNCHR")
         }
 }
-
+TryCatchOutlook(input, s) {
+    try
+        {
+        WinExist(input)
+        WinActivate(input)
+        }
+    catch
+        {
+        run s
+        }
+    else
+        {
+        QuickTrayTip("failed to run:`n" s, tit:="LNCHR")
+        }
+}
 
 UrlEncode(str, sExcepts := "-_.", enc := "UTF-8")
 {
@@ -70,9 +84,9 @@ run_ReplaceText(replacement, runString){
 
 make_run_ReplaceTexts_func(args*) { ; create a 1 arg function from a list of args given as templates, used to pass to run_Replace_Text
 func(rep) {
-   for index, arg in args
-     run_ReplaceText(rep, arg)
-   }
+    for index, arg in args
+        run_ReplaceText(rep, arg)
+    }
 return func
 }
 
@@ -158,7 +172,7 @@ Calculate(expr)
     if expr == '?' { ; load equations list
         run_calc_shortcut_then_return('LNCHR-CalcEqns.txt')
         return
-   } else if expr == "mem" {
+    } else if expr == "mem" {
         run_calc_shortcut_then_return("LNCHR-CalcMemory.txt")
         return
     }
@@ -166,21 +180,17 @@ Calculate(expr)
 
     result := TryEvalMathExpr(expr)
 
-     if result != "undefined" {
-          if InStr(expr, '=') {
+    if result != "undefined" {
+        if InStr(expr, '=') {
             FileAppend expr "`n", "LNCHR-CalcEqns.txt" ; store equation in memory
-          } else {
+        } else {
             A_Clipboard := result
             FileAppend exprOG "`n", "LNCHR-CalcMemory.txt" ; store expression in memory
-          }
-     } else {
+        }
+    } else {
         result := "..."
-     }
+    }
 
     set_calc_text(result)
 
 }
-
-
-
-
