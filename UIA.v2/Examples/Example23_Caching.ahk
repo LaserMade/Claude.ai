@@ -1,7 +1,11 @@
 ﻿;#include <UIA> ; Uncomment if you have moved UIA.ahk to your main Lib folder
 #Requires AutoHotkey v2
-#include ..\Lib\UIA.ahk
+#include <Lib.v2\UIA>
 #Warn All, OutputDebug
+DetectHiddenText(1)
+DetectHiddenWindows(1)
+; #5::
+; {
 cacheRequest := UIA.CreateCacheRequest()
 ; Set TreeScope to include the starting element and all descendants as well
 cacheRequest.TreeScope := 5 
@@ -28,6 +32,7 @@ WinWaitActive "ahk_exe Hznhorizon.exe"
 ; Get element and also build the cache
 npEl:= UIA.ElementFromHandle("ahk_exe Hznhorizon.exe", cacheRequest)
 ; We now have a cached "snapshot" of the window from which we can access our desired elements faster.
-OutputDebug(npEl.CachedDump())
-OutputDebug(npEl.CachedWindowPattern.CachedCanMaximize)
+OutputDebug(npEl.CachedDump() '`n')
+OutputDebug(npEl.CachedWindowPattern.CachedCanMaximize '`n')
+; }
 ExitApp
