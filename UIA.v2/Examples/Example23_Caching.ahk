@@ -10,21 +10,22 @@ cacheRequest := UIA.CreateCacheRequest()
 ; Set TreeScope to include the starting element and all descendants as well
 cacheRequest.TreeScope := 5 
 ; Add all the necessary properties that DumpAll uses: ControlType, LocalizedControlType, AutomationId, Name, Value, ClassName, AcceleratorKey
-; cacheRequest.AddProperty("Type") 
-; cacheRequest.AddProperty("LocalizedType")
-; cacheRequest.AddProperty("AutomationId")
-; cacheRequest.AddProperty("Name")
-; cacheRequest.AddProperty("Value")
-; cacheRequest.AddProperty("ClassName")
-; cacheRequest.AddProperty("AcceleratorKey")
+cacheRequest.AddProperty("Type") 
+cacheRequest.AddProperty("LocalizedType")
+cacheRequest.AddProperty("AutomationId")
+cacheRequest.AddProperty("Name")
+cacheRequest.AddProperty("Value")
+cacheRequest.AddProperty("ClassName")
+cacheRequest.AddProperty("AcceleratorKey")
 
 ; To use cached patterns, first add the pattern
-; cacheRequest.AddPattern("Window") 
+cacheRequest.AddPattern("Window") 
+; cacheRequest.AddPattern("Subtree") 
 ; Also need to add any pattern properties we wish to use
-; cacheRequest.AddProperty("WindowCanMaximize") 
+cacheRequest.AddProperty("WindowCanMaximize") 
 
 ; This all can be done in one line as well:
-cacheRequest := UIA.CreateCacheRequest(["Type", "LocalizedType", "AutomationId", "Name", "Value", "ClassName", "AcceleratorKey", "WindowCanMaximize"], ["Window"], "Subtree")
+; cacheRequest := UIA.CreateCacheRequest(["Type", "LocalizedType", "AutomationId", "Name", "Value", "ClassName", "AcceleratorKey", "WindowCanMaximize"], ["Window"], "Subtree")
 
 ; Run "notepad.exe"
 WinWaitActive "ahk_exe Hznhorizon.exe"
