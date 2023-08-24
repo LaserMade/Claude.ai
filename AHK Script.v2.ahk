@@ -460,33 +460,34 @@ Join(sep, params*) {
 ;                          General Abbreviations
 ;---------------------------------------------------------------------------
 
-; ^!0::
-; { ; V1toV2: Added bracket
-; static var := "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÑÒÓÔŒÕÖØÙÚÛÜßàáâãäåæçèéêëìíîïñòóôœõöøùúûüÿ¿¡«»§¶†‡•-–—™©®¢€¥£₤¤αβγδεζηθικλμνξοπρσςτυφχψωΓΔΘΛΞΠΣΦΨΩ∫∑∏√−±∞≈∝≡≠≤≥×·÷∂′″∇‰°∴ø∈∩∪⊂⊃⊆⊇¬∧∨∃∀⇒⇔→↔↑ℵ∉°₀₁₂₃₄₅₆₇₈₉⁰¹²³⁴⁵⁶⁷⁸⁹"
+^!0::
+{ ; V1toV2: Added bracket
+static var := "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÑÒÓÔŒÕÖØÙÚÛÜßàáâãäåæçèéêëìíîïñòóôœõöøùúûüÿ¿¡«»§¶†‡•-–—™©®¢€¥£₤¤αβγδεζηθικλμνξοπρσςτυφχψωΓΔΘΛΞΠΣΦΨΩ∫∑∏√−±∞≈∝≡≠≤≥×·÷∂′″∇‰°∴ø∈∩∪⊂⊃⊆⊇¬∧∨∃∀⇒⇔→↔↑ℵ∉°₀₁₂₃₄₅₆₇₈₉⁰¹²³⁴⁵⁶⁷⁸⁹"
+Global arr
+arr := strsplit(var)
 
-; static w:=20, cnt := 14, arr := strsplit(var)
-; static myGui := Gui()
-; myGui.new()
-; myGui.Opt("-caption")
-; myGui.MarginX := "0", myGui.MarginY := "0"
-; myGui.SetFont("s10")
-; Loop arr.count()
-; {
-; 	x := mod((a_index - 1),cnt) * w, y := floor((a_index - 1)/ cnt) * w
-; 	ogctextz := myGui.add("text", "x" . x . " y" . y . " w" . w . " h" . w . " center vz" . a_index, arr[a_index])
-; 	ogctextz.OnEvent("Click", myGui.insert.Bind("Normal"))
-; }
-; myGui.show()
-; return
-; } ; Added bracket before function
+static w:=20, cnt := 14,
+myGui := Gui()
+myGui.Opt("-caption")
+myGui.MarginX := "0", myGui.MarginY := "0"
+myGui.SetFont("s10")
+Loop arr
+	{
+	x := mod((a_index - 1),cnt) * w, y := floor((a_index - 1)/ cnt) * w
+	ogctextz := myGui.add("text", "x" . x . " y" . y . " w" . w . " h" . w . " center vz" . a_index, arr[a_index])
+	ogctextz.OnEvent("Click", myGui.insert.Bind("Normal"))
+	}
+myGui.show()
+return
+} ; Added bracket before function
 
-; ; insert(A_GuiEvent, GuiCtrlObj, Info, *)
-; ; { ; V1toV2: Added bracket
-; ; 	myGui := 
-; ; 	oSaved := myGui.submit()
-; ; 	Send(arr[SubStr(A_GuiControl, 2)])
-; ; }
-; ; return
+insert(A_GuiEvent, GuiCtrlObj, Info, *)
+{ ; V1toV2: Added bracket
+	myGui := 
+	oSaved := myGui.submit()
+	Send(arr[SubStr(A_GuiEvent, 2)])
+}
+return
 
 ; :?*X:nm::Send("{Blind}≠") ; used for testing
 
@@ -590,42 +591,137 @@ return
 ; This script modified from the original: http://www.autohotkey.com/docs/scripts/EasyWindowDrag.htm
 
 Alt & ~LButton::
-{ ; V1toV2: Added bracket
-	global EWD_MouseStartX, EWD_MouseStartY, EWD_MouseWin, EWD_OriginalPosX, EWD_OriginalPosY
-	EWD_OriginalPosX := "", EWD_OriginalPosY := ""
-	CoordMode("Mouse")  ; Switch to screen/absolute coordinates.
-	MouseGetPos(&EWD_MouseStartX, &EWD_MouseStartY, &EWD_MouseWin,,2)
-	WinGetClientPos(&EWD_OriginalPosX, &EWD_OriginalPosY,&EWD_OriginalH, &EWD_OriginalW, "ahk_id " EWD_MouseWin)
-	;WinGetPos(&EWD_OriginalPosX, &EWD_OriginalPosY, , , "ahk_id " EWD_MouseWin)
-	EWD_WinState := WinGetMinMax("ahk_id " EWD_MouseWin)
-	if (EWD_WinState = 0)  ; Only if the window isn't maximized 
-		SetTimer(EWD_WatchMouse,10) ; Track the mouse as the user drags it.
-	return
-} ; V1toV2: Added Bracket before label
-
-
-EWD_WatchMouse()
-{ ; V1toV2: Added bracket
-EWD_LButtonState := GetKeyState("LButton", "P") ? "D" : "U"
-if (EWD_LButtonState = "U")  ; Button has been released, so drag is complete.
+; ~MButton & LButton::
+; CapsLock & LButton::
+EWD_MoveWindow(*)
 {
-	SetTimer(EWD_WatchMouse,0)
-	return
+    CoordMode "Mouse"  ; Switch to screen/absolute coordinates.
+    MouseGetPos &EWD_MouseStartX, &EWD_MouseStartY, &EWD_MouseWin
+    WinGetPos &EWD_OriginalPosX, &EWD_OriginalPosY,,, EWD_MouseWin
+    if !WinGetMinMax(EWD_MouseWin)  ; Only if the window isn't maximized 
+        SetTimer EWD_WatchMouse, 10 ; Track the mouse as the user drags it.
+
+    EWD_WatchMouse()
+    {
+        if !GetKeyState("LButton", "P")  ; Button has been released, so drag is complete.
+        {
+            SetTimer , 0
+            return
+        }
+        if GetKeyState("Escape", "P")  ; Escape has been pressed, so drag is cancelled.
+        {
+            SetTimer , 0
+            WinMove EWD_OriginalPosX, EWD_OriginalPosY,,, EWD_MouseWin
+            return
+        }
+        ; Otherwise, reposition the window to match the change in mouse coordinates
+        ; caused by the user having dragged the mouse:
+        CoordMode "Mouse"
+        MouseGetPos &EWD_MouseX, &EWD_MouseY
+        WinGetPos &EWD_WinX, &EWD_WinY,,, EWD_MouseWin
+        SetWinDelay -1   ; Makes the below move faster/smoother.
+        WinMove EWD_WinX + EWD_MouseX - EWD_MouseStartX, EWD_WinY + EWD_MouseY - EWD_MouseStartY,,, EWD_MouseWin
+        EWD_MouseStartX := EWD_MouseX  ; Update for the next timer-call to this subroutine.
+        EWD_MouseStartY := EWD_MouseY
+    }
 }
-EWD_EscapeState := GetKeyState("Escape", "P") ? "D" : "U"
-if (EWD_EscapeState = "D")  ; Escape has been pressed, so drag is cancelled.
-{
-	SetTimer(EWD_WatchMouse,0)
-	WinMove(EWD_OriginalPosX, EWD_OriginalPosY, , , "ahk_id " EWD_MouseWin)
-	return
+
+#HotIf WinExist(A_ScriptName)
+; ; Current date and time
+FormatDateTime(format, datetime:="") {
+    if (datetime = "") {
+        datetime := A_Now
+    }
+    CurrentDateTime := FormatTime(datetime, format)
+    SendInput(CurrentDateTime)
+    return
 }
-;Otherwise, reposition the window to match the change in mouse coordinates caused by the user having dragged the mouse:
-CoordMode("Mouse")
-MouseGetPos(&EWD_MouseX, &EWD_MouseY)
-WinGetPos(&EWD_WinX, &EWD_WinY, , , "ahk_id " EWD_MouseWin)
-;SetWinDelay, -1   ; Makes the below move faster/smoother.
-WinMove(EWD_WinX + EWD_MouseX - EWD_MouseStartX, EWD_WinY + EWD_MouseY - EWD_MouseStartY, , , "ahk_id " EWD_MouseWin)
-EWD_MouseStartX := EWD_MouseX  ; Update for the next timer-call to this subroutine.
-EWD_MouseStartY := EWD_MouseY
-return
-} ; V1toV2: Added bracket in the end
+; Hotstrings
+::/datetime::
+{ ; V1toV2: Added bracket
+    FormatDateTime("dddd, MMMM dd, yyyy, HH:mm")
+Return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+
+::/datetimett::
+{ ; V1toV2: Added bracket
+    FormatDateTime("dddd, MMMM dd, yyyy hh:mm tt")
+Return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+:*X:/c::FormatDateTime("yyyy.MM.dd HH:mm") "`r`n Reason goes here"
+::/time::
+{ ; V1toV2: Added bracket
+    FormatDateTime("HH:mm")
+Return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+::/timett::
+{ ; V1toV2: Added bracket
+    FormatDateTime("hh:mm tt")
+Return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+::/date::
+{ ; V1toV2: Added bracket
+    FormatDateTime("MMMM dd, yyyy")
+Return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+::/daten::
+{ ; V1toV2: Added bracket
+    FormatDateTime("MM/dd/yyyy")
+Return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+::/datet::
+{ ; V1toV2: Added bracket
+    FormatDateTime("yy.MM.dd")
+Return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+::/week::
+{ ; V1toV2: Added bracket
+    FormatDateTime("dddd")
+Return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+::/day::
+{ ; V1toV2: Added bracket
+    FormatDateTime("dd")
+Return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+::/month::
+{ ; V1toV2: Added bracket
+    FormatDateTime("MMMM")
+Return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+::/monthn::
+{ ; V1toV2: Added bracket
+    FormatDateTime("MM")
+Return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+::/year::
+{ ; V1toV2: Added bracket
+    FormatDateTime("yyyy")
+Return
+
+; Others
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+::wtf::Wow that's fantastic
+::/paste::
+{ ; V1toV2: Added bracket
+    Send(A_Clipboard)
+Return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+::/cud::
+    ; useful for WSLs
+{ ; V1toV2: Added bracket
+    SendInput("/mnt/c/Users/" A_UserName "/")
+Return
+} ; V1toV2: Added Bracket before hotkey or Hotstring
+::/nrd::npm run dev
+::/gm::Good morning
+::/ge::Good evening
+::/gn::Good night
+::/ty::Thank you
+::/tyvm::Thank you very much
+::/wc::Welcome
+::/mp::My pleasure
+::/lorem::Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+::/plankton::Plankton are the diverse collection of organisms found in water that are unable to propel themselves against a current. The individual organisms constituting plankton are called plankters. In the ocean, they provide a crucial source of food to many small and large aquatic organisms, such as bivalves, fish and whales.
+
+#HotIf

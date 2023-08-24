@@ -71,17 +71,17 @@ Class W2Con {
     Static AHKMain := "\AHK.Main"
     Static AHKPv1 := "\AHK-Projects.v1"
     Static AHKPv2 := "\AHK-Projects.v2"
-    static UserDir := C "\Users" A_UserName
-    desktop := A_UserName userdir . "Desktop\"
-    documents := userdir . "Documents\"
-    downloads := userdir . "Downloads\"
-    music := userdir . "Music\"
-    pictures := userdir . "Pictures\"
-    videos := userdir . "Videos\"
+    static UserDir := W2Con.C "\Users" A_UserName
+    Static desktop := A_UserName . W2Con.UserDir . "Desktop\"
+    Static documents := W2Con.UserDir . "Documents\"
+    Static downloads := W2Con.UserDir . "Downloads\"
+    Static music := W2Con.UserDir . "Music\"
+    Static pictures := W2Con.UserDir . "Pictures\"
+    Static videos := W2Con.UserDir . "Videos\"
     ;arlbibek := documents . "arlbibek\"
-    arlbibek := documents . "bacona\"
-    screenshot:= userdir . "Pictures\Screenshots\"
-    defaultfolder := userdir . OneDrive . ahk ;C:\Users\bacona\OneDrive - FM Global\3. AHK\AHK-Projects\"
+    Static arlbibek := W2Con.UserDir . A_UserName
+    Static screenshot:= W2Con.UserDir . "Pictures\Screenshots\"
+    Static defaultfolder := W2Con.UserDir . W2Con.OneDrive . W2Con.AHKMain ;C:\Users\bacona\OneDrive - FM Global\3. AHK\AHK-Projects\"
 }
 Tray := A_TrayMenu
 ; script name and startup path
@@ -559,16 +559,16 @@ Return
 ; navigating within the file explorer
 } ; V1toV2: Added bracket in the end
 #HotIf WinActive("ahk_group ExplorerGroup", )
-    ^+u::exploreTo(userdir)
-    ^+e::exploreTo(pc)
-    ^+h::exploreTo(desktop)
-    ^+d::exploreTo(documents)
-    ^+j::exploreTo(downloads)
-    ^+m::exploreTo(music)
-    ^+p::exploreTo(pictures)
-    ^+v::exploreTo(videos)
-    ^+a::exploreTo(arlbibek)
-    ^+s::exploreTo(screenshot)
+    ^+u::exploreTo(W2Con.UserDir)
+    ^+e::exploreTo(W2Con.pc)
+    ^+h::exploreTo(W2Con.)
+    ^+d::exploreTo(W2Con.documents)
+    ^+j::exploreTo(W2Con.downloads)
+    ^+m::exploreTo(W2Con.music)
+    ^+p::exploreTo(W2Con.pictures)
+    ^+v::exploreTo(W2Con.videos)
+    ^+a::exploreTo(W2Con.arlbibek)
+    ^+s::exploreTo(W2Con.screenshot)
 #HotIf
 
 ; opening programs via file explorer

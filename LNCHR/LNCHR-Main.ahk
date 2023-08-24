@@ -69,7 +69,7 @@ is_lngui_on() { ; check if gui is on
 }
 
 set_lngui_state(state) {  ; set state of lngui
-   lngui_props.state := state
+    lngui_props.state := state
 }
 
 
@@ -79,7 +79,7 @@ set_lngui_state(state) {  ; set state of lngui
 build_lngui(){
     global lngui
 
-    common_options := "xm w400 cc5c8c6 -E0x200"
+    common_options := "xm w800 h75 cc5c8c6 -E0x200"
 
     lngui := Gui()
 
@@ -87,7 +87,7 @@ build_lngui(){
 ;    lngui._text := lngui.AddText("x0 y0 w400 cc5c8c6 -E0x200 +BackgroundTrans c" lngui_props.acccolor , lngui_props.title)
 
 
-    lngui.Opt("AlwaysOnTop -SysMenu -caption +Border ")
+    lngui.Opt("AlwaysOnTop -SysMenu -caption +Border")
     lngui.SetFont("s14", "Verdana")
     lngui.Title := lngui_props.title
     lngui.BackColor := "1d1f21"
@@ -108,17 +108,18 @@ build_lngui(){
 
 
 
-set_lngui_window(s){ ; I was messing around with rounded corners here, was not satisfied with results
- if s == "main" {
+set_lngui_window(s)
+{ ; I was messing around with rounded corners here, was not satisfied with results
+    if s == "main" {
     WinSetTransparent 230, lngui.Hwnd
 ;    WinSetRegion "0-0 w350 h90 R20-20", lngui.Hwnd  ;  for round corners
- }
- if s == "query" {
+    }
+    if s == "query" {
 ;     WinSetRegion "0-0 w350 h87 R20-20", lngui.Hwnd  ;  for round corners
- }
-  if s == "calc" {
+    }
+    if s == "calc" {
 ;        WinSetRegion "0-0 w350 h110 R20-20", lngui.Hwnd  ; for round corners
- }
+    }
     lngui.Show("autosize")
 }
 
@@ -146,7 +147,7 @@ close_lngui(*) {
 }
 
 
-
+; --------------------------------------------------------------------------------
 
 ; ______________________________________________________________________________ Open/Closing GUI ___________
 
@@ -278,13 +279,13 @@ lngui_query_enter(*) { ; gui_call_sub_funcs
 
 
 lngui_enable_calc(){
-   lngui_props.qclose := False ; don't close gui after submission
+    lngui_props.qclose := False ; don't close gui after submission
     if ! lngui_props.calced {
         lngui_enable_query("Calculate", Calculate)
         lngui_calctext := lngui.AddText("yp+30 xm w220 cc5c8c6 -E0x200 vCalcText ", " ")
         set_lngui_window("calc")
-   }
-   lngui_props.calced := True
+    }
+    lngui_props.calced := True
 }
 
 

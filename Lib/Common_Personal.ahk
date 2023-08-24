@@ -1,36 +1,34 @@
-﻿;=======================================================================================================================
-; .............: Begin Section
+﻿; --------------------------------------------------------------------------------
 ; Section .....: Auto-Execution
-;=======================================================================================================================
-; #Warn  ; Enable warnings to assist with detecting common errors.
-; SetWinDelay 0 ; (AJB - 06/2023) - comment out for testing
-; SetControlDelay 0 ; (AJB - 06/2023) - comment out for testing
-; REMOVED: ; SetBatchLines, -1 ; Determines how fast a script will run (affects CPU utilization). ; The value -1 = max speed possible. ; (AJB - 05/2023)comment out for testing
-; SetWinDelay, -1 ; (AJB - 05/2023) - comment out for testing 
-; SetControlDelay, -1 ; (AJB - 05/2023) - comment out for testing 
-; REMOVED: ;#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.; Avoids checking empty variables to see if they are environment variables.
+; --------------------------------------------------------------------------------
+#Warn All, OutputDebug ; Enable warnings to assist with detecting common errors.
+#MaxThreads 255 ; Allows a maximum of 255 instead of default threads.
+SetTitleMatchMode(2) ; sets title matching to search for "containing" instead of "exact"
+; --------------------------------------------------------------------------------
 ;#Persistent ; Keeps script permanently running
+; --------------------------------------------------------------------------------
 ;#SingleInstance,Force
-; REMOVED: ;#MaxMem 4095 ; Allows the maximum amount of MB per variable.
-;#MaxThreads 255 ; Allows a maximum of 255 instead of default threads.
-;SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 ;SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-;SetTitleMatchMode, 2 ; sets title matching to search for "containing" instead of "exact"
-;DetectHiddenText,On
-;DetectHiddenWindows, On
-;#Requires AutoHotkey 1.1+
-;#NoTrayIcon
-; ************************************ ... First Return ... ************************************
-;return
-;-----------------------------------------------------------------------------------------------
-; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-; 									... End of Auto-Execution ...
-; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+; --------------------------------------------------------------------------------
+;SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+; --------------------------------------------------------------------------------
+; SetWinDelay(-1)
+; SetControlDelay(-1) ; (AJB - 06/2023) - comment out for testing
+; SetWinDelay(-1) ; (AJB - 05/2023) - comment out for testing 
+; --------------------------------------------------------------------------------
+DetectHiddenText(1)
+DetectHiddenWindows(1)
+; --------------------------------------------------------------------------------
+#Requires AutoHotkey v2
+; --------------------------------------------------------------------------------
+return
+; --------------------------------------------------------------------------------
 
-
-;---------------------------------------------------------------------------
-;                  Personal Abbreviations 
-;---------------------------------------------------------------------------
+; --------------------------------------------------------------------------------
+/**
+ * Description ...: Personal Abbreviations
+ */
+; --------------------------------------------------------------------------------
 
 :*:peml::adam.bacon80@icloud.com												; Personal Email
 :*:eml::adam.bacon@fmglobal.com													; Email
@@ -69,8 +67,13 @@ return
 	:*:usr::OvercastBTC
 	:*:pw::HDBacon{!}980{!}988
 #HotIf
+#HotIf WinActive("ticketmaster.com") or WinActive('Seattle Mariners Account Manager')
+	:*:usr::adam.bacon80@icloud.com
+	:*:pw::HDBacon{!}980{!}988
+#HotIf
 ;============================== Other =============================================
 ;SendEvent ; Use SendEvent so that the script's own hotkeys can be triggered.
+:?*:ppw::HDBacon{!}980{!}988									; other password
 :?*:epw::HDBacon{!}9801988									; other password
 :?*:gpwf::80**19HDabKB									; g password
 :?*:wifionboard::Ah{!}980198812

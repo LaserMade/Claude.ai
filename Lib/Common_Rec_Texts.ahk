@@ -40,6 +40,18 @@ A robust asset integrity program coupled with thorough maintenance, and effectiv
 Management, operations, and maintenance personnel have been working diligently to improve the maintenance programs and practices. Any gaps in maintenance routines are identified and reviewed for implementation. Site management and maintenance personnel should be commended for their ongoing efforts in this area.
 
 In addition to the formal recommendations made, additional comments have been provided that also represent good loss prevention advice and should be completed.
+
+As the world's largest soda ash mine and manufacturing plant, this facility is a very valuable asset for Genesis Alkali Holdings.
+
+From the fire and natural hazards (F&NH) perspective, ignitable liquids at the ELDM plant remain one of the largest exposures here. Their ability to spread over a large area and their high heat of combustion make them difficult to extinguish, which result in large fires with considerable smoke and water damage. Improving the storage of ignitable liquids at the ELDM plant, as outlined in this report, would help reduce the likelihood of a severe ignitable liquid fire.
+
+From the boiler and machinery (B&M) perspective, the primary hazard is failure of the electrical infrastructure - specifically the medium voltage switchgear batteries. The battery testing recommendation was completed and the issues were identified and corrected. The next step is to improve the asset management by monitoring and controlling the temperature to as close to 77°F as practical, and have a remote alarm to a constantly attended location. 
+
+A robust asset integrity strategy coupled with thorough documentation, is necessary for trending, predicting, outage planning, and/or supporting an effective asset management program.
+
+Management and maintenance personnel have been working diligently to improve the asset integrity programs, and should be commended for their ongoing efforts in this area. Any gaps in maintenance routines are identified and reviewed for implementation.
+
+In addition to the formal recommendations made, additional comments have been provided that also represent good loss prevention advice and should be completed.
 )"
 
 A_Clipboard:= txt
