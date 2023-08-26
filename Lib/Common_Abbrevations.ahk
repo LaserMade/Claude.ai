@@ -185,11 +185,11 @@ return
 :*:bd.ft.::bd. ft.
 :*:kva::kVA
 :*:KVA::kVA
-:*:hz::Hz
+; :*:hz::Hz
 :*:HZ::Hz
-:*:KV::kV
-:*:kv::kV
-:*:KW::kW
+:?*:KV:: kV
+:?*:kv:: kV
+:?*:KW:: kW
 :*:kw::kW
 :*:anti-virus::antivirus
 :*:anti-siphon::antisiphon
@@ -252,7 +252,7 @@ return
 :*:fmef::foreign material exclusion (FME)
 :*:fmes::FME
 :*:LOTOf::lock-out tag-out (LOTO)
-:*:asbuiltef::as-built electrical single-line diagram
+:*:asbuiltf::as-built electrical single-line diagram
 :*:afhs::arc flash hazard analysis
 :*:vrlaf::valve regulated lead acid (VRLA)
 :*:vlaf::flooded/vented lead acid (VLA)

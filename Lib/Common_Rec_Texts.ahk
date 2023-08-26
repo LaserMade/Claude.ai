@@ -277,9 +277,9 @@ Low Voltage Circuit Breakers:
 - Section 2.1.3.2, and Table 1.
 
 Table 1:
-Low Rresistance:
+Low Resistance:
 - Measuring resistance across bolted connections
-Insulation Rresistance:
+Insulation Resistance:
 - Each pole measured phase to ground and phase to phase
 Contact Resistance (micro-ohms):
 - Measuring resistance across closed contacts
