@@ -1,7 +1,6 @@
-﻿; -=================================================================================
-; Section .....: Auto-Execution
-; ----------------------------------------------------------------------------------
-; -=================================================================================
+﻿;@include-winapi
+; --------------------------------------------------------------------------------
+#MaxThreads 255 ; Allows a maximum of 255 instead of default threads.
 #Warn All, OutputDebug
 #SingleInstance Force
 SendMode("Input")
@@ -18,12 +17,9 @@ SetMouseDelay(-1)
 SetWinDelay(-1)
 ; --------------------------------------------------------------------------------
 DllCall("SetThreadDpiAwarenessContext", "ptr", -4, "ptr")
+; DllCall("SetThreadDpiAwarenessContext", "ptr", -3, "ptr")
 ; --------------------------------------------------------------------------------
 
-; --------------------------------------------------------------------------------
-; This is kinda cool, I like this ; Sub-Section .....: Make Window Groups
-; --------------------------------------------------------------------------------
-; make_window_groups()
 ; --------------------------------------------------------------------------------
 ; TraySetIcon("shell32.dll","16") ; this changes the icon into a little laptop thing.
 TraySetIcon("shell32.dll","16", true) ; this changes the icon into a little laptop thing.
@@ -71,66 +67,55 @@ WindowListMenu(*){
 	Run("WindowListMenu.ahk")
 }
 ; --------------------------------------------------------------------------------
+#Include <Abstractions\Script>
+Script.startup.CheckStartupStatus()
 #Include <Common_Abbrevations>
 #Include <Common_HumanElement>
 #Include <Common_OSTitles>
 #Include <Common_Personal>
 #Include <Common_Rec_Texts>
 #Include <WINDOWS.v2>
+
 ; --------------------------------------------------------------------------------
-; <<<<< ... First Return ... <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+/**
+ * function Permanently Set Caplocks Off, NumLock On and Scroll Lock Off
+ * @param SetNumLockState
+ * @param SetCapsLockState
+ * @param SetScrollLockState
+  */
+;          
+; --------------------------------------------------------------------------------
+SetNumLockState("AlwaysOn")
+SetCapsLockState("AlwaysOff")
+SetScrollLockState("AlwaysOff")
+; --------------------------------------------------------------------------------
+
 Return
-; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-#HotIf WinActive("ahk_exe Code.exe")
+
+; --------------------------------------------------------------------------------
+#HotIf WinActive(" - Visual Studio Code")
 ; Comment .....:
 :*:;...::; {< 5} {. 3} First Return {. 3} {< 53}`nReturn`n; {< 80}
 :*:;---::; {- 80}
 :*:;,,,::; {< 80}
 :*:;sect::; {- 80} `r; {< 80}`r; {- 80}
-:*:{In::
-{
-Send("{Insert}")
-Sleep(100)
-SendEvent("{Enter}")
-}
-return
-:*:{T::
-{
-	Send("{Tab}")
-}	
-return
-:*:{S::Send("{Space}")
-:*:{E::Send("{Enter}")
+:?B0:{Ins::sert
+:?B0:{Ent::ter
 :*:sle::Sleep(100)
-:*:Gui, Sh::
-{
-myGui := Gui()
-myGui.Show("AutoSize")
-Send("{Enter}")
-}
-return
-:*:Gui, Su::
-{ ; V1toV2: Added bracket
-Send("Gui, Submit,Nohide")
-Send("{Enter}")
-} ; V1toV2: Added Bracket before hotkey or Hotstring
-return
-:*:clipw::Errorlevel := !ClipWait(1)
 #HotIf
+
 ; -------------------------------------------------------------------------------- 
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ; --------------------------------------------------------------------------------
 ; Section .....: Save with Hotkey Function
-; Function ....: ReloadAllAHKScripts()
+; Function ....: Reload() by Run()
 ; --------------------------------------------------------------------------------
-#HotIf WinActive("ahk_exe Code.exe")
+#HotIf WinActive(A_ScriptName " - Visual Studio Code")
 #Include <Abstractions\Script>
-~^s::
-{
-	; ReloadAllAhkScripts()
-	Script.Reload()
-}
-
+	~^s::Script.Reload()
+#HotIf
+; --------------------------------------------------------------------------------
+/*
 ReloadAllAhkScripts()
 {
 	DetectHiddenWindows(true)
@@ -175,15 +160,17 @@ ReloadAllAhkScripts()
 	OutputDebug(rmList)
 	return
 }
-#HotIf
+*/
+
 ; --------------------------------------------------------------------------------
-#c::CenterWindow("A")
+#HotIf WinActive(A_ScriptName)
+#c::try CenterWindow("A")
 
 CenterWindow(winTitle*) {
     hwnd := WinExist(winTitle*)
-    WinGetPos ,, &W, &H, hwnd
+    WinGetPos( ,, &W, &H, hwnd)
     mon := GetNearestMonitorInfo(hwnd)
-    WinMove mon.WALeft + mon.WAWidth // 2 - W // 2, mon.WATop + mon.WAHeight // 2 - H // 2,,, hwnd
+    WinMove( mon.WALeft + mon.WAWidth // 2 - W // 2, mon.WATop + mon.WAHeight // 2 - H // 2,,, hwnd)
 }
 return
 
@@ -218,41 +205,159 @@ return
 ; Section .....: Functions
 ; Function ....: Run scripts selection from the Script Tray Icon
 ; --------------------------------------------------------------------------------
-^+#1::
+
+;--------------------------------------------------------------------------
+;                     Shift+Ctrl+WIN+O to Open OS
+;--------------------------------------------------------------------------
+^+#o::
+{
+	myGui := Gui(,"Quick OS/DS Open/Search",)
+	myGui.Opt("AlwaysOnTop")
+	myGui.SetFont("s12")
+	myGui.Add("Radio","vMyRadio Checked1", "Open Operating Standard")
+	myGui.Add("Radio",, "Open Data Sheet")
+	myGui.Add("Radio",, "Open Operating Requirement")
+	myGui.Add("Text",, "Desired OS/DS/OR `(i.e., 8-9`):")
+	myGui.Add("Edit","vSTDNumber x+m",,).Focus()
+	myGui.Add("Text","x15", "Search for: (optional):")
+	myGui.Add("Edit", "vSearchTerm x+m",,)
+	myGui.Add("Button","x15 +default", "Open/Search").OnEvent("Click", ClickedSearch)
+	myGui.Add("Button","x+m", "Cancel").OnEvent("Click", ClickedCancel)
+	myGui.Show("w600")
+
+	ClickedSearch(*)
+	{
+		Saved := myGui.Submit()  ; Save the contents of named controls into an object.
+
+		If Saved.MyRadio = 1
+		{
+			outputos1 := "C:\Users\"
+			outputos1a := "\FM Global\Operating Standards - Documents\opstds\"
+			outputos2 := "fm.pdf"
+			Run("AcroRd32.exe " outputos1 "" A_UserName "" outputos1a "" Saved.STDNumber "" outputos2)
+			
+			If (!Saved.SearchTerm)
+			{
+				return
+			}
+			
+			Else
+			{
+				Sleep(1200)
+				Send("^+f")
+				Send("^a")
+				Send("{Delete}")
+				Send(Saved.SearchTerm)
+				Send("{Enter}")
+				return 
+			}
+			
+		}
+
+		If Saved.MyRadio=2 
+		{
+			outputos1 := "C:\Program Files\FMGlobal\Operating Standards\ds\FMDS"
+			outputos2 := ".pdf"
+			
+			DSArray := StrSplit(Saved.STDNumber,"-")
+			
+			IF StrLen(DSArray[1])>1
+				DSS := DSArray[1]
+			else
+				DSS := "0" . DSArray[1]
+			
+			IF StrLen(DSArray[2])>1
+				DSN := DSArray[2]
+			else
+				DSN := "0" . DSArray[2]
+			
+			Run("AcroRd32.exe " outputos1 "" DSS "" DSN "" outputos2)
+			
+			If (!Saved.SearchTerm)
+			{
+				return
+			}
+			
+			Else 
+			{
+				Sleep(1200)
+				Send("^+f")
+				Send("^a")
+				Send("{Delete}")
+				Send(Saved.SearchTerm)
+				Send("{Enter}")
+				return
+			}
+		}
+		
+		If Saved.MyRadio=3
+		{
+			outputor1 := "C:\Program Files\FMGlobal\Operating Requirements with Guides\OR"
+			outputor2 := ".pdf"
+			
+			Run("AcroRd32.exe " outputor1 "" Saved.STDNumber "" outputor2)
+			
+			If (!Saved.SearchTerm)
+			{
+				return
+			}
+			
+			Else 
+			{
+				Sleep(1200)
+				Send("^+f")
+				Send("^a")
+				Send("{Delete}")
+				Send(Saved.SearchTerm)
+				Send("{Enter}")
+				return
+			}
+		}
+		myGui.Destroy()
+		return
+	}
+
+	ClickedCancel(*)
+	{
+		myGui.Destroy()
+	}
+}
+return
+; ^+#1::
 GUIFE(*){
 	Run("GUI_FE.ahk")
 }
 return
 ; list
 
-^+#3::
+; ^+#3::
 WindowProbe(*){
 	Run("WindowProbe.ahk", "C:\Users\bacona\OneDrive - FM Global\3. AHK\")
 }
 return
-^+#4::
+; ^+#4::
 GUI_ListofFiles(*){
 	Run("GUI_ListofFiles.ahk")
 }
 return
-^+#5::
+; ^+#5::
 {
 Windows_Data_Types_offline(*){
 	Run("Windows_Data_Types_offline.ahk", "C:\Users\bacona\OneDrive - FM Global\3. AHK\AutoHotkey_MSDN_Types-master\src\v1.1_deprecated\")
 }
 }
 return
-#o::
+; #o::
 Detect_Window_Info(*){
 	Run("Detect_Window_Info.ahk")
 }
 return
-^+#6::
+; ^+#6::
 Detect_Window_Update(*){
 	Edit()
 }
 return
-^+#7::
+; ^+#7::
 test_script(*){
 	Run("test_script.ahk")
 }
@@ -271,27 +376,21 @@ return
 ; }
 ; --------------------------------------------------------------------------------
 ;============================== Test Programs ==============================
+/*
 #Numpad0::
 ; Parameter #1: Pass 1 instead of 0 to hibernate rather than suspend.
 ; Parameter #2: Pass 1 instead of 0 to suspend immediately rather than asking each application for permission.
 ; Parameter #3: Pass 1 instead of 0 to disable all wake events.
-{ ; V1toV2: Added bracket
-DllCall("PowrProf\SetSuspendState", "Int", 1, "Int", 0, "Int", 0)
-return
-; --------------------------------------------------------------------------------
-; https://www.autohotkey.com/board/topic/53443-found-the-top-level-handle-one-hwnd-to-rule-them-all/
-} ; V1toV2: Added Bracket before hotkey or Hotstring
-^!#h::
-{ ; V1toV2: Added bracket
-	ControlHwnd := ""
-	ControlSend("{Click}", , "ahk_id " ControlHwnd)
-} ; V1toV2: Added Bracket before hotkey or Hotstring
-return
+{
+	DllCall("PowrProf\SetSuspendState", "Int", 1, "Int", 0, "Int", 0)
+	Return
+}
+*/
 ; --------------------------------------------------------------------------------
 
 ; --------------------------------------------------------------------------------
 ; ^!#g::
-; { ; V1toV2: Added bracket
+; {
 ; MsgBox("Desktop Window: " DllCall("GetDesktopWindow") "`nClassName: "DllCall("GetClassName") "`nWindowA: " DllCall("FindWindowA") "`nClassInfoA: "DllCall("GetClassInfoA") "`nClassLongA: " DllCall("GetClassLongA") "`nClassWord: " DllCall("GetClassWord") "`nNextWindow: " DllCall("GetNextWindow") "`nNextWindow: " DllCall("GetNextWindow") "`nTitleBarInfo: " DllCall("GetTitleBarInfo"))
 ; ;msgbox % "Desktop Window: " dllCall("GetDesktopWindow")+0 "`nClassName: "dllCall("GetClassName")+0 "`nWindowA: " dllCall("FindWindowA")+0 "`nClassInfoA: "dllCall("GetClassInfoA")+0 "`nClassLongA: " dllCall("GetClassLongA")+0 "`nClassWord: " dllCall("GetClassWord")+0 "`nNextWindow: " dllCall("GetNextWindow")+0 "`nNextWindow: " dllCall("GetNextWindow")+0 "`nTitleBarInfo: " dllCall("GetTitleBarInfo")+0
 ; ;msgbox % dllCall("GetDesktopWindow")+0
@@ -303,7 +402,7 @@ return
 ; ;msgbox % dllCall("GetNextWindow")+0
 ; ;msgbox % dllCall("GetNextWindow")+0
 ; ;msgbox % dllCall("GetTitleBarInfo")+0
-; } ; V1toV2: Added Bracket before hotkey or Hotstring
+; }
 ; return
 ; --------------------------------------------------------------------------------
 
@@ -377,7 +476,7 @@ return
 ; This script is from the Automator
 
 !LButton::
-{ ; V1toV2: Added bracket
+{
 CoordMode("Mouse", "Screen")
 MouseGetPos(&x, &y)
 WinMove(x, y, , , "A")
@@ -385,10 +484,10 @@ return
 ;---------------------------------------------------------------------------
 ;                       Time Stamp Code
 ;---------------------------------------------------------------------------
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 :*:ts::
 ; format month and year
-{ ; V1toV2: Added bracket
+{
 date := FormatTime(A_Now, "MM/yyyy")
 Send("(AJB - " date ")")
 return
@@ -396,7 +495,7 @@ return
 ;--------------------------------------------------------------------------
 ;                    Quick Launch Websites (and Log In)
 ;--------------------------------------------------------------------------
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 
 ; ^+g::Run("`"https://www.google.com/?safe=active&ssui=on`"") ; use ctrl+Shift+g
 ; return
@@ -410,7 +509,7 @@ return
 */
 /* Commented out JOL
 	^+j::
-{ ; V1toV2: Added bracket
+{
 	Run "https://www.jurisdictiononline.com/" ; use ctrl+Shift+j
 	Sleep 3000
 	Send, {Tab}PASSWORD ;Note my username is saved in Edge and already populated. If yours is not, you will need to alter this script. Replace text after tab with your own credential
@@ -430,9 +529,9 @@ return
 ;return
 
 /*
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 	^+a::
-{ ; V1toV2: Added bracket
+{
 	Run "https://www.approvalguide.com//" ; use ctrl+Shift+a
 	Sleep 3500
 	Send, {Tab}{Tab}{Enter}
@@ -456,15 +555,6 @@ return
 }
 
 ;--------------------------------------------------------------------------
-;          Permanently Set Caplocks Off, NumLock On and Scroll Lock Off
-;--------------------------------------------------------------------------
-
-SetNumLockState("AlwaysOn")
-SetCapsLockState("AlwaysOff")
-SetScrollLockState("AlwaysOff")
-return
-
-;--------------------------------------------------------------------------
 ;                Win+Delete to Empty Recycle Bin
 ;--------------------------------------------------------------------------
 
@@ -473,20 +563,8 @@ return
 ;---------------------------------------------------------------------------
 ;                      Helpful Stuff
 ;---------------------------------------------------------------------------
-GetMouse:
-CoordMode("Mouse", "Screen")
-MouseGetPos(&mx, &my)
-CoordMode("Mouse", "Window")
-Return
-
-PutMouse:
-CoordMode("Mouse", "Screen")
-MouseMove(mx, my, 0)
-CoordMode("Mouse", "Window")
-Return
-
 :*:attext::	; Timestamp
-{ ; V1toV2: Added bracket
+{
 Date := FormatTime(A_Now, "MM/dd/yyyy")	; format month, day and year
 IB := InputBox("Nameplate Head Thickness (after 0.)", "Air Tank", "w300 h125"), npht := IB.Value
 IB := InputBox("Nameplate Shell Thickness (after 0.)", "Air Tank", "w300 h125"), npst := IB.Value
@@ -508,7 +586,7 @@ Join(sep, params*) {
 ;---------------------------------------------------------------------------
 
 ^!0::
-{ ; V1toV2: Added bracket
+{
 static var := "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÑÒÓÔŒÕÖØÙÚÛÜßàáâãäåæçèéêëìíîïñòóôœõöøùúûüÿ¿¡«»§¶†‡•-–—™©®¢€¥£₤¤αβγδεζηθικλμνξοπρσςτυφχψωΓΔΘΛΞΠΣΦΨΩ∫∑∏√−±∞≈∝≡≠≤≥×·÷∂′″∇‰°∴ø∈∩∪⊂⊃⊆⊇¬∧∨∃∀⇒⇔→↔↑ℵ∉°₀₁₂₃₄₅₆₇₈₉⁰¹²³⁴⁵⁶⁷⁸⁹"
 Global arr
 arr := strsplit(var)
@@ -526,10 +604,10 @@ Loop arr
 	}
 myGui.show()
 return
-} ; Added bracket before function
+}
 
 insert(A_GuiEvent, GuiCtrlObj, Info, *)
-{ ; V1toV2: Added bracket
+{
 	myGui := 
 	oSaved := myGui.submit()
 	Send(arr[SubStr(A_GuiEvent, 2)])
@@ -538,24 +616,17 @@ return
 
 ; :?*X:nm::Send("{Blind}≠") ; used for testing
 
-:?*:not equal::
-:?*:notequ::
-:?*:not=::
-:?*:!=::
-{ ; V1toV2: Added bracket
+; Convert the HTML character &ndash; to &#8211
+
+:?*:not equalf::
+:?*:notequf::
+:?*:not=f::
+:?*:!=f::
+{
 A_Clipboard := "≠"
 Send("^v")
 return
-} ; V1toV2: Added bracket in the end
-#HotIf WinActive("ahk_exe Hznhorizon.exe")
-	:?*:>=::
-{ ; V1toV2: Added bracket
-	A_Clipboard := "≥"
-	Send("^v")
-	Return
-} ; V1toV2: Added bracket in the end
-#HotIf
-:?*:^i::^{i}
+}
 
 :?*X:microm::Send(chr(181) "m")
 :?*X:3/4f::Send(chr(190))
@@ -566,18 +637,29 @@ return
 :?*:trademarkf::™
 :?*:circlec::©
 :?*:copywritef::©
-:?*:>=::
 :?*:greater than or equal to::
-{ ; V1toV2: Added bracket
-A_Clipboard := "≥"
-Send("^v")
-return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+:?*:>=::
+{
+	A_Clipboard := "≥"
+	Send("^v")
+	Return
+}
 :?*X:degf::Send(chr(176) "F")
 :?*X:degc::Send(chr(176) "C")
-:?*X:prisecf::Send("1" chr(176) "/2 " chr(176) A_Space "Inj testing")
+; :?*X:prisecf::Send("1" chr(176) "/2" chr(176) A_Space "Inj testing")
+:?*:prisecf::1°/2° Inj Testing
+
 :*:hrsgf::heat recovery steam generator (HRSG)
 :*:mocf::management of change (MOC)
+; --------------------------------------------------------------------------------
+::ft2::
+::ft^2::
+::sq.ft.::
+{
+    Send("ft²")
+	return
+}
+; --------------------------------------------------------------------------------
 ::agf::Approval Guide
 :*:FMDSf::FM Global Property Loss Prevention Data Sheet
 ::sgsv::seismic gas shutoff valve
@@ -675,91 +757,99 @@ EWD_MoveWindow(*)
 
 #HotIf WinExist(A_ScriptName)
 ; ; Current date and time
+/*
 FormatDateTime(format, datetime:="") {
-    if (datetime = "") {
-        datetime := A_Now
-    }
-    CurrentDateTime := FormatTime(datetime, format)
-    SendInput(CurrentDateTime)
-    return
+	if (datetime = "") {
+		datetime := A_Now
+	}
+	CurrentDateTime := FormatTime(datetime, format)
+	SendInput(CurrentDateTime)
+	return
 }
+*/
 ; Hotstrings
 ::/datetime::
-{ ; V1toV2: Added bracket
+{
     FormatDateTime("dddd, MMMM dd, yyyy, HH:mm")
 Return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 
 ::/datetimett::
-{ ; V1toV2: Added bracket
+{
     FormatDateTime("dddd, MMMM dd, yyyy hh:mm tt")
 Return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
-:*X:/c::FormatDateTime("yyyy.MM.dd HH:mm") "`r`n Reason goes here"
+}
+:*:/c::
+{
+	FormatDateTime("yyyy.MM.dd HH:mm`n")
+	A_Clipboard := "Reason goes here"
+	Send("^v")
+	Send("{Shift Down}{BS 17}")
+}
 ::/time::
-{ ; V1toV2: Added bracket
+{
     FormatDateTime("HH:mm")
 Return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 ::/timett::
-{ ; V1toV2: Added bracket
+{
     FormatDateTime("hh:mm tt")
 Return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 ::/date::
-{ ; V1toV2: Added bracket
+{
     FormatDateTime("MMMM dd, yyyy")
 Return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 ::/daten::
-{ ; V1toV2: Added bracket
+{
     FormatDateTime("MM/dd/yyyy")
 Return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 ::/datet::
-{ ; V1toV2: Added bracket
+{
     FormatDateTime("yy.MM.dd")
 Return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 ::/week::
-{ ; V1toV2: Added bracket
+{
     FormatDateTime("dddd")
 Return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 ::/day::
-{ ; V1toV2: Added bracket
+{
     FormatDateTime("dd")
 Return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 ::/month::
-{ ; V1toV2: Added bracket
+{
     FormatDateTime("MMMM")
 Return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 ::/monthn::
-{ ; V1toV2: Added bracket
+{
     FormatDateTime("MM")
 Return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 ::/year::
-{ ; V1toV2: Added bracket
+{
     FormatDateTime("yyyy")
 Return
 
 ; Others
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 ::wtf::Wow that's fantastic
 ::/paste::
-{ ; V1toV2: Added bracket
+{
     Send(A_Clipboard)
 Return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
-::/cud::
-    ; useful for WSLs
-{ ; V1toV2: Added bracket
-    SendInput("/mnt/c/Users/" A_UserName "/")
-Return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
+; ::/cud::
+;     ; useful for WSLs
+; {
+;     SendInput("/mnt/c/Users/" A_UserName "/")
+; Return
+; }
 ::/nrd::npm run dev
 ::/gm::Good morning
 ::/ge::Good evening

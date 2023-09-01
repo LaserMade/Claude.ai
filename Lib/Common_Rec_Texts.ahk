@@ -31,7 +31,7 @@
 { ; V1toV2: Added bracket
 A_Clipboard:=""
 Sleep(100)
-txt:="
+A_Clipboard :="
 (
 From the Boiler and Machinery (B&M) perspective, the primary hazard is failure of the electrical infrastructure.
 
@@ -53,9 +53,6 @@ Management and maintenance personnel have been working diligently to improve the
 
 In addition to the formal recommendations made, additional comments have been provided that also represent good loss prevention advice and should be completed.
 )"
-
-A_Clipboard:= txt
-Errorlevel := !ClipWait(1)
 Send("^v")
 return
 ;---------------------- End of UTR Text -------------------------------------------

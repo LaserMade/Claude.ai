@@ -75,7 +75,7 @@ return
 ;SendEvent ; Use SendEvent so that the script's own hotkeys can be triggered.
 :?*:ppw::HDBacon{!}980{!}988									; other password
 :?*:epw::HDBacon{!}9801988									; other password
-:?*:gpwf::80**19HDabKB									; g password
+:?*:fpw::80**19HDabKB									; g password
 :?*:wifionboard::Ah{!}980198812
 ; wifi onboard title window Sign in - Alaska Airlines - Google Chrome
 /*
