@@ -779,13 +779,7 @@ Return
     FormatDateTime("dddd, MMMM dd, yyyy hh:mm tt")
 Return
 }
-:*:/c::
-{
-	FormatDateTime("yyyy.MM.dd HH:mm`n")
-	A_Clipboard := "Reason goes here"
-	Send("^v")
-	Send("{Shift Down}{BS 17}")
-}
+:X:/cf::FormatDateTime("yyyy.MM.dd HH:mm`n")
 ::/time::
 {
     FormatDateTime("HH:mm")

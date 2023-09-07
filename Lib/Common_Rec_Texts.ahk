@@ -237,7 +237,7 @@ Sleep(100)
 return
 } ; V1toV2: Added Bracket before hotkey or Hotstring
 
-:*:lvtit::
+:*:eleclvt::
 { ; V1toV2: Added bracket
 A_Clipboard:=""
 A_Clipboard:= "Improve asset management of the low voltage switchgear."
@@ -247,7 +247,7 @@ Sleep(100)
 return
 } ; V1toV2: Added Bracket before hotkey or Hotstring
 
-:*:lowvi::
+:*:eleclvr::
 { ; V1toV2: Added bracket
 A_Clipboard:=""
 A_Clipboard:= "Improve inspection, testing, and maintenance (ITM) of the low voltage switchgear per" A_Space
@@ -263,7 +263,7 @@ Send("5-20f")
 return
 } ; V1toV2: Added Bracket before hotkey or Hotstring
 
-:*:lowvrec::
+:*:eleclvd::
 { ; V1toV2: Added bracket
 A_Clipboard:=""
 A_Clipboard:= "

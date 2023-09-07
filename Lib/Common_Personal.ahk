@@ -38,11 +38,8 @@ return
 ; :*:pwnotes::
 ; =============================== + FM Stuff + =============================
 :*:fmusr::bacona				; workstation username
-:*:fmpw::		; fm 
-{ 
-	Send("{!}980ab**HD{!}9KB")
-}
-return
+:*:fmpw::{!}980ab**HD{!}9KB		; fm 
+; --------------------------------------------------------------------------------
 #HotIf WinActive("EngNET")
 	:*:usr::bacona
 	:*:pw::{!}980ab**HD{!}9KB
@@ -55,7 +52,7 @@ return
 	:*:usr::bacon942882
 	:*:pw::Ah_19801988
 #HotIf
-#HotIf WinActive("Marriott")
+#HotIf WinActive("marriott") || WinActive('Marriott')
 	:*:usr::063194266
 	:*:pw::HDBacon{!}9801988
 #HotIf
@@ -63,11 +60,11 @@ return
 	:*:usr::OvercastBTC
 	:*:pw::HDBacon{!}980{!}988
 #HotIf
-#HotIf WinActive("AutoHotKey")
+#HotIf WinActive("AutoHotkey")
 	:*:usr::OvercastBTC
 	:*:pw::HDBacon{!}980{!}988
 #HotIf
-#HotIf WinActive("ticketmaster.com") or WinActive('Seattle Mariners Account Manager')
+#HotIf WinActive("ticketmaster.com") || WinActive('Seattle Mariners Account Manager')
 	:*:usr::adam.bacon80@icloud.com
 	:*:pw::HDBacon{!}980{!}988
 #HotIf

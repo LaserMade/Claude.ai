@@ -1,4 +1,4 @@
-
+#Requires AutoHotkey v2+
 
 QuickTrayTip(msg:="", tit:="", t:=5) {
     TrayTip(msg, tit)
@@ -11,4 +11,3 @@ QuickToolTip(msg:="", t:=2) {
     ToolTip(msg)
     SetTimer(() => ToolTip(), -t*1000)
 }
-
