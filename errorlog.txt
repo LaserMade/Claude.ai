@@ -1,0 +1,3 @@
+Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
+Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
+Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.

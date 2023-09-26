@@ -4,14 +4,17 @@
 
 Suspend 1 ; suspend all hotkeys until loaded
 
+; --------------------------------------------------------------------------------
 #Include LNCHR-Commands.ahk
 #Include LNCHR-Funcs.ahk
-
+; --------------------------------------------------------------------------------
 TraySetIcon("rocketlnchr.ico")
-
+; --------------------------------------------------------------------------------
 SetCapsLockState("AlwaysOff")
+; --------------------------------------------------------------------------------
 
-toggleCapsLock(){
+toggleCapsLock()
+{
     SetCapsLockState !GetKeyState('CapsLock', 'T')
 }
 
@@ -21,12 +24,7 @@ toggleCapsLock(){
 +CapsLock::toggleCapsLock()
 
 #HotIf WinActive(A_ScriptName)
-#Include <Abstractions\Script>
-~^s::
-{
-	; ReloadAllAhkScripts()
-	Script.Reload()
-}
+~^s::Run(A_ScriptName)
 #HotIf
 
 UsingMainWorkComputer := A_ComputerName == A_UserName ; Global flag for using main work computer, changes title
@@ -111,8 +109,8 @@ build_lngui(){
 set_lngui_window(s)
 { ; I was messing around with rounded corners here, was not satisfied with results
     if s == "main" {
-    WinSetTransparent 230, lngui.Hwnd
-;    WinSetRegion "0-0 w350 h90 R20-20", lngui.Hwnd  ;  for round corners
+        WinSetTransparent 230, lngui.Hwnd
+        ; WinSetRegion "0-0 w350 h90 R20-20", lngui.Hwnd  ;  for round corners
     }
     if s == "query" {
 ;     WinSetRegion "0-0 w350 h87 R20-20", lngui.Hwnd  ;  for round corners

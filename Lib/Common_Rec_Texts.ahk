@@ -1,5 +1,6 @@
 ﻿#Warn All, OutputDebug
 #SingleInstance Force
+#Requires AutoHotkey v2
 ;ListHotkeys
 ;#NoTrayIcon
 ;---------------------------------------------------------------------------
@@ -28,7 +29,7 @@
 
 ;:*:uthi::Additional recommendations to reduce the exposures at this facility are contained within this report. These recommendations were not discussed in detail because of the focused nature of this visit. However, by implementing these recommendations the building will be less likely to incur a devastating loss that requires months to repair before normal operations can resume.
 :*:utrf::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:=""
 Sleep(100)
 A_Clipboard :="
@@ -59,17 +60,17 @@ return
 ;---------------------- ICS Comment -------------------------------------------
 
 ;:*:uthi::Additional recommendations to reduce the exposures at this facility are contained within this report. These recommendations were not discussed in detail because of the focused nature of this visit. However, by implementing these recommendations the building will be less likely to incur a devastating loss that requires months to repair before normal operations can resume.
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 :*:icscomf::
-{ ; V1toV2: Added bracket
+{ 
 SendLevel(1)
 Send("^b" . "Industrial Control Systems (ICS) Evaluation:" . "^b" . "`n" . "An evaluation of ICS is now included in boiler and machinery evaluations and was performed for the first time at this facility during this visit.")
 return
 ;---------------------- End ICS Comment -------------------------------------------
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 
 :?*:closeconff::
-{ ; V1toV2: Added bracket
+{ 
 SendLevel(1)
 A_Clipboard := "The closing conference date shown on this report is different than the last day the engineer was onsite. This was due to a request by the client to delay to obtain and provide records. The last day onsite was "
 Send("^v")
@@ -81,7 +82,7 @@ Send("/year . `".`"")
 
 return
 ;-------------------------- Red Tag Recommendation ----------------------------------
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 
 :*:rtpst::Use of the FM Global Red Tag Permit System.
 
@@ -151,7 +152,7 @@ return
 
 ; ==========================================================================================================================
 ; :*:reccom::
-; { ; V1toV2: Added bracket
+; { 
 ; hCtl := ControlGetClassNN(ControlGetFocus("A"))
 ; Ctl := ControlGethWnd(hCtl, "A")
 ; hWndChild := DllCall("RealChildWindowFromPoint", "Ptr", Ctl, "UInt", , "Ptr")
@@ -225,33 +226,33 @@ return
 ; ;Clipboard:=txt1:="In addition to the formal B&M recommendations made, the following items also represent good loss prevention advice and should be completed."
 ; ;Send ^v
 ; return
-; } ; V1toV2: Added Bracket before hotkey or Hotstring
+; } 
 
 :*:recresp::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:= ""
 A_Clipboard := "Management stated they understand the recommendation. When the recommendation is received, the vendor will be engaged to ascertain the scope, cost, and scheduling. No timeline for completion was offered."
-Errorlevel := !ClipWait(1)
+
 Send("^v")
 Sleep(100)
 return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 
 :*:eleclvt::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:=""
 A_Clipboard:= "Improve asset management of the low voltage switchgear."
-Errorlevel := !ClipWait(1)
+
 Send("^v")
 Sleep(100)
 return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 
 :*:eleclvr::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:=""
 A_Clipboard:= "Improve inspection, testing, and maintenance (ITM) of the low voltage switchgear per" A_Space
-Errorlevel := !ClipWait(1)
+
 Send("^v")
 Sleep(100)
 SendLevel(1)
@@ -261,10 +262,10 @@ Send("{Space}")
 ;SetKeyDelay,100,10
 Send("5-20f")
 return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 
 :*:eleclvd::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:=""
 A_Clipboard:= "
 (
@@ -291,27 +292,27 @@ Bus Ducts and Cables:
 
 For full guidance on all applicable sections, please see Data Sheet 5-20.
 )"
-Errorlevel := !ClipWait(1)
+
 Send("^v")
 Sleep(100)
 return
 
 
 ; ================================== MV SWITCHGEAR  ==========================
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 :*:mvswgrtit::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:=""
 Sleep(100)
 A_Clipboard := "Improve asset management of the medium voltage switchgear."
-Errorlevel := !ClipWait(1)
+
 Send("^v")
 Sleep(100)
 return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 
 :*:mvswgrrec::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:="
 (
 During the visit, the following deficiency was identified:
@@ -340,35 +341,35 @@ Additional Guidance:
 
 Please see the data sheet for full details and additional guidance.
 )"
-Errorlevel := !ClipWait(1)
+
 Send("^v")
 Sleep(100)
 return
 
 ; =================================================================
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 :*:swgruth::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:=""
 Sleep(100)
 A_Clipboard :="
 (
 The switchgear protects the electrical distribution and downstream production equipment. If this equipment fails to operate as intended, this exposure can result in significant business interruption, delays in testing/certification, loss of in-process and/or controlled storage products, and personnel safety.
 )"
-Errorlevel := !ClipWait(1)
+
 Send("^v")
 Sleep(100)
 return
 
 ; =========================== ECP STUFF ==================================
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 
 :*:ecprinsr::Management stated they understand the recommendation, and have agreed to add the documents to the existing document review management program. Once the documents are added, reviewed, and updated, FM Global will be provided the documents, and contacted for review prior to closure of the recommendation. No formal timeline for completion was offered.
 return
 
 ; ==================TRANSFORMERS ==============
 :*:xfmrrec::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:=""
 Sleep(100)
 A_Clipboard := "
@@ -399,21 +400,21 @@ Note 2: Once baseline/benchmark testing has been completed please provide the re
 
 Please see the data sheet for full details.
 )"
-Errorlevel := !ClipWait(1)
+
 Send("^v")
 Sleep(100)
 return
 
 ; ================ PARTIAL DISCHARGE SURVEYS ====================================
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 :*:pdtitle::Implement an annual online partial discharge (PD) survey program.
 
 :*:pdrec::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:=""
 Sleep(100)
 A_Clipboard:= "Perform annual online partial discharge (PD) surveys for switchgear and circuit breakers rated 4 kV and above per "
-Errorlevel := !ClipWait(1)
+
 Send("^v")
 Sleep(100)
 SetKeyDelay(100, 10)
@@ -426,25 +427,26 @@ Sleep(100)
 Send(".`n`n`n")
 A_Clipboard:=""
 A_Clipboard := "Note: This recommendation is being made due to updated guidance, and associated industry loss history."
-Errorlevel := !ClipWait(1)
+
 Send("^v")
 Sleep(100)
 return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 
 :*:pduth::
-{ ; V1toV2: Added bracket
-A_Clipboard:= ""
-A_Clipboard := "Partial discharge (PD) and corona activity occur in switchgear rated 4 kV and above and is a good indicator of insulation issues due to incorrect installation, manufacturer defects, and signs of aging. The switchgear protects the electrical distribution and downstream production equipment."
-A_Clipboard
-Errorlevel := !ClipWait(1)
-Send("^v")
+{
+A_Clipboard := ""
+A_Clipboard := "
+(
+    Partial discharge (PD) and corona activity occur in switchgear rated 4 kV and above and is a good indicator of insulation issues due to incorrect installation, manufacturer defects, and signs of aging. The switchgear protects the electrical distribution and downstream production equipment.
+)"
+Send('^v')
 Sleep(100)
 return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+}
 
 :*:pdtech::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:= ""
 Sleep(100)
 A_Clipboard := "
@@ -454,7 +456,6 @@ There are multiple ways to meet the intent of this recommendation. Please utiliz
 Partial Discharge (PD) Guidance:
 Please see Data Sheet 5-19, Sections 3.2.3, and 3.2.4, for in-depth technical details regarding methods of testing, and continuous monitoring vs. in-service survey PD testing.
 )"
-Errorlevel := !ClipWait(1)
 Send("^v")
 Sleep(100)
 SetKeyDelay(100, 10)
@@ -466,33 +467,30 @@ Send("^#b")
 return
 
 ; ============================ BATTERY STUFF =====================
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 :*:battitmt::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:= ""
 Sleep(100)
 A_Clipboard := "Improve inspection, testing, and maintenance (ITM) of medium voltage (MV) switchgear batteries."
-Errorlevel := !ClipWait(1)
 Send("^v")
 Sleep(100)
 return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 :*:battmgmt::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:= ""
 Sleep(100)
 A_Clipboard := "Improve asset management of medium voltage (MV) switchgear batteries."
-Errorlevel := !ClipWait(1)
 Send("^v")
 Sleep(100)
 return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 :*:battrec::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:=""
 Sleep(100)
 A_Clipboard := "Improve the management of medium voltage (MV) switchgear batteries per "
-Errorlevel := !ClipWait(1)
 Send("^v")
 Sleep(100)
 SetKeyDelay(100, 10)
@@ -508,23 +506,23 @@ A_Clipboard := "
 - Perform five year capacity (performance or discharge) testing
 - Monitor, maintain, and control battery room/area temperature at, or near, 77°F
 )"
-Errorlevel := !ClipWait(1)
+
 Send("^v")
 Sleep(100)
 return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 :*:battuth::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard := "Switchgear batteries are critical safety devices, and provide the trip voltage necessary to open the breaker(s) in a fault condition. Monitoring and controlling the temperature of the batter room/area, at/near 77°F, is also critical to overall battery life and health. Deterioration of the batteries affects the circuit breaker's arc-interrupting capability."
-Errorlevel := !ClipWait(1)
+
 Sleep(100)
 Send("^v")
 Sleep(100)
 return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 
 :*:battitmf::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard:= "
 (
 The following guidance is outlined in Data Sheet 5-28:
@@ -549,10 +547,10 @@ Please see the data sheet for full guidance details.
 )"
 Send("^v")
 return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 
 :*:battmgmf::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard := "
 (
 The following guidance is outlined in Data Sheet 5-28:
@@ -564,17 +562,17 @@ Temperature Control and Monitoring:
 
 Please see the data sheet for full guidance details.
 )"
-Errorlevel := !ClipWait(1)
+
 Sleep(100)
 Send("^v")
 Sleep(100)
 return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+} 
 
 :*:battresp::
-{ ; V1toV2: Added bracket
+{ 
 A_Clipboard := "Management stated they understand the recommendation. An assessment will be conducted internally if performing this in-house is practical, or if the existing vendor will be used; if performed in-house, the appropriate battery tester will be purchased as soon as practical, and capacitance testing will begin. No formal timeline for completion was offered."
-Errorlevel := !ClipWait(1)
+
 Sleep(100)
 Send("^v")
 Sleep(100)

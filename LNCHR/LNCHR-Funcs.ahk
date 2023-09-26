@@ -1,4 +1,4 @@
-#Requires AutoHotkey v2.0+
+#Requires AutoHotkey v2+
 #Include QuickTips.ahk
 
 ; ______________________________________________________________________________ TryRun ___________
@@ -25,6 +25,31 @@ TryCatchOutlook(input, s) {
     else
         {
         QuickTrayTip("failed to run:`n" s, tit:="LNCHR")
+        }
+}
+VSCodeEdit(selFolder, file?, path?) {
+    Static vscode := 'C:\Users\' A_UserName '\AppData\Local\Programs\Microsoft VS Code\Code.exe '
+    Static Lib := A_MyDocuments '\AutoHotkey\Lib\'
+    try {
+        WinExist(file ' - Visual Studio Code')
+        WinActivate(file ' - Visual Studio Code')
+    } 
+    try {
+        ; if(selFolder = 'Lib') 
+        ;     folder := Lib
+        ;     Run(folder)
+        if(selFolder = 'folder')
+            file = '' ? file := path : path
+            Run(vscode path)
+        if(selFolder = 'file')
+            Run(vscode path '\' file)
+    }
+    catch Error as e {
+    }
+    else
+        {
+        QuickTrayTip("failed to run:`n" file, tit:="LNCHR")
+        throw e
         }
 }
 

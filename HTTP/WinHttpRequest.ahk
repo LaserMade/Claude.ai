@@ -5,7 +5,7 @@
  * @date 2021/08/01
  * @version 0.0.18
  ***********************************************************************/
-
+#Requires AutoHotkey v2
 class WinHttpRequest {
 	static AutoLogonPolicy := {
 		Always: 0,

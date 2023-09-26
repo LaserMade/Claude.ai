@@ -5,7 +5,7 @@
  * @date 2021/10/04
  * @version 0.0.1
  ***********************************************************************/
-
+#Requires AutoHotkey v2
 
 class WinHttp {
 	; flags for WinHttpOpen():

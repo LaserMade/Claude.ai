@@ -1,20 +1,16 @@
 ﻿; --------------------------------------------------------------------------------
 ; Section .....: Auto-Execution
 ; --------------------------------------------------------------------------------
-#Warn All, OutputDebug ; Enable warnings to assist with detecting common errors.
 #MaxThreads 255 ; Allows a maximum of 255 instead of default threads.
-SetTitleMatchMode(2) ; sets title matching to search for "containing" instead of "exact"
+#Warn All, OutputDebug
+#SingleInstance Force
+SendMode("Input")
+SetWorkingDir(A_ScriptDir)
+SetTitleMatchMode(2)
 ; --------------------------------------------------------------------------------
-;#Persistent ; Keeps script permanently running
-; --------------------------------------------------------------------------------
-;#SingleInstance,Force
-;SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-; --------------------------------------------------------------------------------
-;SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-; --------------------------------------------------------------------------------
-; SetWinDelay(-1)
-; SetControlDelay(-1) ; (AJB - 06/2023) - comment out for testing
-; SetWinDelay(-1) ; (AJB - 05/2023) - comment out for testing 
+SetWinDelay(-1)
+SetControlDelay(-1)
+SetWinDelay(-1)
 ; --------------------------------------------------------------------------------
 DetectHiddenText(1)
 DetectHiddenWindows(1)
@@ -26,14 +22,31 @@ return
 
 ; --------------------------------------------------------------------------------
 /**
- * Description ...: Personal Abbreviations
+ * @function Common_Personal_Abbreviations
  */
 ; --------------------------------------------------------------------------------
 
-:*:peml::adam.bacon80@icloud.com												; Personal Email
-:*:eml::adam.bacon@fmglobal.com													; Email
-:*:emp#::52906																	; Employee Number
-:*:officeaddress::FM Global: 601 108th Ave NE, Suite 1400, Bellevue, WA 98004 	; Office Address
+:*:peml::adam.bacon80@icloud.com	; Personal Email
+:*:eml::adam.bacon@fmglobal.com		; Email
+:*:emp#::52906						; Employee Number
+:*:costcenter::908					; Employee Number
+:*:officeaddys::					; Office Address (single line)
+{
+	Send('FM Global: 601 108th Ave NE')
+	Send(', Suite 1400, Bellevue, WA 98004')
+}	
+:*:officeaddyml::					; Office Address (multi line)
+{
+	A_Clipboard := "
+	(
+		FM Global: 
+		601 108th Ave NE 
+		Suite 1400 
+		Bellevue, WA 98004
+	)"
+	Send(A_Clipboard)
+}	
+
 :*:paddrf::1378 Fenmore Ave, Sanger, CA 93657									; My Address
 ; :*:pwnotes::
 ; =============================== + FM Stuff + =============================
@@ -69,164 +82,97 @@ return
 	:*:pw::HDBacon{!}980{!}988
 #HotIf
 ;============================== Other =============================================
-;SendEvent ; Use SendEvent so that the script's own hotkeys can be triggered.
-:?*:ppw::HDBacon{!}980{!}988									; other password
+:?*:ppw::HDBacon{!}980{!}988								; other password
 :?*:epw::HDBacon{!}9801988									; other password
-:?*:fpw::80**19HDabKB									; g password
+; :?*:fpw::80**19HDabKB										; g password
+:?*:fpw::{!}980ab**HD{!}9KB									; g password
 :?*:wifionboard::Ah{!}980198812
-; wifi onboard title window Sign in - Alaska Airlines - Google Chrome
-/*
-	#IfWinActive ahk_class CabinetWClass
-	#InputLevel 1
-	RButton::
-{ ; V1toV2: Added bracket
-	SendEvent {Shift down}
-	SendEvent RButton
-	SendEvent {Shift up}
-	;SendEvent {Blind}{LButton up}
-	;SendEvent {Blind}{LShift up}
-	ToolTip You pressed %A_ThisHotkey%.
-	Sleep 3000
-	ToolTip
-	;Send {ShiftDown}
-	;PostMessage,0x0204,,,,ahk_exe explorer.exe 
-	;PostMessage,0x0205,,,,ahk_exe explorer.exe 
-	;send {ShiftUp}
-	return
-	#InputLevel
-	#IfWinActive
-*/
-; } ; V1toV2: Added Bracket before hotkey or Hotstring
+; --------------------------------------------------------------------------------
 :*:solusr::abacon01
 :*:solpw::7jZuhYwi
-; :*:solcod::
 :*:solvznpw::gill4-frank-dug
-; { ; V1toV2: Added bracket
-; } ; V1toV2: Added bracket in the end
-#HotIf WinActive("Reddit", )
+; - myQuest ----------------------------------------------------------------------
+#HotIf WinActive('Login - CAS – Central Authentication Service - Google Chrome')
+:*:usr::adam.bacon8088@gmail.com
+:*:pw:: Ah{!}980198819
+#HotIf
+; - Reddit -----------------------------------------------------------------------
+#HotIf WinActive("Reddit")
 :*:usr::Comfortable_Kick_776
 :*:pw:: 80ab**HD!9KB20!9
-redditpw:
-; fmjobapp ---------------------
-#HotIf WinActive("intranet-fmglobal.icims.com", )
-:*:joblog::
-{ ; V1toV2: Added bracket
-SendLevel(1)
-site:= "https://intranet-fmglobal.icims.com/jobs/candidate?back=dashboard"
-Run(site)
-return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+#HotIf
+; --------------------------------------------------------------------------------
+#HotIf WinActive('Code Project')
+:*:usr::adam.bacon80@icloud.com
+:*:pw:: HDBacon20{1}5
+#HotIf
+; --------------------------------------------------------------------------------
+#HotIf WinActive('Carey')
+:*:usr::adam.bacon@fmglobal.com
+:*:pw:: Ah{!}9801988
+#HotIf
+; - fmjobapp ---------------------
+:X?:joblog::Run("https://intranet-fmglobal.icims.com/jobs/candidate?back=dashboard")
+#HotIf WinActive("intranet-fmglobal.icims.com")
 :*:eml::adam.bacon@fmglobal.com
 :*:usr::adambacon160807
 :*:pw::80ab**HD{!}9KB{!}9
-return
 #HotIf
-; Marsh ---------------------
-#HotIf WinActive("kiteworks", )
-:*:marshlog::
-{ ; V1toV2: Added bracket
-site:= "https://us-mmc-datatransfer.mmc.com/login?#/"
-Run(site)
-return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
-:*:usr::
-{ ; V1toV2: Added bracket
-Send("adam.bacon@fmglobal.com")
-A_Clipboard := "HDBacon!9801988"
-return
-} ; V1toV2: Added bracket in the end
+; - Marsh ---------------------
+:X?:marshlog::Run("https://us-mmc-datatransfer.mmc.com/login?#/")
+#HotIf WinActive("kiteworks")
+:*:usr::adam.bacon@fmglobal.com
+:*:pw::HDBacon{!}9801988
 #HotIf
-; Delta---------------------
-#HotIf WinActive("Delta", )
-:*:deltalog::
-{ ; V1toV2: Added bracket
-site:= "https://www.delta.com/mydelta/walletMyReceiptSummary"
-Run(site)
-return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+; - Delta---------------------
+:*:deltalog::Run("https://www.delta.com/mydelta/walletMyReceiptSummary")
+#HotIf WinActive("Delta")
 :*:usr::9339385271
 :*:pw::HDBacon{!}9801988
-return
 #HotIf
-; Alaska--------------------
-#HotIf WinActive("Alaska Airlines", )
-:*:aklog::
-{ ; V1toV2: Added bracket
-site:= "https://www.alaskaair.com"
-Run(site)
-Return
-}
+; - Alaska--------------------
+:X?:aklog::Run('https://www.alaskaair.com')
+#HotIf WinActive("Alaska Airlines")
 :*:usr::72832631
 :*:pw::Ah{!}9801988
 #HotIf
-; Hilton---------------------------------------
-#HotIf WinActive("Hilton", )
-:*:hiltonlog::
-{ ; V1toV2: Added bracket
-site:= "https://www.hilton.com/"
-Run(site)
-return
-return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
-:*:usr::942499799
-:*:pw::HDBacon{!}9801988
-#HotIf
-; the-automator.com----------------------------
-#HotIf WinActive("the-Automator", )
-:*:automatorlog::
-{ ; V1toV2: Added bracket
-SendLevel(1)
-site:= "https://https://www.the-automator.com/wp-login.php"
-Run(site)
-return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
-return
-:*:usr::adam.bacon80@icloud.com
-:*:pw::HDBacon{!}9801988
-#HotIf
-; iCloud ---------------------------------------
-#HotIf WinActive("iCloud", )
-:*:icloudlog::
-{ ; V1toV2: Added bracket
-site:= "https://www.icloud.com/"
-Run(site)
-return
-return
-} ; V1toV2: Added Bracket before hotkey or Hotstring
-:*:usr::adamjcdbacon@hotmail.com
-:*:pw::80ab**HD{!}9KB20{!}9
-#HotIf
-; Discord ---------------------------------------
-#HotIf WinActive("Discord", )
-:*:discordlog::
-{ ; V1toV2: Added bracket
-site:= "https://discord.com/channels/@me"
-Run(site)
-} ; V1toV2: Added Bracket before hotkey or Hotstring
-:*:usr::adam.bacon8073@gmail.com
-:*:pw::HDBacon{!}980{!}988
-return
-#HotIf
-; Avis ---------------------------------------
-#HotIf WinActive("Avis", )
-:*:avislog::
-{ ; V1toV2: Added bracket
-site:= "https://www.avis.com/"
-Run(site)
-} ; V1toV2: Added Bracket before hotkey or Hotstring
-:*:usr::S4K347
-:*:pw::HDBacon{!}9801988
-return
-#HotIf
-#HotIf WinActive("United", )
-:*:unitedlog::
-{ ; V1toV2: Added bracket
-site:= "https://www.united.com/"
-Run(site)
-} ; V1toV2: Added Bracket before hotkey or Hotstring
+; --------------------------------------------------------------------------------
+/** @airline United */
+:X?:unitedlog::Run("https://www.united.com/")
+#HotIf WinActive("United")
 :*:usr::MP216222
 :*:pw::HDBacon{!}9801988
 return
+#HotIf
+; - Hilton---------------------------------------
+:X?:hiltonlog::Run("https://www.hilton.com/")
+#HotIf WinActive("Hilton")
+:*:usr::942499799
+:*:pw::HDBacon{!}9801988
+#HotIf
+; - the-automator.com----------------------------
+:X?:automatorlog::Run("https://https://www.the-automator.com/wp-login.php")
+#HotIf WinActive("the-Automator")
+:*:usr::adam.bacon80@icloud.com
+:*:pw::HDBacon{!}9801988
+#HotIf
+; - iCloud ---------------------------------------
+:X?:icloudlog::Run("https://www.icloud.com/")
+#HotIf WinActive("iCloud") || WinActive('Apple Music')
+:*:usr::adamjcdbacon@hotmail.com
+:*:pw::80ab**HD{!}9KB20{!}9
+#HotIf
+; - Discord ---------------------------------------
+:X?:discordlog::Run("https://discord.com/channels/@me")
+#HotIf WinActive("Discord")
+:*:usr::adam.bacon8073@gmail.com
+:*:pw::HDBacon{!}980{!}988
+#HotIf
+; - Avis ---------------------------------------
+:X?:avislog::Run("https://www.avis.com/")
+#HotIf WinActive("Avis")
+:*:usr::S4K347
+:*:pw::HDBacon{!}9801988
 #HotIf
 /*
 MileIQ: 80ab**HD19KB

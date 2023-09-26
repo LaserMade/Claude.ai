@@ -76,15 +76,16 @@ DetectHiddenWindows(true)
 ; ..............: Notes: 
 ; ********************************************** ... First Return ... **************************************************
 ;return
-; ----------------------------------------------------------------------------------------------------------------------
-; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-; 									... End of Auto-Execution ...
-; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-; ----------------------------------------------------------------------------------------------------------------------
-
-;---------------------------------------------------------------------------
+; --------------------------------------------------------------------------------
+:*c:ahkf::AutoHotkey
+:*c:ahkv2::AutoHotkey v2+
+:*c:AHKf::AutoHotkey
+:*c:ahk v2::AutoHotkey v2+
+:*c:qapf::Quick Access Pop-up
+:*c:QAPf::Quick Access Pop-up
+; --------------------------------------------------------------------------------
 ;                          General Abbreviations ;#[AHK Script - General Abbreviations]
-;---------------------------------------------------------------------------
+; --------------------------------------------------------------------------------
 #HotString C1 B O *
 #HotString EndChars f
 
@@ -165,32 +166,32 @@ DetectHiddenWindows(true)
 :*:cbtf::computer-based training
 :*:recf::recommendation
 
-:*:densityf::								; input density and area in statement
-{ ; V1toV2: Added bracket
-IB := InputBox("Density in gpm/sq. ft.", "Sprinkler System Density", "w300 h125"), density := IB.Value
-IB := InputBox("Area in sq. ft.", "Demand Area", "w300 h125"), area := IB.Value
-Send(density " gpm/sq. ft. over " area " sq. ft.")
-return
+:*:densityf::   ; input density and area in statement
+{
+    IB := InputBox("Density in gpm/sq. ft.", "Sprinkler System Density", "w300 h125"), density := IB.Value
+    IB := InputBox("Area in sq. ft.", "Demand Area", "w300 h125"), area := IB.Value
+    Send(density " gpm/sq. ft. over " area " sq. ft.")
+    return
+}
 
 ;---------------------------------------------------------------------------
 ;                    Brand Assurance Spellings/Language ;#[AHK Script - Brand Assurance corrections]
 ;---------------------------------------------------------------------------
-} ; V1toV2: Added Bracket before hotkey or Hotstring
 :*:<FM>::FM Diamond
 :*:FM diamond::FM Diamond
-:*:FMG::FM Global
+:*:FMGf::FM Global
 :*:not FM approved::non-FM Approved
 :*:not FM Approved::non-FM Approved
 :*:non-storage sprinkler::nonstorage sprinkler
 :*:bd.ft.::bd. ft.
-:*:kva::kVA
-:*:KVA::kVA
+:*:kvaf::kVA
+:*:KVAf::kVA
 ; :*:hz::Hz
-:*:HZ::Hz
-:?*:KV:: kV
-:?*:kv:: kV
-:?*:KW:: kW
-:*:kw::kW
+:*:HZf::Hz
+:?*:KVf:: kV
+:?*:kvf:: kV
+:?*:KWf:: kW
+:*:kwf::kW
 :*:anti-virus::antivirus
 :*:anti-siphon::antisiphon
 :*:anti-freeze::antifreeze
