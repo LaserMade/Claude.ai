@@ -1,7 +1,7 @@
 ﻿;@include-winapi
 ; --------------------------------------------------------------------------------
 #Include <Directives\__AE.v2>
-AE.__Init() ; ! in test phase to use a class for Auto Execution Section
+; AE.__Init() ; ! in test phase to use a class for Auto Execution Section
 ; --------------------------------------------------------------------------------
 #Requires AutoHotkey v2
 ; --------------------------------------------------------------------------------

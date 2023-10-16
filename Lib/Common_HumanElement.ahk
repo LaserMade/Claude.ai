@@ -1,6 +1,5 @@
-﻿; REMOVED: #NoEnv
-#SingleInstance Force
-;#NoTrayIcon
+﻿#Requires AutoHotkey v2+
+
 :*:millitm::
 { ; V1toV2: Added bracket
 SendLevel(1)

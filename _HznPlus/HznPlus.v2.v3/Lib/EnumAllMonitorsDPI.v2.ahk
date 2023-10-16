@@ -42,7 +42,7 @@ for Each, hMonitor in EnumMonitors() {
 	List .= 'Index: [' Each ']`n' 'mhWnd: ' hMonitor '`n' 'dpi.x: ' dpi.x  '`n' 'dpi.y: ' dpi.y '`n' 'dpi.Window: ' GetDpiForWindow(hwnd) "`n"
 }
 
-MsgBox List
+MsgBox(List)
 return
 }
 

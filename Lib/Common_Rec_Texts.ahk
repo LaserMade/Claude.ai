@@ -1,6 +1,5 @@
-﻿#Warn All, OutputDebug
-#SingleInstance Force
-#Requires AutoHotkey v2
+﻿#Requires AutoHotkey v2
+#Include <Directives\__AE.v2>
 ;ListHotkeys
 ;#NoTrayIcon
 ;---------------------------------------------------------------------------
@@ -28,7 +27,7 @@
 ;---------------------- UTR Text -------------------------------------------
 
 ;:*:uthi::Additional recommendations to reduce the exposures at this facility are contained within this report. These recommendations were not discussed in detail because of the focused nature of this visit. However, by implementing these recommendations the building will be less likely to incur a devastating loss that requires months to repair before normal operations can resume.
-:*:utrf::
+:*:utrelecf::
 { 
 A_Clipboard:=""
 Sleep(100)
@@ -56,30 +55,209 @@ In addition to the formal recommendations made, additional comments have been pr
 )"
 Send("^v")
 return
+} 
+:*:utrmechf::
+{ 
+A_Clipboard:=""
+Sleep(100)
+A_Clipboard :="
+(
+This facility is important to Graymont Western US Inc. because there is no other lime production in this region. Over the years, the facility has developed strong relationships with its clients. Future production rates may rise due to possible increases in customer demand. The facility can continue to provide for its customers provided there are no major interruptions.`n`n
+)"
+Send("^v")
+Sleep(100)
+Send('^b')
+Sleep(100)
+Send('^u')
+Sleep(300)
+Send('Boiler and Machinery (B&M):')
+Sleep(300)
+Send('^b')
+Sleep(100)
+Send('^u')
+Sleep(100)
+A_Clipboard := ""
+Sleep(100)
+Send('`n')
+A_Clipboard := "
+(
+From B&M perspective, the primary exposure is failure of mechanical rotating equipment. The gears that turn these large kilns and mills can take up to 18 months to receive once ordered. Current production rates preclude the possibility of long-term makeup by the other production equipment. The lack of nondestructive examination/testing (NDE/T) program, and/or spare ring gear segments,  is a cause for concern and brings this risk to the forefront. A formal, documented, equipment contingency plan (ECP) exists; however, upon further review, the vendor (Metso) was unable to find the drawings/specifications for the bull gears. This is critical information that can cause significant delay, should be maintained on-file, and included in the ECP.
+
+The secondary minor exposure is failure of the electrical infrastructure. Due to a FM Global standards change based on loss history and industry changes, annual partial discharge (PD) online surveys on 4 kV switchgear/circuit breakers are now being recommended versus previous "best practice" guidance. 
+
+A robust asset integrity strategy, coupled with thorough documentation, is necessary for trending, predicting, outage planning, and/or supporting an effective inspection, testing, and maintenance program.
+
+Management, operations, and maintenance personnel have been working diligently to improve the maintenance programs and practices. Any gaps in maintenance routines are identified and reviewed for implementation; they should be commended for their ongoing efforts in this area.
+
+In addition to the formal B&M recommendations made, additional minor recommendations in the Comments section of this report have been provided that also represent good loss prevention advice and should be completed.
+)"
+Send("^v")
+return
+} 
 ;---------------------- End of UTR Text -------------------------------------------
 ;---------------------- ICS Comment -------------------------------------------
 
 ;:*:uthi::Additional recommendations to reduce the exposures at this facility are contained within this report. These recommendations were not discussed in detail because of the focused nature of this visit. However, by implementing these recommendations the building will be less likely to incur a devastating loss that requires months to repair before normal operations can resume.
-} 
+Return
+
+; $^c:: clip_it() ; Clip hotkey
+; $^b:: clip_it(1) ; Paste last clip hotkey
+
+clip_it(send_clip := 0) {
+	Static last_clip := "" ; Track last clipboard
+	If send_clip ; If send_clip is true
+	{
+		bak := ClipboardAll() ; Backup current clipboard
+		A_Clipboard := last_clip ; Put last_clip onto clipboard
+		sendInput('^v') ; Paste
+		While DllCall("GetOpenClipboardWindow") ; If clipboard still in use (long paste)
+			Sleep(50) ; Sleep for a bit
+		A_Clipboard := bak ; Restore original clipboard
+	}
+	Else ; Else if send_clip false
+	{
+		last_clip := A_Clipboard ; Update last_clip with current clipboard
+		SendInput('^c') ; And then copy new contents to active clipboard
+	}
+}
+#Include <HznPlus.v2> ; including to hopefully wait until the bold/underline/italics keys are pressed (state = 6)
 :*:icscomf::
-{ 
-SendLevel(1)
-Send("^b" . "Industrial Control Systems (ICS) Evaluation:" . "^b" . "`n" . "An evaluation of ICS is now included in boiler and machinery evaluations and was performed for the first time at this facility during this visit.")
-return
+{
+	SendLevel((A_SendLevel+1))
+	BlockInput(1)
+	Send('^u')
+	hWnd := WinActive('A')
+	DllCall("GetWindowThreadProcessId", "Int", hwnd, "Int*", &tpID := 0)
+	name := WinGetProcessName(hwnd)
+	A_Process := name
+	if (A_Process ~= 'i)hznHorizon.exe')
+		static hznHwnd := hWnd
+	list := []
+	list := WinGetControls(hznHwnd)
+	ClassNN := ''
+	hTb := 0
+	for , ClassNN in list {
+		if (ClassNN ~= 'i)m.*bar.*') {
+			hTb := ControlGetHwnd(ClassNN, hznHwnd)
+		}
+	}
+	if !(GETBUTTONSTATE(102, hTb) = 6)
+		While !(GETBUTTONSTATE(102, hTb) = 6)
+			Sleep(10)
+	; Sleep(100)
+	Send('^b')
+	if !(GETBUTTONSTATE(100, hTb) = 6)
+		While !(GETBUTTONSTATE(100, hTb) = 6)
+			Sleep(10)
+	; Sleep(100)
+	A_Clipboard := 'Industrial Control Systems (ICS) Evaluation:'
+	; Sleep(100)
+	clip_it()
+	clip_it(1)
+	; Sleep(300)
+	Send('^u')
+	if !(GETBUTTONSTATE(102, hTb) = 4)
+		While !(GETBUTTONSTATE(102, hTb) = 4)
+			Sleep(10)
+	; Sleep(100)
+	Send('^b')
+	if !(GETBUTTONSTATE(100, hTb) = 4)
+		While !(GETBUTTONSTATE(100, hTb) = 4)
+			Sleep(10)
+	; Sleep(100)
+	A_Clipboard := '`nAn evaluation of ICS is now included in boiler and machinery evaluations and was performed for the first time at this facility during this visit.'
+	clip_it()
+	clip_it(1)
+	Sleep(100)
+	return
+; {
+; 	; sCd := A_ControlDelay
+; 	; SetControlDelay(20)
+; 	hCtl := ControlGetFocus('A')
+; 	cSleep := 50
+; 	lSleep := 5
+; 	; bClip := ClipboardAll()
+; 	DllCall("EmptyClipboard")
+; 	DllCall("OpenClipboard")
+; 	DllCall("EmptyClipboard")
+; 	DllCall("OpenClipboard", "Ptr", hCtl)
+; 	DllCall("EmptyClipboard")
+; 	DllCall("CloseClipboard")
+; 	Loop lSleep
+; 		Sleep(cSleep) ; Sleep for a bit
+; 	Until DllCall("GetOpenClipboardWindow") ; If clipboard still in use (long paste)
+; 	SendLevel((A_SendLevel+1))
+; 	BlockInput(1)
+; 	Send('^b' . '^u')
+; 	Sleep(cSleep)
+; 	A_Clipboard := 'Industrial Control Systems (ICS) Evaluation:'
+; 	Loop lSleep
+; 		Sleep(cSleep) ; Sleep for a bit
+; 	Until DllCall("GetOpenClipboardWindow") ; If clipboard still in use (long paste)
+; 	Send('^+v')
+; 	; DllCall("EmptyClipboard")
+; 	; DllCall("OpenClipboard")
+; 	; DllCall("EmptyClipboard")
+; 	; DllCall("OpenClipboard", "Ptr", hCtl)
+; 	; DllCall("EmptyClipboard")
+; 	; DllCall("CloseClipboard")
+; 	; Loop lSleep
+; 	; 	Sleep(cSleep) ; Sleep for a bit
+; 	; Until DllCall("GetOpenClipboardWindow") ; If clipboard still in use (long paste)
+; 	; Send('^b' . '^u')
+; 	Send('^u')
+; 	Sleep(cSleep)
+; 	Send('^b')
+; 	Sleep(cSleep)
+; 	DllCall("EmptyClipboard")
+; 	DllCall("OpenClipboard")
+; 	DllCall("EmptyClipboard")
+; 	DllCall("OpenClipboard", "Ptr", hCtl)
+; 	DllCall("EmptyClipboard")
+; 	DllCall("CloseClipboard")
+; 	Send('`n')
+; 	Sleep(100)
+; 	A_Clipboard := 'An evaluation of ICS is now included in boiler and machinery evaluations and was performed for the first time at this facility during this visit.'
+; 	; ClipWait(5)
+; 	Send('^+v')
+; 	DllCall("EmptyClipboard")
+; 	DllCall("OpenClipboard") ;, "Ptr", hCtl)
+; 	DllCall("EmptyClipboard")
+; 	DllCall("CloseClipboard")
+; 	; A_Clipboard := bClip
+; 	SetControlDelay(sCd)
+; return
 ;---------------------- End ICS Comment -------------------------------------------
 } 
 
+:?*C:comments::
+{
+	slbak := A_SendLevel
+	SendLevel((A_SendLevel+1))
+	BlockInput(1)
+	Send('^+{Left}')
+	Sleep(100)
+	Send('^b')
+	Sleep(100)
+	Send('^u')
+	Sleep(300)
+	Send('Additional Boiler and Machinery (B & M) Minor Recommendations:')
+	Sleep(300)
+	Send('^b')
+	Sleep(100)
+	Send('^u')
+	Sleep(100)
+	Send('`n')
+	Send('In addition to the formal B & M recommendations made, the following items also represent good loss prevention advice and should be completed.')
+	SendLevel(slbak)
+	BlockInput(0)
+	return
+}
 :?*:closeconff::
 { 
 SendLevel(1)
 A_Clipboard := "The closing conference date shown on this report is different than the last day the engineer was onsite. This was due to a request by the client to delay to obtain and provide records. The last day onsite was "
 Send("^v")
-SetKeyDelay(10, 10)
-Send("/week . `", `"")
-Send("/month . `", `"")
-Send("/day . `", `"")
-Send("/year . `".`"")
-
 return
 ;-------------------------- Red Tag Recommendation ----------------------------------
 } 
@@ -166,9 +344,9 @@ return
 ; ;clipboard:= % txt
 ; ;clipwait 1
 
-; DllCall("keybd_event", "int", 162, "int", 29, "int", 0, "int", 0) 
+; DllCall("keybd_event", "int", 162, "int", 29, "int", 0, "int", 0)
 ; DllCall("keybd_event", "int", 0x42, "int", 0, "int", 0)
-; ;dllcall("keybd_event", int, 0x42, int, 2, int, 0)
+; DllCall("keybd_event", int, 0x42, int, 2, int, 0)
 ; DllCall("keybd_event", "int", 162, "int", 29, "int", 2, "int", 0)
 ; ;send ctrl+shift+left without using Send/SendInput/ControlSend
 ; ;e.g. tested on Notepad (Windows 7)

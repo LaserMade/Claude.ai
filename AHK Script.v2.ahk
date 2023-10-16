@@ -1,12 +1,10 @@
-﻿;@include-winapi
-; --------------------------------------------------------------------------------
+﻿#Requires AutoHotkey v2+
 #Include <Directives\__AE.v2>
-#Requires AutoHotkey v2+
-; AE.__Init() ; ! in test phase to use a class for Auto Execution Section
+;@include-winapi
+; --------------------------------------------------------------------------------
 ; --------------------------------------------------------------------------------
 
 ; --------------------------------------------------------------------------------
-; TraySetIcon("shell32.dll","16") ; this changes the icon into a little laptop thing.
 TraySetIcon("shell32.dll","16", true) ; this changes the icon into a little laptop thing.
 ; --------------------------------------------------------------------------------
 myScript := A_TrayMenu
@@ -59,16 +57,60 @@ SetNumLockState("AlwaysOn")
 SetCapsLockState("AlwaysOff")
 SetScrollLockState("AlwaysOff")
 ; --------------------------------------------------------------------------------
-
-; Return
-
+#HotIf !WinActive('ahk_exe hznHorizon.exe')
+	^+v::Paste()
+	Paste(*)
+	{
+		Static Msg := WM_PASTE := 770, wParam := 0, lParam := 0
+		; WinActive('ahk_exe WINWORD.exe') ? Send('+{Insert}') : hCtl := ControlGetFocus('A')
+		; Run('WINWORD.exe /x /q /a /w')
+		WinActive('ahk_exe WINWORD.exe') ? Send('+{Insert}') : hCtl := ControlGetFocus('A')
+		try DllCall('SendMessage', 'Ptr', hCtl, 'UInt', Msg, 'UInt', wParam, 'UIntP', lParam)
+		return
+	}
+#HotIf
 ; --------------------------------------------------------------------------------
 #HotIf WinActive(" - Visual Studio Code")
-:*:;---::; {- 80}
-:*:;,,,::; {< 80}
+; :*?:;---::
+; {
+; 	prevClip := ClipboardAll()
+; 	ClipWait(1)
+; 	Sleep(100)
+; 	A_Clipboard := ''
+; 	Send('^+{Left}')
+; 	; Sleep(100)
+; 	A_Clipboard := '; --------------------------------------------------------------------------------'
+; 	; Sleep(300)
+; 	; Send('+{Insert}')
+; 	; ClipWait(1)
+; 	Send('^v')
+; 	A_Clipboard := prevClip
+; 	ClipWait(1)
+; 	return
+; }
+
+;
+:*C:fn...::
+{
+	Send('^+{Left}')
+	Sleep(100)
+	Send('function...:' A_Tab)
+	return
+}	
+; --------------------------------------------------------------------------------
+:*:;---::
+{
+	Send('^+{Left}')
+	Send('; {- 80}')
+} ; {- 80}
 :?B0:{Ins::sert
 :?B0:{Ent::ter
-:*:sle::Sleep(100)
+:*:sle::
+{
+	BlockInput(1)
+	Send('Sleep(100)')
+	BlockInput(0)
+}
 #HotIf
 
 ; -------------------------------------------------------------------------------- 
@@ -176,16 +218,143 @@ return
 ^+!r::ReloadAllAhkScripts()
 ; - Chrome River----------------------------------
 #HotIf WinActive("Chrome River - Google Chrome")
+	~*+s::Send('+{Tab 2}' . '{Enter}')
 	; SendMode("Event")
 	:*:bt::Business Travel -{Space} 
-	:*:air::Business Travel - Airfare -
-	:*:seat::Business Travel - Airline Fee - Seat Upgrade -
-	:*:inter::Business Travel - Airline Fee - Internet - 
-	:*:bags::Business Travel - Airline Fee - Baggage Fee - 
-	:*:ho::Business Travel - Hotel -{Space}
-	:*:me::Business Travel - Meal - 
-	:*:car::Business Travel - Car Service -
-	:*:rent::Business Travel - Rental Car -
+	:*:air::
+	{
+		Send('Business Travel - Airfare -' . A_Space)
+		Send('{Tab 3}' . '{Space Down}')
+		Sleep(100)
+		Send('{Space Up}')
+		Sleep(100)
+		Send('{Down}')
+		Sleep(100)
+		Send('{Down}')
+		; Sleep(100)
+		Send('{Enter Down}')
+		Sleep(100)
+		Send('{Enter Up}')
+		; Sleep(50)
+		Send('{Tab 4}' . '{Space Down}')
+		Sleep(100)
+		Send('{Space Up}')
+		Sleep(100)
+		Send('{Down}')
+		Sleep(100)
+		Send('{Down}')
+		Sleep(100)
+		Send('{Down}')
+		Send('{Enter Down}')
+		Sleep(100)
+		Send('{Enter Up}')
+		Send('+{Tab 7}')
+	}
+	:*:seatf::
+	{
+		; Send('Business Travel - Airline Fee - Seat Upgrade - ')
+		Send('{Tab}' . '{Space Down}')
+		Sleep(100)
+		Send('{Space Up}')
+		Sleep(100)
+		Send('{Down 5}')
+		; Sleep(100)
+		Send('{Enter Down}')
+		Sleep(100)
+		Send('{Enter Up}')
+		; Sleep(50)
+		Send('+{Tab}')
+		Send('Business Travel - Airline Fee - Seat Upgrade - ')
+		return
+	}
+	:*:wifiair::
+	:*:inter::
+	{
+		Send('Business Travel - Airline Fee - Internet - ')
+		Send('{Tab}' . '{Space Down}')
+		Sleep(100)
+		Send('{Space Up}')
+		Sleep(100)
+		Send('{Down 8}')
+		; Sleep(100)
+		Send('{Enter Down}')
+		Sleep(100)
+		Send('{Enter Up}')
+		; Sleep(50)
+		Send('+{Tab}')
+	}
+	:*:bags::
+	{
+		Send('Business Travel - Airline Fee - Baggage Fee -' . A_Space)
+		Send('{Tab}' . '{Space Down}')
+		Sleep(100)
+		Send('{Space Up}')
+		Sleep(100)
+		Send('{Down 3}')
+		; Sleep(100)
+		Send('{Enter Down}')
+		Sleep(100)
+		Send('{Enter Up}')
+		; Sleep(50)
+		Send('+{Tab}')
+	}
+	:*:hotel::
+	{
+		Send('Business Travel - Hotel - ')
+		Send('{Tab 2}' . '{Space Down}')
+		Sleep(100)
+		Send('{Space Up}')
+		Sleep(100)
+		Send('{Down 3}')
+		; Sleep(100)
+		Send('{Enter Down}')
+		Sleep(100)
+		Send('{Enter Up}')
+		Send('{Tab}' . '{Space}')
+		; Sleep(50)
+		Send('+{Tab 3}')
+
+	}
+	:*X:meal::Send('Business Travel - Meal -' A_Space)
+		
+	:*:car::
+	{
+		Send('Business Travel - Car Service - ')
+		Send('{Tab}' . '{Space Down}')
+		Sleep(100)
+		Send('{Space Up}')
+		Sleep(100)
+		Send('{Down 3}')
+		; Sleep(100)
+		Send('{Enter Down}')
+		Sleep(100)
+		Send('{Enter Up}')
+		; Sleep(50)
+		Send('+{Tab}')
+	}
+	:*:rent::
+	{
+		Send('Business Travel - Rental Car - ')
+		Send('{Tab}' . '{Space Down}')
+		Sleep(100)
+		Send('{Space Up}')
+		Sleep(100)
+		Send('{Down 4}')
+		; Sleep(100)
+		Send('{Enter Down}')
+		Sleep(100)
+		Send('{Enter Up}')
+		Send('{Tab 4}' . '{Space Down}')
+		Sleep(100)
+		Send('{Space Up}')
+		Sleep(100)
+		Send('{Down 3}')
+		; Sleep(100)
+		Send('{Enter Down}')
+		Sleep(100)
+		Send('{Enter Up}')
+		Send('+{Tab 6}')
+	}
 	:*:mob::Business Mobile
 	:*:bint::Business Internet
 	:*:comp::Company Vehicle
@@ -218,6 +387,7 @@ return
 :*:genesisf::Genesis Alkali Holdings LLC "Genesis Alkali Holdings LLC - Green River" / 075548.55-01
 :*:pogof::Northern Star Resources Limited "Pogo Mine" / 000084.00-01
 :*:materionf::Materion Corporation "Materion Natural Resources Inc." [Delta UT] / 075107.62-01
+:*:materions::Materion Corporation [Delta UT] (075107.62-01)
 :*:reddogf::Teck Resources Limited " Red Dog Mine & Port Sites" [Kivalina, AK] / 092024.83-04 & 092024.83-05
 
 :*:caesf::Cobham Group Limited "Microelectronic Solutions" [San Jose CA] / Index No. 000258.83-01
@@ -229,10 +399,24 @@ return
 :*:mtcemf::Eagle Materials Inc. "Mountain Cement Company-EM" [Laramie WY] / Index No. 075554.08-02
 :*:mtcems::Mountain Cement Co. (075554.08-02)
 
-:*:Varexf::Varex Imaging Corporation [SLC UT] / 075053.23-07
+:*:varexf::Varex Imaging Corporation [SLC UT] / 075053.23-07
 
-:*:Cytivaf::Danaher Corporation "Cytiva" [Logan UT] / Index No. 001338.79-02
-:*:Cytivas::Danaher Corp. - Cytiva (001338.79-02)
+:*:cytivaf::Danaher Corporation "Cytiva" [Logan UT] / Index No. 001338.79-02
+:*:cytivas::Danaher Corp. - Cytiva (001338.79-02)
+
+:*:grumaf::Gruma, S.A.B. de C.V. "Hayward Plant"[Hayward CA] / Index No. 076370.11
+:*:grumas::Gruma 'Mission Foods' [Hayward CA] (076370.11)
+:*:graymontf::Graymont Limited "Graymont Western US Inc. - Indian Creek Plant"[Townsend MT] / 075377.81 - 01
+:*:graymonts::Graymont "Indian Creek Plant"[Townsend MT] (075377.81 - 01)
+
+:*:red dogf::Teck Resources Limited "Teck Alaska Inc. - Red Dog Mine Site" / 092024.83 - 04
+:*:reddogs::
+:*:red dogs::
+{
+	Send('Red Dog (092024.83 - 04)')
+}
+:*:vulcanf::Vulcan Materials Company "Sanger-5085"[Sanger CA] / 000170.74 - 01
+:*:vulcans::Vulcan Materials[Sanger CA] (00170.74 - 01)
 
 ;---------------------------------------------------------------------------
 ;      Shift+WIN+m Button to Click on Window Anywhere to Drag
@@ -249,10 +433,19 @@ return
 ;                       Time Stamp Code
 ;---------------------------------------------------------------------------
 }
+#HotIf WinActive('ahk_exe hznhorizon.exe')
+:*:ts::
+; format month and year
+{
+	date := FormatTime(A_Now, "yyyy.MM")
+	Send("(AJB - " date ")")
+	return
+}
+#HotIf
 :*:tsf::
 ; format month and year
 {
-	date := FormatTime(A_Now, "MM/yyyy")
+	date := FormatTime(A_Now, "yyyy.MM.dd")
 	Send("(AJB - " date ")")
 	return
 }
@@ -737,8 +930,8 @@ ReloadAllAhkScripts()
 
 ; --------------------------------------------------------------------------------
 ;                     Shift+Ctrl+WIN+O to Open OS
-/*
 ; --------------------------------------------------------------------------------
+/*
 ^+#o::
 {
 	myGui := Gui(,"Quick OS/DS Open/Search",)

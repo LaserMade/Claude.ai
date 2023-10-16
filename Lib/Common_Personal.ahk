@@ -55,7 +55,8 @@ return
 ; --------------------------------------------------------------------------------
 #HotIf WinActive("EngNET")
 	:*:usr::bacona
-	:*:pw::{!}980ab**HD{!}9KB
+	; :*:pw::{!}980ab**HD{!}9KB
+	:*:pw::80ab**HD{!}9KB{!}2{!}9
 #HotIf
 #HotIf WinActive("Xfinity")
 	:*:usr::harmony_bacon@comcast.net

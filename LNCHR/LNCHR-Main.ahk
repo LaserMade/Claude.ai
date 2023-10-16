@@ -2,7 +2,7 @@
 #SingleInstance Force
 #WinActivateForce
 
-Suspend 1 ; suspend all hotkeys until loaded
+Suspend(1) ; suspend all hotkeys until loaded
 
 ; --------------------------------------------------------------------------------
 #Include LNCHR-Commands.ahk
@@ -15,7 +15,7 @@ SetCapsLockState("AlwaysOff")
 
 toggleCapsLock()
 {
-    SetCapsLockState !GetKeyState('CapsLock', 'T')
+    SetCapsLockState(!GetKeyState('CapsLock', 'T'))
 }
 
 ; Allow normal CapsLock functionality to be toggled by Alt+CapsLock, or shift, or crl

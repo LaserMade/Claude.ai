@@ -77,6 +77,7 @@ DetectHiddenWindows(true)
 ; ********************************************** ... First Return ... **************************************************
 ;return
 ; --------------------------------------------------------------------------------
+:*: f::flood
 :*c:ahkf::AutoHotkey
 :*c:ahkv2::AutoHotkey v2+
 :*c:AHKf::AutoHotkey
@@ -86,10 +87,12 @@ DetectHiddenWindows(true)
 ; --------------------------------------------------------------------------------
 ;                          General Abbreviations ;#[AHK Script - General Abbreviations]
 ; --------------------------------------------------------------------------------
-#HotString C1 B O *
-#HotString EndChars f
+; #HotString C1 B O *
+#HotString *
+; #HotString EndChars f
 
 ; ................................................
+:B0:msdn:: win32 
 ::potiential::potential
 ::accellerated::accelerated
 ::resiliancy::resiliency
