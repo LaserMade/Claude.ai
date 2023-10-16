@@ -77,7 +77,7 @@ DetectHiddenWindows(true)
 ; ********************************************** ... First Return ... **************************************************
 ;return
 ; --------------------------------------------------------------------------------
-:*: f::flood
+
 :*c:ahkf::AutoHotkey
 :*c:ahkv2::AutoHotkey v2+
 :*c:AHKf::AutoHotkey
@@ -97,19 +97,19 @@ DetectHiddenWindows(true)
 ::accellerated::accelerated
 ::resiliancy::resiliency
 ::tendancy::tendency
-::ds::Data Sheet
-::gsu::generator step up (GSU)
-::dga::dissolved gas analysis (DGA)
+::dsf::Data Sheet
+::gsuf::generator step up (GSU)
+::dgaf::dissolved gas analysis (DGA)
 ::as-builtf::as-built electrical single-line diagram
 ::delinieation::delineation
 ::agf::Approval Guide
-::FMDS::FM Global Property Loss Prevention Data Sheet
-::sgsv::seismic gas shutoff valve
+::FMDSf::FM Global Property Loss Prevention Data Sheet
+::sgsvf::seismic gas shutoff valve
 :*:erpf::emergency response plan
 :*:ferpf::flood emergency response plan
-::wst::water supply tool
-::efc::eFC
-::wdt::water delivery time
+::wstf::water supply tool
+::efcf::eFC
+::wdtf::water delivery time
 :*:wpivf::wall post-indicator valve
 :*:pivf::post-indicator valve
 :*:ulf::Underwriters Laboratories
@@ -119,10 +119,10 @@ DetectHiddenWindows(true)
 :*:cepf::cartoned expanded plastic
 :*:sopf::standard operating procedure (SOP)
 :*:eopf::emergency operating procedure (EOP)
-:*:ooc::out of commission (OOC)
+:*:oocf::out of commission (OOC)
 :*:oshpd::Office of Statewide Health Planning and Development (OSHPD)
 :*:hospitalinds::OSHPD
-::ooo::out of office
+::ooof::out of office
 ::OSY::OS&Y
 ::sq.ft.::sq. ft.
 :*:oemf::original equipment manufacturer (OEM)
@@ -132,21 +132,21 @@ DetectHiddenWindows(true)
 :*:mehpf::minimum end head pressure
 :*:mawpf::maximum allowable working pressure (MAWP)
 :*:mipf::metal insulating panels
-::lwco::low water cutout (LWCO)
-::lwfco::low water fuel cutoff
-::lfpil::low flash point ignitable liquid
-::hfpil::high flash point ignitable liquid
-:*:lmgtfy::https://letmegooglethat.com/?q=
+::lwcof::low water cutout (LWCO)
+::lwfcof::low water fuel cutoff
+::lfpilf::low flash point ignitable liquid
+::hfpilf::high flash point ignitable liquid
+:*:lmgtfyf::https://letmegooglethat.com/?q=
 :*:itmf::inspection, testing, and maintenance (ITM)
 :*:irasf::in-rack automatic sprinklers
-::il::ignitable liquid
+::ilf::ignitable liquid
 :*:hrlf::higher RelativeLikelihood
 :*:htff::heat transfer fluid
-::gp::generally protected
+::gpf::generally protected
 :*:FMRTPS::FM Global Red Tag Permit System
 :*:FMHWPS::FM Global Hot Work Permit System
-:*:DS::Data Sheet
-:*:FMA::FM Approved
+:*:DSf::Data Sheet
+:*:FMAf::FM Approved
 :*:FMILSC::FM Approved Ignitable Liquid Storage Cabinet
 :*:FRPf::fiber-reinforced plastic panels
 :*:epof::emergency power off
@@ -161,11 +161,11 @@ DetectHiddenWindows(true)
 :*:fnhf::fire and natural hazards (F&NH)
 :*:2oo3::two out of three-voting logic
 :*:ostt::overspeed trip test
-:*:o/s::overspeed
+:*:o/sf::overspeed
 :*:the majority of::most of
 :*:in the near future::soon
 :*:as a result of::because of
-::recs::recommendations
+::recsf::recommendations
 :*:cbtf::computer-based training
 :*:recf::recommendation
 

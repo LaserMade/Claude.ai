@@ -388,6 +388,7 @@ return
 :*:pogof::Northern Star Resources Limited "Pogo Mine" / 000084.00-01
 :*:materionf::Materion Corporation "Materion Natural Resources Inc." [Delta UT] / 075107.62-01
 :*:materions::Materion Corporation [Delta UT] (075107.62-01)
+
 :*:reddogf::Teck Resources Limited " Red Dog Mine & Port Sites" [Kivalina, AK] / 092024.83-04 & 092024.83-05
 
 :*:caesf::Cobham Group Limited "Microelectronic Solutions" [San Jose CA] / Index No. 000258.83-01
@@ -406,6 +407,7 @@ return
 
 :*:grumaf::Gruma, S.A.B. de C.V. "Hayward Plant"[Hayward CA] / Index No. 076370.11
 :*:grumas::Gruma 'Mission Foods' [Hayward CA] (076370.11)
+
 :*:graymontf::Graymont Limited "Graymont Western US Inc. - Indian Creek Plant"[Townsend MT] / 075377.81 - 01
 :*:graymonts::Graymont "Indian Creek Plant"[Townsend MT] (075377.81 - 01)
 
@@ -417,6 +419,8 @@ return
 }
 :*:vulcanf::Vulcan Materials Company "Sanger-5085"[Sanger CA] / 000170.74 - 01
 :*:vulcans::Vulcan Materials[Sanger CA] (00170.74 - 01)
+
+:*:igts::International Game Technology (079291.45 - 02)
 
 ;---------------------------------------------------------------------------
 ;      Shift+WIN+m Button to Click on Window Anywhere to Drag
