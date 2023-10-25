@@ -1,23 +1,5 @@
-﻿;@include-winapi
-; --------------------------------------------------------------------------------
-#MaxThreads 255 ; Allows a maximum of 255 instead of default threads.
-#Warn All, OutputDebug
-#SingleInstance Force
-SendMode("Input")
-SetWorkingDir(A_ScriptDir)
-SetTitleMatchMode(2)
-; --------------------------------------------------------------------------------
-DetectHiddenText(true)
-DetectHiddenWindows(true)
-; --------------------------------------------------------------------------------
-#Requires AutoHotkey v2
-; --------------------------------------------------------------------------------
-SetControlDelay(-1)
-SetMouseDelay(-1)
-SetWinDelay(-1)
-; --------------------------------------------------------------------------------
-DllCall("SetThreadDpiAwarenessContext", "ptr", -4, "ptr")
-; DllCall("SetThreadDpiAwarenessContext", "ptr", -3, "ptr")
+﻿#Requires AutoHotkey v2
+#Include <Directives\__AE.v2>
 ; --------------------------------------------------------------------------------
 /**
  * @function Common_Abbrevations

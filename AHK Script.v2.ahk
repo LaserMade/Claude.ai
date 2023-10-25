@@ -38,7 +38,21 @@ WindowListMenu(*){
 	Run("WindowListMenu.ahk")
 }
 ; --------------------------------------------------------------------------------
-#Include <Abstractions\Script>
+; testtest()
+; testtest() {
+; 	str := A_AppData
+; 	newstr := RegExReplace(str, 'i)\\Roaming', '')
+; 	ToolTip( 'A_AppData: ' 			. A_AppData 		. '`n'
+; 			. 'A_AppDataCommon: ' 	. A_AppDataCommon 	. '`n'
+; 			. 'A_ProgramsCommon: ' 	. A_ProgramsCommon 	. '`n'
+; 			. 'A_UserName: '		. A_UserName 		. '`n'
+; 			. 'str: '				. str 				. '`n'
+; 			. 'newstr: '			. newstr 			. '`n'
+; 			, 0, 0
+; 			)
+; }
+		
+; #Include <Abstractions\Script>
 ; Script.startup.CheckStartupStatus()
 #Include <Common_Include>
 #Include <WINDOWS.v2>
@@ -113,19 +127,6 @@ SetScrollLockState("AlwaysOff")
 }
 #HotIf
 
-; -------------------------------------------------------------------------------- 
-; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-; --------------------------------------------------------------------------------
-; Section .....: Save with Hotkey Function
-; Function ....: Reload() by Run()
-; --------------------------------------------------------------------------------
-; #HotIf WinActive(A_ScriptName " - Visual Studio Code")
-; #Include <Abstractions\Script>
-; 	~^s::Script.Reload()
-; 	; 	~^s::Run(A_ScriptName)
-; #HotIf
-; --------------------------------------------------------------------------------
-
 ; --------------------------------------------------------------------------------
 ; #HotIf WinActive(A_ScriptName)
 #c::try CenterWindow("A")
@@ -138,33 +139,33 @@ CenterWindow(winTitle*) {
 }
 return
 
-GetNearestMonitorInfo(winTitle*) {
-    static MONITOR_DEFAULTTONEAREST := 0x00000002
-    hwnd := WinExist(winTitle*)
-    hMonitor := DllCall("MonitorFromWindow", "ptr", hwnd, "uint", MONITOR_DEFAULTTONEAREST, "ptr")
-    NumPut("uint", 104, MONITORINFOEX := Buffer(104))
-    if (DllCall("user32\GetMonitorInfo", "ptr", hMonitor, "ptr", MONITORINFOEX)) {
-        Return  { Handle   : hMonitor
-                , Name     : Name := StrGet(MONITORINFOEX.ptr + 40, 32)
-                , Number   : RegExReplace(Name, ".*(\d+)$", "$1")
-                , Left     : L  := NumGet(MONITORINFOEX,  4, "int")
-                , Top      : T  := NumGet(MONITORINFOEX,  8, "int")
-                , Right    : R  := NumGet(MONITORINFOEX, 12, "int")
-                , Bottom   : B  := NumGet(MONITORINFOEX, 16, "int")
-                , WALeft   : WL := NumGet(MONITORINFOEX, 20, "int")
-                , WATop    : WT := NumGet(MONITORINFOEX, 24, "int")
-                , WARight  : WR := NumGet(MONITORINFOEX, 28, "int")
-                , WABottom : WB := NumGet(MONITORINFOEX, 32, "int")
-                , Width    : Width  := R - L
-                , Height   : Height := B - T
-                , WAWidth  : WR - WL
-                , WAHeight : WB - WT
-                , Primary  : NumGet(MONITORINFOEX, 36, "uint")
-            }
-    }
-    throw Error("GetMonitorInfo: " A_LastError, -1)
-}
-return
+; GetNearestMonitorInfo(winTitle*) {
+;     static MONITOR_DEFAULTTONEAREST := 0x00000002
+;     hwnd := WinExist(winTitle*)
+;     hMonitor := DllCall("MonitorFromWindow", "ptr", hwnd, "uint", MONITOR_DEFAULTTONEAREST, "ptr")
+;     NumPut("uint", 104, MONITORINFOEX := Buffer(104))
+;     if (DllCall("user32\GetMonitorInfo", "ptr", hMonitor, "ptr", MONITORINFOEX)) {
+;         Return  { Handle   : hMonitor
+;                 , Name     : Name := StrGet(MONITORINFOEX.ptr + 40, 32)
+;                 , Number   : RegExReplace(Name, ".*(\d+)$", "$1")
+;                 , Left     : L  := NumGet(MONITORINFOEX,  4, "int")
+;                 , Top      : T  := NumGet(MONITORINFOEX,  8, "int")
+;                 , Right    : R  := NumGet(MONITORINFOEX, 12, "int")
+;                 , Bottom   : B  := NumGet(MONITORINFOEX, 16, "int")
+;                 , WALeft   : WL := NumGet(MONITORINFOEX, 20, "int")
+;                 , WATop    : WT := NumGet(MONITORINFOEX, 24, "int")
+;                 , WARight  : WR := NumGet(MONITORINFOEX, 28, "int")
+;                 , WABottom : WB := NumGet(MONITORINFOEX, 32, "int")
+;                 , Width    : Width  := R - L
+;                 , Height   : Height := B - T
+;                 , WAWidth  : WR - WL
+;                 , WAHeight : WB - WT
+;                 , Primary  : NumGet(MONITORINFOEX, 36, "uint")
+;             }
+;     }
+;     throw Error("GetMonitorInfo: " A_LastError, -1)
+; }
+; return
 ; --------------------------------------------------------------------------------
 ; Section .....: Functions
 ; Function ....: Run scripts selection from the Script Tray Icon
@@ -216,211 +217,49 @@ return
 ;                Ctrl+Shift+Alt+r Reload AutoHotKey Script (to load changes)
 ; --------------------------------------------------------------------------------
 ^+!r::ReloadAllAhkScripts()
-; - Chrome River----------------------------------
-#HotIf WinActive("Chrome River - Google Chrome")
-	~*+s::Send('+{Tab 2}' . '{Enter}')
-	; SendMode("Event")
-	:*:bt::Business Travel -{Space} 
-	:*:air::
-	{
-		Send('Business Travel - Airfare -' . A_Space)
-		Send('{Tab 3}' . '{Space Down}')
-		Sleep(100)
-		Send('{Space Up}')
-		Sleep(100)
-		Send('{Down}')
-		Sleep(100)
-		Send('{Down}')
-		; Sleep(100)
-		Send('{Enter Down}')
-		Sleep(100)
-		Send('{Enter Up}')
-		; Sleep(50)
-		Send('{Tab 4}' . '{Space Down}')
-		Sleep(100)
-		Send('{Space Up}')
-		Sleep(100)
-		Send('{Down}')
-		Sleep(100)
-		Send('{Down}')
-		Sleep(100)
-		Send('{Down}')
-		Send('{Enter Down}')
-		Sleep(100)
-		Send('{Enter Up}')
-		Send('+{Tab 7}')
-	}
-	:*:seatf::
-	{
-		; Send('Business Travel - Airline Fee - Seat Upgrade - ')
-		Send('{Tab}' . '{Space Down}')
-		Sleep(100)
-		Send('{Space Up}')
-		Sleep(100)
-		Send('{Down 5}')
-		; Sleep(100)
-		Send('{Enter Down}')
-		Sleep(100)
-		Send('{Enter Up}')
-		; Sleep(50)
-		Send('+{Tab}')
-		Send('Business Travel - Airline Fee - Seat Upgrade - ')
-		return
-	}
-	:*:wifiair::
-	:*:inter::
-	{
-		Send('Business Travel - Airline Fee - Internet - ')
-		Send('{Tab}' . '{Space Down}')
-		Sleep(100)
-		Send('{Space Up}')
-		Sleep(100)
-		Send('{Down 8}')
-		; Sleep(100)
-		Send('{Enter Down}')
-		Sleep(100)
-		Send('{Enter Up}')
-		; Sleep(50)
-		Send('+{Tab}')
-	}
-	:*:bags::
-	{
-		Send('Business Travel - Airline Fee - Baggage Fee -' . A_Space)
-		Send('{Tab}' . '{Space Down}')
-		Sleep(100)
-		Send('{Space Up}')
-		Sleep(100)
-		Send('{Down 3}')
-		; Sleep(100)
-		Send('{Enter Down}')
-		Sleep(100)
-		Send('{Enter Up}')
-		; Sleep(50)
-		Send('+{Tab}')
-	}
-	:*:hotel::
-	{
-		Send('Business Travel - Hotel - ')
-		Send('{Tab 2}' . '{Space Down}')
-		Sleep(100)
-		Send('{Space Up}')
-		Sleep(100)
-		Send('{Down 3}')
-		; Sleep(100)
-		Send('{Enter Down}')
-		Sleep(100)
-		Send('{Enter Up}')
-		Send('{Tab}' . '{Space}')
-		; Sleep(50)
-		Send('+{Tab 3}')
-
-	}
-	:*X:meal::Send('Business Travel - Meal -' A_Space)
-		
-	:*:car::
-	{
-		Send('Business Travel - Car Service - ')
-		Send('{Tab}' . '{Space Down}')
-		Sleep(100)
-		Send('{Space Up}')
-		Sleep(100)
-		Send('{Down 3}')
-		; Sleep(100)
-		Send('{Enter Down}')
-		Sleep(100)
-		Send('{Enter Up}')
-		; Sleep(50)
-		Send('+{Tab}')
-	}
-	:*:rent::
-	{
-		Send('Business Travel - Rental Car - ')
-		Send('{Tab}' . '{Space Down}')
-		Sleep(100)
-		Send('{Space Up}')
-		Sleep(100)
-		Send('{Down 4}')
-		; Sleep(100)
-		Send('{Enter Down}')
-		Sleep(100)
-		Send('{Enter Up}')
-		Send('{Tab 4}' . '{Space Down}')
-		Sleep(100)
-		Send('{Space Up}')
-		Sleep(100)
-		Send('{Down 3}')
-		; Sleep(100)
-		Send('{Enter Down}')
-		Sleep(100)
-		Send('{Enter Up}')
-		Send('+{Tab 6}')
-	}
-	:*:mob::Business Mobile
-	:*:bint::Business Internet
-	:*:comp::Company Vehicle
-	:*:off::Office Supplies - risk file organization folders for site visit efficiency 
-return 
-#HotIf
-
-;:*:planeml::Edward Evatt, FM Global, edward.evatt@fmglobal.com{Enter}Terry Keatts, FM Global, terry.keatts@fmglobal.com ;Plan Review email additions
-;:*:plansig::Terry Keatts, P.E.{Enter}Sr. Engineering Specialist{Enter}FM Global â€“ Seattle Office{Enter}ENGSanFranciscoPlanReviewSM@fmglobal.com{Enter}(925) 287-4336
-
-; --------------------------------------------------------------------------------
-;     DSP Email Subject Endings for Quick Entry ;#[AHK Script - DSPs]
-; --------------------------------------------------------------------------------
-
-:*:cinerf::Ciner Enterprises Inc. "Sisecam Wyoming LLC" [Green River WY] / 001131.69-01
-:*:ciners::Ciner-Sisecam (001131.69-01)
-
-:*:solvaygf::Solvay S.A. "Solvay Soda Ash Joint Venture / Soda Ash Expansion / Chemicals" / 000968.17-01
-:*:solvaygs::Solvay (000968.17-01)
-
-:*:heclagcf::Hecla Mining Company "Greens Creek Mine" [Admiralty Island AK] / 092010.60-03
-:*:heclagcs::Hecla-Greens Creek (092010.60-03)
-:*:heclags::Hecla-Greens Creek
-
-:*:heclalff::Hecla Mining Company "Lucky Friday Mine" [Mullan ID] / 079127.30-07
-:*:heclalfs::Hecla-Lucky Friday (079127.30-07)
-:*:heclals::Hecla-Lucky Friday
-
-:*:montanarssf::Montana Resources, LLC "Continental Mine and Operations" / 075346.68-03
-:*:genesisf::Genesis Alkali Holdings LLC "Genesis Alkali Holdings LLC - Green River" / 075548.55-01
-:*:pogof::Northern Star Resources Limited "Pogo Mine" / 000084.00-01
-:*:materionf::Materion Corporation "Materion Natural Resources Inc." [Delta UT] / 075107.62-01
-:*:materions::Materion Corporation [Delta UT] (075107.62-01)
-
-:*:reddogf::Teck Resources Limited " Red Dog Mine & Port Sites" [Kivalina, AK] / 092024.83-04 & 092024.83-05
-
-:*:caesf::Cobham Group Limited "Microelectronic Solutions" [San Jose CA] / Index No. 000258.83-01
-:*:cobhamf::Cobham Group Limited "Microelectronic Solutions" [San Jose CA] / Index No. 000258.83-01
-
-:*:trinityf::Trinity Health Corporation "Saint Agnes Medical Center, Saint Agnes Medical Providers. Inc. & Trinity Information Services - Fresno" [Fresno CA] / 076602.13-04
-:*:trinitys::Trinity (076602.13-04)
-
-:*:mtcemf::Eagle Materials Inc. "Mountain Cement Company-EM" [Laramie WY] / Index No. 075554.08-02
-:*:mtcems::Mountain Cement Co. (075554.08-02)
-
-:*:varexf::Varex Imaging Corporation [SLC UT] / 075053.23-07
-
-:*:cytivaf::Danaher Corporation "Cytiva" [Logan UT] / Index No. 001338.79-02
-:*:cytivas::Danaher Corp. - Cytiva (001338.79-02)
-
-:*:grumaf::Gruma, S.A.B. de C.V. "Hayward Plant"[Hayward CA] / Index No. 076370.11
-:*:grumas::Gruma 'Mission Foods' [Hayward CA] (076370.11)
-
-:*:graymontf::Graymont Limited "Graymont Western US Inc. - Indian Creek Plant"[Townsend MT] / 075377.81 - 01
-:*:graymonts::Graymont "Indian Creek Plant"[Townsend MT] (075377.81 - 01)
-
-:*:red dogf::Teck Resources Limited "Teck Alaska Inc. - Red Dog Mine Site" / 092024.83 - 04
-:*:reddogs::
-:*:red dogs::
+ReloadAllAhkScripts()
 {
-	Send('Red Dog (092024.83 - 04)')
+	DetectHiddenWindows(true)
+	static oList := WinGetList("ahk_class AutoHotkey",,,)
+	aList := Array()
+	List := oList.Length
+	For v in oList
+	{
+		aList.Push(v)
+	}
+	scripts := ""
+	Loop aList.Length
+		{
+			title := WinGetTitle("ahk_id " aList[A_Index])
+			;PostMessage(0x111,65414,0,,"ahk_id " aList[A_Index])
+			dnrList := [A_ScriptName, "Scriptlet_Library"]
+			rmList := InStr(title, "Scriptlet_Library", false)
+			
+			If (title = A_ScriptName) || (title = "Scriptlet_Library"){
+				continue
+			}
+			PostMessage(0x111,65400,0,,"ahk_id " aList[A_Index])
+			; Note: I think the 654*** is for v2 => avoid the 653***'s
+			; [x] Reload:		65400
+			; [x] Help: 		65411 ; 65401 doesn't really work or do anything that I can tell
+			; [x] Spy: 			65402
+			; [x] Pause: 		65403
+			; [x] Suspend: 		65404
+			; [x] Exit: 		65405
+			; [x] Variables:	65406
+			; [x] Lines Exec:	65407 & 65410
+			; [x] HotKeys:		65408
+			; [x] Key History:	65409
+			; [x] AHK Website:	65412 ; Opens https://www.autohotkey.com/ in default browser; and 65413
+			; [x] Save?:		65414
+			; Don't use these => ;//static a := { Open: 65300, Help:    65301, Spy: 65302, XXX (nonononono) Reload: 65303 [bad reload like Reload()], Edit: 65304, Suspend: 65305, Pause: 65306, Exit:   65307 }
+			; scripts .=  (scripts ? "`r`n" : "") . RegExReplace(title, " - AutoHotkey v[\.0-9]+$")
+			scripts .=  (scripts ? "`r`n" : "") . RegExReplace(title, " - AutoHotkey v[\.0-9]+$")
+		}
+	OutputDebug(scripts)
+	OutputDebug(rmList)
+	return
 }
-:*:vulcanf::Vulcan Materials Company "Sanger-5085"[Sanger CA] / 000170.74 - 01
-:*:vulcans::Vulcan Materials[Sanger CA] (00170.74 - 01)
-
-:*:igts::International Game Technology (079291.45 - 02)
 
 ;---------------------------------------------------------------------------
 ;      Shift+WIN+m Button to Click on Window Anywhere to Drag

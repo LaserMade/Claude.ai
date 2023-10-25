@@ -51,7 +51,7 @@ A robust asset integrity strategy coupled with thorough documentation, is necess
 
 Management and maintenance personnel have been working diligently to improve the asset integrity programs, and should be commended for their ongoing efforts in this area. Any gaps in maintenance routines are identified and reviewed for implementation.
 
-In addition to the formal recommendations made, additional comments have been provided that also represent good loss prevention advice and should be completed.
+In addition to the formal recommendations made, additional comments have been provided that also represent industry best practices, and should be completed.
 )"
 Send("^v")
 return
@@ -89,7 +89,7 @@ A robust asset integrity strategy, coupled with thorough documentation, is neces
 
 Management, operations, and maintenance personnel have been working diligently to improve the maintenance programs and practices. Any gaps in maintenance routines are identified and reviewed for implementation; they should be commended for their ongoing efforts in this area.
 
-In addition to the formal B&M recommendations made, additional minor recommendations in the Comments section of this report have been provided that also represent good loss prevention advice and should be completed.
+In addition to the formal recommendations made, additional comments have been provided that also represent industry best practices, and should be completed.
 )"
 Send("^v")
 return
@@ -100,55 +100,35 @@ return
 ;:*:uthi::Additional recommendations to reduce the exposures at this facility are contained within this report. These recommendations were not discussed in detail because of the focused nature of this visit. However, by implementing these recommendations the building will be less likely to incur a devastating loss that requires months to repair before normal operations can resume.
 Return
 
-; $^c:: clip_it() ; Clip hotkey
-; $^b:: clip_it(1) ; Paste last clip hotkey
-
-clip_it(send_clip := 0) {
-	Static last_clip := "" ; Track last clipboard
-	If send_clip ; If send_clip is true
-	{
-		bak := ClipboardAll() ; Backup current clipboard
-		A_Clipboard := last_clip ; Put last_clip onto clipboard
-		sendInput('^v') ; Paste
-		While DllCall("GetOpenClipboardWindow") ; If clipboard still in use (long paste)
-			Sleep(50) ; Sleep for a bit
-		A_Clipboard := bak ; Restore original clipboard
-	}
-	Else ; Else if send_clip false
-	{
-		last_clip := A_Clipboard ; Update last_clip with current clipboard
-		SendInput('^c') ; And then copy new contents to active clipboard
-	}
-}
 #Include <HznPlus.v2> ; including to hopefully wait until the bold/underline/italics keys are pressed (state = 6)
 :*:icscomf::
 {
 	SendLevel((A_SendLevel+1))
 	BlockInput(1)
 	Send('^u')
-	hWnd := WinActive('A')
-	DllCall("GetWindowThreadProcessId", "Int", hwnd, "Int*", &tpID := 0)
-	name := WinGetProcessName(hwnd)
-	A_Process := name
-	if (A_Process ~= 'i)hznHorizon.exe')
-		static hznHwnd := hWnd
-	list := []
-	list := WinGetControls(hznHwnd)
-	ClassNN := ''
-	hTb := 0
-	for , ClassNN in list {
-		if (ClassNN ~= 'i)m.*bar.*') {
-			hTb := ControlGetHwnd(ClassNN, hznHwnd)
-		}
-	}
-	if !(GETBUTTONSTATE(102, hTb) = 6)
-		While !(GETBUTTONSTATE(102, hTb) = 6)
-			Sleep(10)
+	; hWnd := WinActive('A')
+	; DllCall("GetWindowThreadProcessId", "Int", hwnd, "Int*", &tpID := 0)
+	; name := WinGetProcessName(hwnd)
+	; A_Process := name
+	; if (A_Process ~= 'i)hznHorizon.exe')
+	; 	static hznHwnd := hWnd
+	; list := []
+	; list := WinGetControls(hznHwnd)
+	; ClassNN := ''
+	; hTb := 0
+	; for , ClassNN in list {
+	; 	if (ClassNN ~= 'i)m.*bar.*') {
+	; 		hTb := ControlGetHwnd(ClassNN, hznHwnd)
+	; 	}
+	; }
+	; if !(GETBUTTONSTATE(102, hTb) = 6)
+	; 	While !(GETBUTTONSTATE(102, hTb) = 6)
+	; 		Sleep(10)
 	; Sleep(100)
 	Send('^b')
-	if !(GETBUTTONSTATE(100, hTb) = 6)
-		While !(GETBUTTONSTATE(100, hTb) = 6)
-			Sleep(10)
+	; if !(GETBUTTONSTATE(100, hTb) = 6)
+	; 	While !(GETBUTTONSTATE(100, hTb) = 6)
+	; 		Sleep(10)
 	; Sleep(100)
 	A_Clipboard := 'Industrial Control Systems (ICS) Evaluation:'
 	; Sleep(100)
@@ -156,14 +136,15 @@ clip_it(send_clip := 0) {
 	clip_it(1)
 	; Sleep(300)
 	Send('^u')
-	if !(GETBUTTONSTATE(102, hTb) = 4)
-		While !(GETBUTTONSTATE(102, hTb) = 4)
-			Sleep(10)
+	; if !(GETBUTTONSTATE(102, hTb) = 4)
+	; 	While !(GETBUTTONSTATE(102, hTb) = 4)
+	; 		Sleep(10)
 	; Sleep(100)
 	Send('^b')
-	if !(GETBUTTONSTATE(100, hTb) = 4)
-		While !(GETBUTTONSTATE(100, hTb) = 4)
-			Sleep(10)
+	; if !(GETBUTTONSTATE(100, hTb) = 4) {
+	; 	While !(GETBUTTONSTATE(100, hTb) = 4)
+	; 		Sleep(10)
+	; }
 	; Sleep(100)
 	A_Clipboard := '`nAn evaluation of ICS is now included in boiler and machinery evaluations and was performed for the first time at this facility during this visit.'
 	clip_it()
@@ -230,7 +211,7 @@ clip_it(send_clip := 0) {
 ;---------------------- End ICS Comment -------------------------------------------
 } 
 
-:?*C:comments::
+:?*C1:comments::
 {
 	slbak := A_SendLevel
 	SendLevel((A_SendLevel+1))
@@ -273,7 +254,7 @@ return
 
 :*:qwft::Conduct quarterly, documented, waterflow alarm testing.
 
-:*:qwfr::Waterflow alarms should be tested by opening the inspectorâ€™s test valves to flow water through the sprinkler system. For wet-pipe systems, use the inspectorâ€™s test connection at the extreme end of the system. For dry-pipe systems, use the hydraulic test connections at the dry-pipe valve. The waterflow alarm should activate within 90 seconds of the initial waterflow. Testing should be done only by well-trained personnel or by an inspection service to avoid unnecessary local disturbances and response by the public fire department. Following the test, the alarm monitoring company should be contacted to confirm that all test signals are received. Records of all testing should be retained for review.
+:*:qwfr::Waterflow alarms should be tested by opening the inspectors test valves to flow water through the sprinkler system. For wet-pipe systems, use the inspectorâ€™s test connection at the extreme end of the system. For dry-pipe systems, use the hydraulic test connections at the dry-pipe valve. The waterflow alarm should activate within 90 seconds of the initial waterflow. Testing should be done only by well-trained personnel or by an inspection service to avoid unnecessary local disturbances and response by the public fire department. Following the test, the alarm monitoring company should be contacted to confirm that all test signals are received. Records of all testing should be retained for review.
 
 
 ;------------------ Monthly Physical Valve Inspection ---------------------------------

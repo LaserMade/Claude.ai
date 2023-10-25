@@ -92,7 +92,11 @@ DetectHiddenWindows(true)
 ; #HotString EndChars f
 
 ; ................................................
-:B0:msdn:: win32 
+::exstatic::ecstatic
+::leasure::leisure
+::precicely::precisely
+::publically::publicly
+:B0:msdn:: win32 A_Space 
 ::potiential::potential
 ::accellerated::accelerated
 ::resiliancy::resiliency

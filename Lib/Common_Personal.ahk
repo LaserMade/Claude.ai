@@ -1,23 +1,5 @@
-﻿; --------------------------------------------------------------------------------
-; Section .....: Auto-Execution
-; --------------------------------------------------------------------------------
-#MaxThreads 255 ; Allows a maximum of 255 instead of default threads.
-#Warn All, OutputDebug
-#SingleInstance Force
-SendMode("Input")
-SetWorkingDir(A_ScriptDir)
-SetTitleMatchMode(2)
-; --------------------------------------------------------------------------------
-SetWinDelay(-1)
-SetControlDelay(-1)
-SetWinDelay(-1)
-; --------------------------------------------------------------------------------
-DetectHiddenText(1)
-DetectHiddenWindows(1)
-; --------------------------------------------------------------------------------
-#Requires AutoHotkey v2
-; --------------------------------------------------------------------------------
-return
+﻿#Requires AutoHotkey v2
+#Include <Directives\__AE.v2>
 ; --------------------------------------------------------------------------------
 
 ; --------------------------------------------------------------------------------
@@ -51,12 +33,12 @@ return
 ; :*:pwnotes::
 ; =============================== + FM Stuff + =============================
 :*:fmusr::bacona				; workstation username
-:*:fmpw::{!}980ab**HD{!}9KB		; fm 
+:*:fmpw::**{!}980HDKBab		; fm 
 ; --------------------------------------------------------------------------------
 #HotIf WinActive("EngNET")
 	:*:usr::bacona
-	; :*:pw::{!}980ab**HD{!}9KB
-	:*:pw::80ab**HD{!}9KB{!}2{!}9
+	; :*:pw::80ab**HD{!}9KB{!}2{!}9
+	:*:pw::**{!}980HDKBab
 #HotIf
 #HotIf WinActive("Xfinity")
 	:*:usr::harmony_bacon@comcast.net
