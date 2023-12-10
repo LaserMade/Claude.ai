@@ -75,7 +75,7 @@ SetScrollLockState("AlwaysOff")
 ~n::
 {
 	If (A_PriorKey = '``'){
-		Sleep(10)
+		Sleep(100)
 		Send('{Right}')
 	}
 }
