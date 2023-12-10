@@ -1,7 +1,7 @@
 ﻿#Requires Autohotkey v2+
 #SingleInstance Force
 #WinActivateForce
-
+#Include <Directives\__AE.v2>
 Suspend(1) ; suspend all hotkeys until loaded
 
 ; --------------------------------------------------------------------------------
@@ -13,19 +13,18 @@ TraySetIcon("rocketlnchr.ico")
 SetCapsLockState("AlwaysOff")
 ; --------------------------------------------------------------------------------
 
-toggleCapsLock()
-{
-    SetCapsLockState(!GetKeyState('CapsLock', 'T'))
-}
-
+; toggleCapsLock()
+; {
+;     SetCapsLockState(!GetKeyState('CapsLock', 'T'))
+; }
 ; Allow normal CapsLock functionality to be toggled by Alt+CapsLock, or shift, or crl
 !CapsLock::
 ^CapsLock::
 +CapsLock::toggleCapsLock()
 
-#HotIf WinActive(A_ScriptName)
-~^s::Run(A_ScriptName)
-#HotIf
+; #HotIf WinActive(A_ScriptName)
+;     *~^s::Run(A_ScriptName)
+; #HotIf
 
 UsingMainWorkComputer := A_ComputerName == A_UserName ; Global flag for using main work computer, changes title
 UsingAnyWorkComputer := InStr(A_ComputerName, A_UserName) == 1 ; Global flag for using any work computer for select commands
@@ -109,7 +108,7 @@ build_lngui(){
 set_lngui_window(s)
 { ; I was messing around with rounded corners here, was not satisfied with results
     if s == "main" {
-        WinSetTransparent 230, lngui.Hwnd
+        WinSetTransparent( 230, lngui.Hwnd)
         ; WinSetRegion "0-0 w350 h90 R20-20", lngui.Hwnd  ;  for round corners
     }
     if s == "query" {
@@ -161,7 +160,7 @@ lngui_activable(){ ; conditions to be met to allow hotkey
 ; Double press within 500 ms -> send win+alt+space to open power launcher
 ; Disable if Remote Desktop is active (to allow other instance of this app take over)
 #HotIf lngui_activable()  ;; do not push capslock stuff to remote desktop
-CapsLock::
+#CapsLock::
     {
         if is_lngui_state("query") {
             if !WinActive(lngui.Hwnd) { ; return focus to lnchr
@@ -178,7 +177,7 @@ CapsLock::
             }
 
         if WinActive("PowerToys.PowerLauncher") {
-                Send "{Esc}"
+                Send( "{Esc}")
                 return
             }
         if is_lngui_state("off"){
@@ -189,7 +188,7 @@ CapsLock::
                 close_lngui() ; don't return here as a second key press might have been used
             }
         if (key_presses.caps > 1){ ; do this when double press
-                Send "#!{Space}" ; win+alt+space, opens MS Power Toys Run
+                Send("#!{Space}") ; win+alt+space, opens MS Power Toys Run
                 close_lngui()
                 return
             }

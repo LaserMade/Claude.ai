@@ -215,3 +215,16 @@ Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a 
 Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
 Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
 Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
+Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
+Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
+Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
+Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
+Error on line 88: Invalid number of parameters.
+Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
+Error on line 88: Invalid number of parameters.
+Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
+Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
+Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
+Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.
+Error on line 61: Invalid number of parameters.
+Error on line 4: Parameter #1 of Integer.Call requires a Number, but received a String.

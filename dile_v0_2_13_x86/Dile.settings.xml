@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <RecentAssemblies />
+  <RecentProjects />
+  <RecentDumpFiles />
+  <IsLoadClassEnabled>true</IsLoadClassEnabled>
+  <WarnUnloadedAssembly>true</WarnUnloadedAssembly>
+  <StopOnException>true</StopOnException>
+  <StopOnlyOnUnhandledException>false</StopOnlyOnUnhandledException>
+  <StopOnMdaNotification>true</StopOnMdaNotification>
+  <DisplayHexaNumbers>true</DisplayHexaNumbers>
+  <EvaluateMethodsInObjectViewer>true</EvaluateMethodsInObjectViewer>
+  <DetachOnQuit>true</DetachOnQuit>
+  <MaxRecentAssembliesCount>10</MaxRecentAssembliesCount>
+  <MaxRecentProjectsCount>10</MaxRecentProjectsCount>
+  <MaxRecentDumpFilesCount>10</MaxRecentDumpFilesCount>
+  <DefaultAssemblyDirectory />
+  <DefaultProjectDirectory />
+  <DefaultDumpFileDirectory />
+  <Shortcuts />
+  <Panels>
+    <PanelDisplayer MenuFunction="ArgumentsPanel" PanelVisible="true">
+      <SerializableFont FamilyName="Tahoma" Size="11" FontStyle="Regular" GraphicsUnit="World" GdiCharset="1" GdiVerticalFont="false" />
+    </PanelDisplayer>
+    <PanelDisplayer MenuFunction="AutoObjectsPanel" PanelVisible="true">
+      <SerializableFont FamilyName="Tahoma" Size="11" FontStyle="Regular" GraphicsUnit="World" GdiCharset="1" GdiVerticalFont="false" />
+    </PanelDisplayer>
+    <PanelDisplayer MenuFunction="BreakpointsPanel" PanelVisible="true">
+      <SerializableFont FamilyName="Tahoma" Size="11" FontStyle="Regular" GraphicsUnit="World" GdiCharset="1" GdiVerticalFont="false" />
+    </PanelDisplayer>
+    <PanelDisplayer MenuFunction="CallStackPanel" PanelVisible="true">
+      <SerializableFont FamilyName="Tahoma" Size="11" FontStyle="Regular" GraphicsUnit="World" GdiCharset="1" GdiVerticalFont="false" />
+    </PanelDisplayer>
+    <PanelDisplayer MenuFunction="DebugOutputPanel" PanelVisible="true">
+      <SerializableFont FamilyName="Tahoma" Size="11" FontStyle="Regular" GraphicsUnit="World" GdiCharset="1" GdiVerticalFont="false" />
+    </PanelDisplayer>
+    <PanelDisplayer MenuFunction="InformationPanel" PanelVisible="true">
+      <SerializableFont FamilyName="Tahoma" Size="11" FontStyle="Regular" GraphicsUnit="World" GdiCharset="1" GdiVerticalFont="false" />
+    </PanelDisplayer>
+    <PanelDisplayer MenuFunction="LocalVariablesPanel" PanelVisible="true">
+      <SerializableFont FamilyName="Tahoma" Size="11" FontStyle="Regular" GraphicsUnit="World" GdiCharset="1" GdiVerticalFont="false" />
+    </PanelDisplayer>
+    <PanelDisplayer MenuFunction="LogMessagePanel" PanelVisible="true">
+      <SerializableFont FamilyName="Tahoma" Size="11" FontStyle="Regular" GraphicsUnit="World" GdiCharset="1" GdiVerticalFont="false" />
+    </PanelDisplayer>
+    <PanelDisplayer MenuFunction="ModulesPanel" PanelVisible="true">
+      <SerializableFont FamilyName="Tahoma" Size="11" FontStyle="Regular" GraphicsUnit="World" GdiCharset="1" GdiVerticalFont="false" />
+    </PanelDisplayer>
+    <PanelDisplayer MenuFunction="ProjectExplorerPanel" PanelVisible="true">
+      <SerializableFont FamilyName="Tahoma" Size="11" FontStyle="Regular" GraphicsUnit="World" GdiCharset="1" GdiVerticalFont="false" />
+    </PanelDisplayer>
+    <PanelDisplayer MenuFunction="QuickSearchPanel" PanelVisible="true">
+      <SerializableFont FamilyName="Tahoma" Size="11" FontStyle="Regular" GraphicsUnit="World" GdiCharset="1" GdiVerticalFont="false" />
+    </PanelDisplayer>
+    <PanelDisplayer MenuFunction="OpCodeHelperPanel" PanelVisible="true">
+      <SerializableFont FamilyName="Tahoma" Size="11" FontStyle="Regular" GraphicsUnit="World" GdiCharset="1" GdiVerticalFont="false" />
+    </PanelDisplayer>
+    <PanelDisplayer MenuFunction="ThreadsPanel" PanelVisible="true">
+      <SerializableFont FamilyName="Tahoma" Size="11" FontStyle="Regular" GraphicsUnit="World" GdiCharset="1" GdiVerticalFont="false" />
+    </PanelDisplayer>
+  </Panels>
+  <CodeEditorFont>
+    <SerializableFont FamilyName="Courier New" Size="9" FontStyle="Regular" GraphicsUnit="Point" GdiCharset="238" GdiVerticalFont="false" />
+  </CodeEditorFont>
+  <DisplayedDebugEvents>AllSet</DisplayedDebugEvents>
+  <FuncEvalTimeout>5</FuncEvalTimeout>
+  <FuncEvalAbortTimeout>30</FuncEvalAbortTimeout>
+  <ProjectNewsFeedUpdatePeriod>1</ProjectNewsFeedUpdatePeriod>
+  <LastProjectNewsFeedUpdate>2023-08-24T14:51:49.8365005-07:00</LastProjectNewsFeedUpdate>
+  <LastProjectNewsFeed>&lt;html&gt;&lt;head&gt;&lt;style type="text/css"&gt;
+					.html,
+						body
+					{
+						overflow-x: hidden;
+					}
+					
+					div.title
+					{
+						font-weight: bold;
+						padding-bottom: 5px;
+					}
+
+					div.title a:visited,
+						div.title a:hover,
+						div.title a:active,
+						div.title a:link
+					{
+						color: #1752b6;
+						font-family: Microsoft Sans Serif;
+						font-size: 12;
+						font-weight: bold;
+					}
+
+					div.description
+					{
+						padding-bottom: 5px;
+						width: 100%;
+					}
+
+					div.pubDate
+					{
+						font-size: smaller;
+						padding-bottom: 20px;
+						width: 100%;
+					}
+				&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class="title"&gt;&lt;a href="https://sourceforge.net/p/dile/news/2010/05/weekly-builds-made-available/"&gt;Weekly builds made available&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sat, 08 May 2010 17:07:05 -0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="https://sourceforge.net/p/dile/news/2007/11/dile-v026-readme-update/"&gt;DILE v0.2.6 readme update&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 04 Nov 2007 05:43:39 -0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="https://sourceforge.net/p/dile/news/2007/09/dile-v026/"&gt;DILE v0.2.6&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 30 Sep 2007 11:49:05 -0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="https://sourceforge.net/p/dile/news/2007/03/dile-tutorial-1-basics/"&gt;DILE tutorial 1: Basics&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 11 Mar 2007 08:14:58 -0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="https://sourceforge.net/p/dile/news/2007/02/dile-v025/"&gt;DILE v0.2.5&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 25 Feb 2007 09:47:12 -0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="https://sourceforge.net/p/dile/news/2006/11/dile-v024/"&gt;DILE v0.2.4&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Tue, 14 Nov 2006 22:05:39 -0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="https://sourceforge.net/p/dile/news/2006/08/dile-v023/"&gt;DILE v0.2.3&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 27 Aug 2006 19:01:42 -0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="https://sourceforge.net/p/dile/news/2006/04/source-code-has-been-moved-to-svn/"&gt;Source code has been moved to SVN&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Tue, 18 Apr 2006 20:22:46 -0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="https://sourceforge.net/p/dile/news/2006/02/dile-v022/"&gt;DILE v0.2.2&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Wed, 22 Feb 2006 19:03:48 -0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="https://sourceforge.net/p/dile/news/2006/01/dile-v021/"&gt;DILE v0.2.1&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Thu, 26 Jan 2006 21:10:22 -0000&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</LastProjectNewsFeed>
+  <ReleasesFeedUpdatePeriod>1</ReleasesFeedUpdatePeriod>
+  <LastReleasesFeedUpdate>2023-08-24T14:51:50.0411351-07:00</LastReleasesFeedUpdate>
+  <LastReleasesFeed>&lt;html xmlns:files="http://sourceforge.net/api/files.rdf#" xmlns:media="http://video.search.yahoo.com/mrss/"&gt;&lt;head&gt;&lt;style type="text/css"&gt;
+					.html,
+					body
+					{
+						overflow-x: hidden;
+					}
+
+					div.title
+					{
+						font-weight: bold;
+						padding-bottom: 5px;
+					}
+
+					div.title a:visited,
+						div.title a:hover,
+						div.title a:active,
+						div.title a:link
+					{
+						color: #1752b6;
+						font-family: Microsoft Sans Serif;
+						font-size: 12;
+						font-weight: bold;
+					}
+
+					div.fileSize
+					{
+						padding-bottom: 5px;
+						width: 100%;
+					}
+
+					div.pubDate
+					{
+						font-size: smaller;
+						padding-bottom: 20px;
+						width: 100%;
+					}
+				&lt;/style&gt;&lt;/head&gt;&lt;body /&gt;&lt;/html&gt;</LastReleasesFeed>
+  <BlogFeedUpdatePeriod>1</BlogFeedUpdatePeriod>
+  <LastBlogFeedUpdate>2023-08-24T14:51:49.8375027-07:00</LastBlogFeedUpdate>
+  <LastBlogFeed>&lt;html&gt;&lt;head&gt;&lt;style type="text/css"&gt;
+					.html,
+						body
+					{
+						overflow-x: hidden;
+					}
+					
+					div.title
+					{
+						font-weight: bold;
+						padding-bottom: 5px;
+					}
+
+					div.title a:visited,
+						div.title a:hover,
+						div.title a:active,
+						div.title a:link
+					{
+						color: #1752b6;
+						font-family: Microsoft Sans Serif;
+						font-size: 12;
+						font-weight: bold;
+					}
+
+					div.description
+					{
+						padding-bottom: 5px;
+						width: 100%;
+					}
+
+					div.pubDate
+					{
+						font-size: smaller;
+						padding-bottom: 20px;
+						width: 100%;
+					}
+				&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2011/07/dile-tutorial-part-5-thread-and-call.html"&gt;DILE tutorial, part 5: Thread and Call Stack Panel&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sat, 30 Jul 2011 17:45:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2011/06/dile-tutorial-part-4-information-debug.html"&gt;DILE tutorial, part 4: Information, Debug Output and Log Message Panel&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sat, 04 Jun 2011 15:58:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2011/05/dile-tutorial-part-3-quick-search-and.html"&gt;DILE tutorial, part 3: Quick Search and Start Page&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Mon, 09 May 2011 01:58:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2011/05/dile-tutorial-part-2-project-explorer.html"&gt;DILE tutorial, part 2: Project Explorer&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 01 May 2011 15:28:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2011/04/dile-tutorial-part-1-main-window.html"&gt;DILE tutorial, part 1: Main Window&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sat, 23 Apr 2011 17:32:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2011/04/time-to-kill-dile.html"&gt;Time to kill DILE?&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Fri, 22 Apr 2011 19:41:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2011/03/no-more-badimageformatexceptions.html"&gt;No more BadImageFormatExceptions&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 13 Mar 2011 10:03:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2010/08/dile-feature-loading-modules-from.html"&gt;DILE feature: loading modules from memory dump files&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 22 Aug 2010 13:12:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2010/08/dump-debugging-in-dile.html"&gt;Dump-debugging in DILE&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 01 Aug 2010 11:19:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2010/07/history-of-dile.html"&gt;History of DILE&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Thu, 01 Jul 2010 12:30:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2010/05/dile-and-net-40.html"&gt;DILE and .NET 4.0&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 30 May 2010 07:01:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2010/05/but-where-is-e.html"&gt;But where is the 'E'?&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Fri, 14 May 2010 19:06:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2010/05/almost-weekly-builds.html"&gt;(Almost) Weekly builds&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sat, 08 May 2010 17:11:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2010/04/dile-logo.html"&gt;DILE logo&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Mon, 05 Apr 2010 14:23:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2010/03/dile-tutorial-from-hacker.html"&gt;DILE tutorial... from a hacker?&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 21 Mar 2010 14:18:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2010/03/im-back.html"&gt;I'm back&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 14 Mar 2010 09:54:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2007/11/dile-v026-vc-sp1-runtime.html"&gt;DILE v0.2.6: VC++ SP1 runtime&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 04 Nov 2007 06:10:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2007/09/dile-v026.html"&gt;DILE v0.2.6&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sat, 29 Sep 2007 06:32:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2007/03/dile-tutorial-basics.html"&gt;DILE tutorial: basics&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Wed, 07 Mar 2007 21:35:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2007/03/windows-developer-power-tools.html"&gt;Windows Developer Power Tools&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sat, 03 Mar 2007 22:47:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2007/02/dile-v025-64-bit-compatible.html"&gt;DILE v0.2.5 (64-bit compatible)&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 25 Feb 2007 16:54:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2006/11/dile-v024.html"&gt;DILE v0.2.4&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Tue, 14 Nov 2006 22:21:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2006/11/little-change-moving-to-singapore.html"&gt;A "little" change... moving to Singapore&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Tue, 07 Nov 2006 22:18:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2006/08/vs2005-quickwatch-dile-v023.html"&gt;VS2005 QuickWatch "bug" + DILE v0.2.3&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Sun, 27 Aug 2006 19:08:00 +0000&lt;/div&gt;&lt;div class="title"&gt;&lt;a href="http://pzsolt.blogspot.com/2006/07/dile-in-windows-developer-power-tools.html"&gt;DILE in the Windows Developer Power Tools book&lt;/a&gt;&lt;/div&gt;&lt;div class="pubDate"&gt;Thu, 13 Jul 2006 08:35:00 +0000&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</LastBlogFeed>
+  <StartPageEnabled>true</StartPageEnabled>
+  <NameEscapingType>CharacterCode</NameEscapingType>
+  <CopyILAddresses>false</CopyILAddresses>
+  <AutomaticRefreshInterval>2000</AutomaticRefreshInterval>
+  <SearchOptions>TypeDefinition</SearchOptions>
+  <SyncOpCodeHelper>true</SyncOpCodeHelper>
+</Settings>

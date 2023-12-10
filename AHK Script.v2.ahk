@@ -2,9 +2,6 @@
 #Include <Directives\__AE.v2>
 ;@include-winapi
 ; --------------------------------------------------------------------------------
-; --------------------------------------------------------------------------------
-
-; --------------------------------------------------------------------------------
 TraySetIcon("shell32.dll","16", true) ; this changes the icon into a little laptop thing.
 ; --------------------------------------------------------------------------------
 myScript := A_TrayMenu
@@ -38,25 +35,16 @@ WindowListMenu(*){
 	Run("WindowListMenu.ahk")
 }
 ; --------------------------------------------------------------------------------
-; testtest()
-; testtest() {
-; 	str := A_AppData
-; 	newstr := RegExReplace(str, 'i)\\Roaming', '')
-; 	ToolTip( 'A_AppData: ' 			. A_AppData 		. '`n'
-; 			. 'A_AppDataCommon: ' 	. A_AppDataCommon 	. '`n'
-; 			. 'A_ProgramsCommon: ' 	. A_ProgramsCommon 	. '`n'
-; 			. 'A_UserName: '		. A_UserName 		. '`n'
-; 			. 'str: '				. str 				. '`n'
-; 			. 'newstr: '			. newstr 			. '`n'
-; 			, 0, 0
-; 			)
-; }
-		
 ; #Include <Abstractions\Script>
 ; Script.startup.CheckStartupStatus()
-#Include <Common_Include>
+#Include <Common\Common_Include>
 #Include <WINDOWS.v2>
-#Include <Misc Scripts.V2>
+; #Include <Misc Scripts.V2>
+#Include <Common\Misc Scripts.V2>
+#Include <Tools\Info>
+#Include <System\Web>
+#Include <Tools\CleanInputBox>
+#Include <App\Git>
 
 ; --------------------------------------------------------------------------------
 /**
@@ -71,61 +59,98 @@ SetNumLockState("AlwaysOn")
 SetCapsLockState("AlwaysOff")
 SetScrollLockState("AlwaysOff")
 ; --------------------------------------------------------------------------------
-#HotIf !WinActive('ahk_exe hznHorizon.exe')
-	^+v::Paste()
-	Paste(*)
-	{
-		Static Msg := WM_PASTE := 770, wParam := 0, lParam := 0
-		; WinActive('ahk_exe WINWORD.exe') ? Send('+{Insert}') : hCtl := ControlGetFocus('A')
-		; Run('WINWORD.exe /x /q /a /w')
-		WinActive('ahk_exe WINWORD.exe') ? Send('+{Insert}') : hCtl := ControlGetFocus('A')
-		try DllCall('SendMessage', 'Ptr', hCtl, 'UInt', Msg, 'UInt', wParam, 'UIntP', lParam)
-		return
+; :*?B0:`n::^{Right}
+#HotIf WinActive("Chrome River - Google Chrome")
+; hWA := WinActive("Chrome River - Google Chrome")
+; HotIf(hWA)
+	*^s::SaveCR()
+	; ---------------------------------------------------------------------------
+	SaveCR(){
+		expRpt := UIA.ElementFromChromium('Chrome River - Google Chrome')
+		Sleep(100)
+		expRpt.WaitElement({Type: '50000 (Button)', Name: "Save", LocalizedType: "button", AutomationId: "save-btn"}, 10000).Highlight(100).Invoke()
 	}
+; HotIf()
+#HotIf
+~n::
+{
+	If (A_PriorKey = '``'){
+		Sleep(10)
+		Send('{Right}')
+	}
+}
+#HotIf !WinActive(" - Visual Studio Code")
+:*b0:(::){left 1}
+:*b0:{::{}}{left 1}
+:*b0:[::]{left 1}
+:*b0:'::{'}{left 1}
+:*b0:"::{"}{left 1}
+:*:`  ::{bs 1}{right}{Space}
+#HotIf
+#HotIf !WinActive('ahk_exe hznHorizon.exe')
+^+v::Paste()
+Paste(*)
+{
+	Static Msg := WM_PASTE := 770, wParam := 0, lParam := 0
+	; WinActive('ahk_exe WINWORD.exe') ? Send('+{Insert}') : hCtl := ControlGetFocus('A')
+	; Run('WINWORD.exe /x /q /a /w')
+	WinActive('ahk_exe WINWORD.exe') ? Send('+{Insert}') : hCtl := ControlGetFocus('A')
+	try DllCall('SendMessage', 'Ptr', hCtl, 'UInt', Msg, 'UInt', wParam, 'UIntP', lParam)
+	return
+}
 #HotIf
 ; --------------------------------------------------------------------------------
 #HotIf WinActive(" - Visual Studio Code")
-; :*?:;---::
-; {
-; 	prevClip := ClipboardAll()
-; 	ClipWait(1)
-; 	Sleep(100)
-; 	A_Clipboard := ''
-; 	Send('^+{Left}')
-; 	; Sleep(100)
-; 	A_Clipboard := '; --------------------------------------------------------------------------------'
-; 	; Sleep(300)
-; 	; Send('+{Insert}')
-; 	; ClipWait(1)
-; 	Send('^v')
-; 	A_Clipboard := prevClip
-; 	ClipWait(1)
-; 	return
-; }
-
-;
-:*C:fn...::
+; :CB0:function::
+:*C1:function::
 {
+	BlockInput(1)
 	Send('^+{Left}')
+	; Sleep(10)
+	; Send('{Del}')
+	; Sleep(100)
+	Send('function ...:')
 	Sleep(100)
-	Send('function...:' A_Tab)
-	return
-}	
+	Send(A_Tab)
+	BlockInput(0)
+
+}
+
 ; --------------------------------------------------------------------------------
 :*:;---::
 {
 	Send('^+{Left}')
-	Send('; {- 80}')
-} ; {- 80}
-:?B0:{Ins::sert
-:?B0:{Ent::ter
-:*:sle::
+	Send('; {- 75}')
+}
+:?C1*:{Ins::
 {
 	BlockInput(1)
+	Send('^+{Left}')
+	Send('Insert')
+	Send('{Esc}')
+	BlockInput(0)
+}
+:?C1*:{Ent::
+{
+	BlockInput(1)
+	Send('^+{Left}')
+	SendText('Enter')
+	Send('{Esc}')
+	BlockInput(0)
+
+}
+:*:sleep::
+{
+	BlockInput(1)
+	Send('^+{Left}')
 	Send('Sleep(100)')
+	Sleep(100)
+	Send('{Left}')
+	Send('+{Left 3}')
 	BlockInput(0)
 }
 #HotIf
+^#g::git_InstallAHKLibrary('https://github.com/Axlefublr/lib-v2/blob/1d1940095902e483a56bbdd8af6ab0642d8a9fe6/Scr/Keys/Trinity.ahk','Scr\Keys\')
 
 ; --------------------------------------------------------------------------------
 ; #HotIf WinActive(A_ScriptName)
@@ -213,53 +238,53 @@ test_script(*){
 }
 return
 
-; --------------------------------------------------------------------------------
-;                Ctrl+Shift+Alt+r Reload AutoHotKey Script (to load changes)
-; --------------------------------------------------------------------------------
-^+!r::ReloadAllAhkScripts()
-ReloadAllAhkScripts()
-{
-	DetectHiddenWindows(true)
-	static oList := WinGetList("ahk_class AutoHotkey",,,)
-	aList := Array()
-	List := oList.Length
-	For v in oList
-	{
-		aList.Push(v)
-	}
-	scripts := ""
-	Loop aList.Length
-		{
-			title := WinGetTitle("ahk_id " aList[A_Index])
-			;PostMessage(0x111,65414,0,,"ahk_id " aList[A_Index])
-			dnrList := [A_ScriptName, "Scriptlet_Library"]
-			rmList := InStr(title, "Scriptlet_Library", false)
+; ; --------------------------------------------------------------------------------
+; ;                Ctrl+Shift+Alt+r Reload AutoHotKey Script (to load changes)
+; ; --------------------------------------------------------------------------------
+; ^+!r::ReloadAllAhkScripts()
+; ReloadAllAhkScripts()
+; {
+; 	DetectHiddenWindows(true)
+; 	static oList := WinGetList("ahk_class AutoHotkey",,,)
+; 	aList := Array()
+; 	List := oList.Length
+; 	For v in oList
+; 	{
+; 		aList.Push(v)
+; 	}
+; 	scripts := ""
+; 	Loop aList.Length
+; 		{
+; 			title := WinGetTitle("ahk_id " aList[A_Index])
+; 			;PostMessage(0x111,65414,0,,"ahk_id " aList[A_Index])
+; 			dnrList := [A_ScriptName, "Scriptlet_Library"]
+; 			rmList := InStr(title, "Scriptlet_Library", false)
 			
-			If (title = A_ScriptName) || (title = "Scriptlet_Library"){
-				continue
-			}
-			PostMessage(0x111,65400,0,,"ahk_id " aList[A_Index])
-			; Note: I think the 654*** is for v2 => avoid the 653***'s
-			; [x] Reload:		65400
-			; [x] Help: 		65411 ; 65401 doesn't really work or do anything that I can tell
-			; [x] Spy: 			65402
-			; [x] Pause: 		65403
-			; [x] Suspend: 		65404
-			; [x] Exit: 		65405
-			; [x] Variables:	65406
-			; [x] Lines Exec:	65407 & 65410
-			; [x] HotKeys:		65408
-			; [x] Key History:	65409
-			; [x] AHK Website:	65412 ; Opens https://www.autohotkey.com/ in default browser; and 65413
-			; [x] Save?:		65414
-			; Don't use these => ;//static a := { Open: 65300, Help:    65301, Spy: 65302, XXX (nonononono) Reload: 65303 [bad reload like Reload()], Edit: 65304, Suspend: 65305, Pause: 65306, Exit:   65307 }
-			; scripts .=  (scripts ? "`r`n" : "") . RegExReplace(title, " - AutoHotkey v[\.0-9]+$")
-			scripts .=  (scripts ? "`r`n" : "") . RegExReplace(title, " - AutoHotkey v[\.0-9]+$")
-		}
-	OutputDebug(scripts)
-	OutputDebug(rmList)
-	return
-}
+; 			If (title = A_ScriptName) || (title = "Scriptlet_Library"){
+; 				continue
+; 			}
+; 			PostMessage(0x111,65400,0,,"ahk_id " aList[A_Index])
+; 			; Note: I think the 654*** is for v2 => avoid the 653***'s
+; 			; [x] Reload:		65400
+; 			; [x] Help: 		65411 ; 65401 doesn't really work or do anything that I can tell
+; 			; [x] Spy: 			65402
+; 			; [x] Pause: 		65403
+; 			; [x] Suspend: 		65404
+; 			; [x] Exit: 		65405
+; 			; [x] Variables:	65406
+; 			; [x] Lines Exec:	65407 & 65410
+; 			; [x] HotKeys:		65408
+; 			; [x] Key History:	65409
+; 			; [x] AHK Website:	65412 ; Opens https://www.autohotkey.com/ in default browser; and 65413
+; 			; [x] Save?:		65414
+; 			; Don't use these => ;//static a := { Open: 65300, Help:    65301, Spy: 65302, XXX (nonononono) Reload: 65303 [bad reload like Reload()], Edit: 65304, Suspend: 65305, Pause: 65306, Exit:   65307 }
+; 			; scripts .=  (scripts ? "`r`n" : "") . RegExReplace(title, " - AutoHotkey v[\.0-9]+$")
+; 			scripts .=  (scripts ? "`r`n" : "") . RegExReplace(title, " - AutoHotkey v[\.0-9]+$")
+; 		}
+; 	OutputDebug(scripts)
+; 	OutputDebug(rmList)
+; 	return
+; }
 
 ;---------------------------------------------------------------------------
 ;      Shift+WIN+m Button to Click on Window Anywhere to Drag
@@ -414,114 +439,6 @@ insert(A_GuiEvent, GuiCtrlObj, Info, *)
 	oSaved := myGui.submit()
 	Send(arr[SubStr(A_GuiEvent, 2)])
 }
-return
-
-; :?*X:nm::Send("{Blind}≠") ; used for testing
-
-; Convert the HTML character &ndash; to &#8211
-
-:?*:not equalf::
-:?*:notequf::
-:?*:not=f::
-:?*:!=f::
-{
-A_Clipboard := "≠"
-Send("^v")
-return
-}
-
-:?*X:microm::Send(chr(181) "m")
-:?*X:3/4f::Send(chr(190))
-:?*X:1/2f::Send(chr(189))
-:?*X:1/4f::Send(chr(188))
-:?*X:+-::Send(chr(177))
-:?*X:regtmf::Send(chr(174)) ;®
-:?*:trademarkf::™
-:?*:circlec::©
-:?*:copywritef::©
-:?*:greater than or equal to::
-:?*:>=::
-{
-	clipbac := ClipboardAll()
-    A_Clipboard := "≥"
-	Send("^v")
-    sleep(100)
-    A_Clipboard := clipbac
-    return
-}
-; :?*X:degf::Send(chr(176) "F")
-:?*:degf::°F
-; :?*X:degc::Send(chr(176) "C")
-:?*:degc::°C
-; :?*X:prisecf::Send("1" chr(176) "/2" chr(176) A_Space "Inj testing")
-:?*:prisecf::1°/2° Inj Testing
-
-:*:hrsgf::heat recovery steam generator (HRSG)
-:*:mocf::management of change (MOC)
-; --------------------------------------------------------------------------------
-::ft2::
-::ft^2::
-::sq.ft.::
-{
-    Send("ft²")
-	return
-}
-; --------------------------------------------------------------------------------
-::agf::Approval Guide
-:*:FMDSf::FM Global Property Loss Prevention Data Sheet
-::sgsv::seismic gas shutoff valve
-::erpf::emergency response plan
-::ferpf::flood emergency response plan
-::wst::water supply tool
-::efcf::eFC
-::wdt::water delivery time
-::wpivf::wall post-indicator valve
-::pivf::post-indicator valve
-::ulf::Underwriters Laboratories
-::uupf::uncartoned unexpanded plastic
-::uepf::uncartoned expanded plastic
-::cupf::cartoned unexpanded plastic
-::cepf::cartoned expanded plastic
-::sopf::standard operating procedure
-::eopf::emergency operating procedure
-::ooo::out of office
-::OSY::OS&Y
-::sq.ftf.::sq. ft.
-::oemf::original equipment manufacturer
-::ndef::nondestructive examination (NDE)
-::ndtf::nondestructive testing (NDT)
-::ndetf::nondestructive examination/testing (NDE/NDT)
-::mehpf::minimum end head pressure
-::mawpf::maximum allowable working pressure
-::mipf::metal insulating panels
-:*:lwco::LWCO
-::LWCOf::low water cutout (LWCO)
-::lfpil::low flash point ignitable liquid
-::hfpil::high flash point ignitable liquid
-:*:lmgtfy::https://letmegooglethat.com/?q=
-::ITMf::inspection, testing, and maintenance (ITM)
-::itmf::ITM
-::iras::in-rack automatic sprinklers
-::il::ignitable liquid
-::hrl::higher RelativeLikelihood
-::htf::heat transfer fluid
-::gp::generally protected
-:*:FMRTPS::FM Global Red Tag Permit System
-:*:FMHWPS::FM Global Hot Work Permit System
-::FMDSl::FM Global Data Sheet
-:*:FMA::FM Approved
-::FRPf::fiber-reinforced plastic panels
-::epof::emergency power off
-::blrbf::black liquor recovery boiler
-::efile::eFile
-::icsf::industrial control system
-::otf::operational technology network
-::itf::information technology network
-::mfaf::multi-factor authentication
-:?*:exerie::experie
-
-; 079291.45-02
-; 079291.45-02
 
 ;---------------------------------------------------------------------------
 ;      Alt+Left Mouse Button to Click on Window Anywhere to Drag
@@ -588,11 +505,9 @@ Return
     FormatDateTime("dddd, MMMM dd, yyyy hh:mm tt")
 Return
 }
-::/cf::
-{
-FormatDateTime("yyyy.MM.dd HH:mm`n")
-return
-}
+
+:X:/cf::FormatDateTime("yyyy.MM.dd HH:mm")
+
 ::/time::
 {
     FormatDateTime("HH:mm")
