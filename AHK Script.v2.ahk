@@ -1,6 +1,13 @@
-﻿#Requires AutoHotkey v2+
+﻿/************************************************************************
+ * @description 
+ * @file AHK Script.v2.ahk
+ * @author 
+ * @date 2023/12/28
+ * @version 0.0.0
+ ***********************************************************************/
+
+#Requires AutoHotkey v2+
 #Include <Directives\__AE.v2>
-;@include-winapi
 ; --------------------------------------------------------------------------------
 TraySetIcon("shell32.dll","16", true) ; this changes the icon into a little laptop thing.
 ; --------------------------------------------------------------------------------
@@ -38,39 +45,30 @@ WindowListMenu(*){
 ; #Include <Abstractions\Script>
 ; Script.startup.CheckStartupStatus()
 #Include <Common\Common_Include>
-#Include <WINDOWS.v2>
-; #Include <Misc Scripts.V2>
+; #Include <WINDOWS.v2>
 #Include <Common\Misc Scripts.V2>
 #Include <Tools\Info>
 #Include <System\Web>
 #Include <Tools\CleanInputBox>
 #Include <App\Git>
-
-; --------------------------------------------------------------------------------
-/**
- * function Permanently Set Caplocks Off, NumLock On and Scroll Lock Off
- * @param SetNumLockState
- * @param SetCapsLockState
- * @param SetScrollLockState
-  */
-;          
-; --------------------------------------------------------------------------------
+#Include <System\UIA>
+#Include <GetNearestMonitorInfo().v2>
+#Include <Utils\ClipSend>
+; #Include <WindowSpyDpi>
+; ---------------------------------------------------------------------------
 SetNumLockState("AlwaysOn")
 SetCapsLockState("AlwaysOff")
 SetScrollLockState("AlwaysOff")
 ; --------------------------------------------------------------------------------
-; :*?B0:`n::^{Right}
 #HotIf WinActive("Chrome River - Google Chrome")
-; hWA := WinActive("Chrome River - Google Chrome")
-; HotIf(hWA)
-	*^s::SaveCR()
-	; ---------------------------------------------------------------------------
-	SaveCR(){
-		expRpt := UIA.ElementFromChromium('Chrome River - Google Chrome')
-		Sleep(100)
-		expRpt.WaitElement({Type: '50000 (Button)', Name: "Save", LocalizedType: "button", AutomationId: "save-btn"}, 10000).Highlight(100).Invoke()
-	}
-; HotIf()
+*^s::SaveCR()
+; ---------------------------------------------------------------------------
+SaveCR(){
+	expRpt := UIA.ElementFromChromium('Chrome River - Google Chrome')
+	; Sleep(100)
+	expRpt.WaitElement({Type: '50000 (Button)', Name: "Save", LocalizedType: "button", AutomationId: "save-btn"}, 10000).Highlight(100).Invoke()
+}
+
 #HotIf
 ~n::
 {
@@ -79,30 +77,440 @@ SetScrollLockState("AlwaysOff")
 		Send('{Right}')
 	}
 }
+#HotIf WinActive("ahk_exe hznHorizon.exe")
+
+^+Down::
+{
+	bak := ClipboardAll()
+	d:=0, A_Clipboard := '', d := 15, text := '', aText := []
+	; if A_Clipboard != '' {
+	; 	loop {
+	; 		Sleep(d)
+	; 	} until A_Clipboard := ''
+	; }
+	cutline()
+	cutline()
+	cutline() {
+		Send('{End}{Shift Down}{Home}{Down}{Shift Up}')
+		Send('^x')
+		text := A_Clipboard
+		Sleep(d)
+		aText.Push(text)
+		Send('{Home}{Shift Down}{End}{Down}{Shift Up}')
+		Send('{Del}')
+		return aText
+	}
+	Send(aText[2])
+	Send(aText[1])
+	; Infos(atext[1] '`n' aText[2])
+	return
+	text := ''
+	loop text.Length {
+		Sleep(d)
+	} until text = ''
+	text .= (aText[2] '`n' aText[1])
+	loop text.Length {
+		Sleep(d)
+	} until text != ''
+	; Send('^x')
+	; Sleep(d)
+	Send('{Del 2}')
+	Sleep(d)
+	send('{End}')
+	Sleep(d)
+	Send('{Enter}')
+	Sleep(d)
+	send('^v')
+	Sleep(100)
+	A_Clipboard := bak
+}
+^+Up::
+{
+	bak := ClipboardAll()
+	d:=0, A_Clipboard := '', d := 15, text := ''
+	Send('{Home}+{End}')
+	Sleep(d)
+	Send('^x')
+	Sleep(d)
+	Send('{Del}')
+	Sleep(d)
+	send('{Home}{Up}')
+	Sleep(d)
+	Send('{Enter}')
+	Sleep(d)
+	send('^v')
+	Sleep(100)
+	A_Clipboard := bak
+}
+^+d::
+{
+	bak := ClipboardAll()
+	d:=0,text := '', txt := '', A_Clipboard := '', d := 15
+	; Sleep(d)
+	Send('{Home}+{End}')
+	; @step: Copy
+	; SndMsgCopy()
+	; Sleep(d)
+	; text := A_Clipboard
+	; Sleep(d)
+	; @step: Cut
+	SndMsgCut()
+	; SendMessage('0x300',0,0,ControlGetFocus('A'),'A') ; Send('^x')
+	; Send('{End}{Enter}')
+	; @step Paste
+	; SendMessage('0x302',0,0,ControlGetFocus('A'),'A')
+	Send('^v')
+	Sleep(d)
+	Send('{Enter}')
+	Sleep(d)
+	Send('^v')
+	Sleep(d)
+	A_Clipboard := bak
+}
+#HotIf
+;! ---------------------------------------------------------------------------
+;! ---------------------------------------------------------------------------
+;! ---------------------------------------------------------------------------
+; ---------------------------------------------------------------------------
+SndMsgCopy(*) {
+	static WM_COPY := 0x0301, fCtl := 0
+	try fCtl := ControlGetFocus('A')
+	(fCtl = 0) ? SendEvent('^c') : SendMessage(WM_COPY,0,0,fCtl,'A')
+}
+; ---------------------------------------------------------------------------
+SndMsgCut(*) {
+	static WM_CUT := 0x0300, fCtl := 0
+	try fCtl := ControlGetFocus('A')
+	(fCtl = 0) ? SendEvent('^x') : SendMessage(WM_CUT,0,0,fCtl,'A')
+}
+; ---------------------------------------------------------------------------
+SndMsgPaste(*) {
+	static WM_PASTE := 0x0302, fCtl := 0
+	try fCtl := ControlGetFocus('A')
+	(fCtl = 0) ? SendEvent('^v') : SendMessage(WM_PASTE,0,0,fCtl,'A')
+}
+which_brackets(str, lChar, rChar, MapObj) {
+	bkts := []
+	for k, v in MapObj {
+		If (str ~= '\' k){
+			lChar := k, rChar := v
+		}
+	}
+	bkts.SafePush(lChar)
+	bkts.SafePush(rChar)
+	; Infos([brackets]`n' 'str: ' bkts.str := str '`n' 'lChar: ' bkts.lChar := lChar '`n' 'rChar: ' bkts.rChar := rChar)
+	return (bkts, {lChar:lChar, rChar:rChar})
+}
+; split_text(text) => (stext := [], stext := StrSplit(text))
+; ; ---------------------------------------------------------------------------
+; do_brackets_exist(text, lChar, rChar) => ((lChar.length > 0) ? (((text ~= ('\' lChar) || (('\' lChar) && ('\' rChar)))) ? true : false) : false)
+; ; ---------------------------------------------------------------------------
+; brackets_at_ends(text, lChar, rChar){
+; 	stext := '', stext := split_text(text), ltext := stext.Length
+; 	; ---------------------------------------------------------------------------
+; 	(bL := (stext[1] ~= '\' lChar) 		? true : false)
+; 	(bR := (stext[ltext] ~= '\' rChar) 	? true : false)
+; 	; ---------------------------------------------------------------------------
+; 	(bL = 1 ? 'true' : 'false'), (bR = 1 ? 'true' : 'false')
+; 	; ---------------------------------------------------------------------------
+; 	; Infos('true: ' true '`n' 'false: ' false '`n' 'bL: ' bL ' : ' stext[1] '`n' 'bR: ' bR ' : ' stext[ltext])
+; 	return ((bL || bR = true) ? true : false)
+; }
+; ---------------------------------------------------------------------------
+clip_empty(mode := false){
+	if A_Clipboard = '' {
+		while (A_Clipboard = '') {
+			Sleep(10)
+		}
+	} else {
+		while !(A_Clipboard = '') {
+			Sleep(10)
+		}
+	}
+}
+; ---------------------------------------------------------------------------
 #HotIf !WinActive(" - Visual Studio Code")
-:*b0:(::){left 1}
-:*b0:{::{}}{left 1}
-:*b0:[::]{left 1}
-:*b0:'::{'}{left 1}
-:*b0:"::{"}{left 1}
-:*:`  ::{bs 1}{right}{Space}
+/************************************************************************
+ * function ...: Mirror the VS Code hotkeys for the below params
+ * @file AHK Script.v2.ahk
+ * @author OvercastBTC
+ * @date 2023/12/28
+ * @version 0.5.0
+ * @example By using the * => the key is intercepted and not sent to the window/control
+ * 		Params:
+ * 			1. ''
+ * 			2. ""
+ * 			3. ()
+ * 			4. {}
+ * 			5. []
+ ***********************************************************************/
+*'::
+*"::
+*(::
+*{::
+*[::
+{
+	CoordMode('Caret','Window')
+	Infos.DestroyAll()
+	_AE_bInpt_sLvl(1)
+	A_Clipboard := '', text := ''
+	SetTimer(clip_empty, -500)
+	t1 := '', t2 := '', t3 := '', t4 := '', t5 := '', t6 := '', t7 := '',
+	c1 := '', c2 := '', c3 := '', c4 := '', c5 := '', c6 := '', c7 := ''
+	bLeft := '', bRight := '', lChar := '', rChar := '',
+	; s := '', c := '',
+	bK := '', bV := '',
+	eK := '', eV := '', 
+	x  := 0, y  := 0,	xC := 0, yC := 0, w := 0, p := ''
+	control  := unset, fCtl := unset, WinA := unset, ClassNN := unset
+	Selected := ''
+	bChar := '', bChars := '', bV1 := '', bV2 := '', b1 := '', b2 := ''
+	eChar := '', eChars := '', eV1 := '', eV2 := '', e1 := '', e2 := ''
+	cLen := 0, sLen := 0
+	; toggle := 0
+	; ---------------------------------------------------------------------------
+	at := [], bkts := [], eChr := [], bChr := [], mbChr := [], meChr := []
+	; ---------------------------------------------------------------------------
+	eMap := Map('"','"', "'", "'", '[', ']', '{', '}', '(', ')')
+	; ---------------------------------------------------------------------------
+	; @step ...: Try and get the focused control, caret and mouse positions
+	; @step ...: Try and get caret position
+	; @step ...: Try and get mouse position (includes window handle, and control handle)
+	; ---------------------------------------------------------------------------
+	try if WinActive('ahk_exe hznHorizon.exe'){
+		static fCtl := ControlGetFocus(), ClassNN := ControlGetClassNN(fCtl)
+	}
+	; return
+	try (CaretGetPos(&xC, &yC))
+	try MouseGetPos(&x, &y, &w, &control, 2)
+	; el := UIA.ElementFromHandle('A').Length
+	; el := UIA.ElementFromHandle('A',true)
+	el := UIA.CreateCacheRequest({Type: 'edit'},{Type: 'text'})
+	for each, value in el {
+		; ele := value.FindElements({Type: '50020 (Text)', LocalizedType: "text"})
+		Infos(value)
+	}
+	; elinfo := el.Children
+
+	; Infos(
+	; 	'xC[' xC '] yC[' yC ']'
+	; 	'`n'
+	; 	'x[' x '] y[' y ']'
+	; 	'`n'
+	; 	'control: ' ClassNN ' Title: ' WinT 
+	; )
+	; ---------------------------------------------------------------------------
+	; @step: get the key pressed, removing the hotkey modifier, and trim whitespaces
+	; ---------------------------------------------------------------------------
+	str := StrSplit(A_ThisHotkey,'*', '*', 1), str := Trim(str[1])
+	; ---------------------------------------------------------------------------
+	; @info ...: brackets identified => b := Array() 
+	; ---------------------------------------------------------------------------
+	bkts := which_brackets(str, lChar,rChar, eMap)
+	; ---------------------------------------------------------------------------
+	bLeft := bkts.lChar, bRight := bkts.rChar
+	; ---------------------------------------------------------------------------
+	; @step: Copy the selected text into the clipboard for evaluation
+	; ---------------------------------------------------------------------------
+	; WinActive('ahk_exe hznHorizon.exe') ? Send('+{Left}') : Click(2)
+	c1 := A_Clipboard.length
+	SndMsgCopy()
+	; c2 := A_Clipboard.length
+	; ---------------------------------------------------------------------------
+	; @step: store the clipboard into the variable text, see if text is empty
+	; @info: don't technically need to do that to see if the text is empty
+	; @info: however, two birds with one stone => set text variable
+	; ---------------------------------------------------------------------------
+	text := A_Clipboard, t1 := text
+	c2 := t1.length
+	; ---------------------------------------------------------------------------
+	; @info ...: set a short sleep cycle until the text = clipboard
+	; ---------------------------------------------------------------------------
+	Loop {
+		Sleep(15)
+	} until A_Clipboard = text
+	; ---------------------------------------------------------------------------
+	; @step ...: Set cLen (clipboard length, or initial cLen length)
+	; @step ...: Set sLen (string length, or initial sLen length)
+	; @why  ...: Used to select the whole word or sentance for toggling backets.
+	; ---------------------------------------------------------------------------
+	cLen := text.length
+	; ---------------------------------------------------------------------------
+	t2 := text, c3 := t2.length
+	;! ---------------------------------------------------------------------------
+	; @step ...: get stats from text
+	; @why  ...: Can be used to determine the location of the text (line, total lines, etc.)
+	;! ---------------------------------------------------------------------------
+	; try stats := AE_GetStats()
+	stats := AE_GetStats()
+	; ---------------------------------------------------------------------------
+	; (text.length = 0) ? l := 1 : l := 0
+	; needle:= "D)\s+$"
+	; ---------------------------------------------------------------------------
+	; @step ...: Is there a space at the end?
+	; @step ...: If so, remove it and store it in s (s := ' ', or s := A_Space)
+	; @why  ...: If its a single line, no need to re-add
+	; @why  ...: If it's part of a sentance, need to add it back at the end
+	;! Moved to next section
+	; ---------------------------------------------------------------------------
+	; needle:= ('\s+$')
+	; spaceNeedle:= ('\s+\Q([^\s]+)\E\s+')
+	; spacereplace := "[$1]"
+	; spacereplace := ''
+	; if ((text ~= spaceNeedle) != 0) {
+	; 	text := RegExReplace(text, spaceNeedle, spacereplace)
+	; 	s := ' '
+	; } else {
+	; 	text := text
+	; 	s := ''
+	; }
+	t3 := text, c4 := t3.length
+	; ((text ~= needle) != 0) ? (text := RegExReplace(text, needle, ''), s := '') : s := ' '
+	; ---------------------------------------------------------------------------
+	; @step ...: Is there a dash, dash space, or space (or combo of) at the beginning?
+	; @step ...: If so, remove it/them and store it in bChars 
+	; @step ...: Is there a space, comma, question mark, semi-colon, colon, (?more?) (or combo of) at the end?
+	; //@step ...: If so, remove it and store it in s (s := ' ', or s := A_Space)
+	; @step ...: If so, remove it/them and store it in eChars 
+	; @why  ...: If its a single word on the line, no need to re-add ; fix [identify if it's a single word on the line]
+	; @why  ...: If it's part of a sentance, need to add it back at the end
+	; ---------------------------------------------------------------------------
+	bChrNeedle := '^[ -]+'
+	bChrReplace := '$1'
+	; ---------------------------------------------------------------------------
+	eChrNeedle := '[,.\s?:;]+$'
+	eChrReplace := '$1'
+	; ---------------------------------------------------------------------------
+	; cp := [], bcp := [], cpt := ''
+	b1 := bChars
+	if (text ~= bChrNeedle) {
+		RegExMatch(text, bChrNeedle,&mbChr)
+		; text := RegExReplace(text, bChrNeedle,'')
+		text := RegExReplace(text, bChrNeedle,bChrReplace)
+		try for each, bV1 in mbChr {
+			bChr.SafePush(bV1)
+			cpt .= bV1 '`n' ;? testing purposes only
+		}
+		try for each, bV2 in bChr {
+			bChars .= bV2
+		}
+	}
+	b2 := bChars
+	t4 := text, c5 := t4.length
+	; ---------------------------------------------------------------------------
+	e1 := eChars
+	if (text ~= eChrNeedle) {
+		RegExMatch(text, eChrNeedle,&meChr)
+		; text := RegExReplace(text, eChrNeedle,'')
+		text := RegExReplace(text, eChrNeedle,eChrReplace)
+		try for each, eV1 in meChr {
+			eChr.SafePush(eV1)
+			cpt .= eV1 '`n'
+		}
+		try for each, eV2 in eChr {
+			eChars .= eV2
+		}
+	}
+	e2 := eChars
+	t5 := text, c6 := t5.length
+	; ---------------------------------------------------------------------------
+	; @step if text.length != 0 => do brackets exist? If so, remove them, if not, add them
+	; ---------------------------------------------------------------------------
+	bK := bLeft, bV := bRight
+	bktPattern := "\Q" bK "\E([^" bV "]+)\Q" bV "\E"
+	bktRplc := '$1'
+	((text ~= eMap.Get(bLeft)) ? (text := RegExReplace(text, bktPattern, bktRplc)) : (text := bK text bV ))
+	; ---------------------------------------------------------------------------
+	; @step Add the bChars and eChars back to the text
+	; ---------------------------------------------------------------------------
+	text := bChars text eChars
+	; (text ~= eMap.Get(bLeft)) ? (text := RegExReplace(text, pattern, replacement)
+	; 							; , text := text c s
+	; 						) 
+	; 	: (text := k text v c s)
+	; ---------------------------------------------------------------------------
+	A_Clipboard := text
+	t6 := A_Clipboard, c7 := t6.length
+	WinActive('ahk_exe hznHorizon.exe') ? SndMsgPaste() : Send('^v')
+	Infos(
+		'c1[' c1 ']' 
+		'`n'
+		'c2[' c2 ']' ' t1: ' t1
+		'`n'
+		'c3[' c3 ']' ' t2: ' t2
+		'`n'
+		'c4[' c4 ']' ' t3: ' t3
+		'`n'
+		'b1[' b1 ']'
+		'`n'
+		'b2[' b2 ']'
+		'`n'
+		'e1[' e1 ']'
+		'`n'
+		'e2[' e2 ']'
+		'`n'
+		'c5[' c5 ']' ' t4: ' t4
+		'`n'
+		'c6[' c6 ']' ' t5: ' t5
+		'`n'
+		'c7[' c7 ']' ' t6: ' t6
+		'`n'
+		't7: ' t7
+		'RegEx:'
+		'`n'
+		cpt
+		'`n'
+		'Control: ' ClassNN := ControlGetClassNN(control) '(' control ')'
+	)
+	; Sleep(100)
+	
+	; try Send('^v')
+	; A_Clipboard := text
+	; Send('^v')
+
+	; ---------------------------------------------------------------------------
+	; SendEvent(l '}')
+	Send('+{Left ' text.length '}')
+	; WinActive('ahk_exe hznHorizon.exe') ? SendEvent('^{left}+^{right}') : SendEvent('^+{left 3}')
+	; Send('^{left}+^{right}')
+	; _AE_bInpt_sLvl(0)
+	; Run(A_ScriptName)
+}
+; :*:`  ::{bs 1}{right}{Space} ;? testing purposes only
 #HotIf
 #HotIf !WinActive('ahk_exe hznHorizon.exe')
-^+v::Paste()
-Paste(*)
-{
+^!v::NotHznPaste()
+NotHznPaste(*) {
 	Static Msg := WM_PASTE := 770, wParam := 0, lParam := 0
 	; WinActive('ahk_exe WINWORD.exe') ? Send('+{Insert}') : hCtl := ControlGetFocus('A')
 	; Run('WINWORD.exe /x /q /a /w')
-	WinActive('ahk_exe WINWORD.exe') ? Send('+{Insert}') : hCtl := ControlGetFocus('A')
-	try DllCall('SendMessage', 'Ptr', hCtl, 'UInt', Msg, 'UInt', wParam, 'UIntP', lParam)
-	return
+
+	WinActive('ahk_exe Code.exe') ? Send('^v') : ((WinActive('ahk_exe WINWORD.exe') || WinActive('ahk_exe Teams.exe')) ? Send('+{Insert}') : tryDll())
+
+	tryDll() {
+		hCtl := tryHwnd()
+		try {
+			DllCall('SendMessage', 'Ptr', hCtl , 'UInt', Msg, 'UInt', wParam, 'UIntP', lParam)
+		} 
+		catch {
+			Send('+{Insert}')
+		}
+	}
+
 }
+
 #HotIf
 ; --------------------------------------------------------------------------------
+:*:;---::
+{
+	Send('+{Home}')
+	A_Clipboard := '; ---------------------------------------------------------------------------'
+	; Send('; {- 75}')
+	Send('^v')
+}
 #HotIf WinActive(" - Visual Studio Code")
 ; :CB0:function::
-:*C1:function::
+:*C1:function...::
 {
 	BlockInput(1)
 	Send('^+{Left}')
@@ -115,13 +523,7 @@ Paste(*)
 	BlockInput(0)
 
 }
-
 ; --------------------------------------------------------------------------------
-:*:;---::
-{
-	Send('^+{Left}')
-	Send('; {- 75}')
-}
 :?C1*:{Ins::
 {
 	BlockInput(1)
@@ -144,13 +546,13 @@ Paste(*)
 	BlockInput(1)
 	Send('^+{Left}')
 	Send('Sleep(100)')
-	Sleep(100)
+	Sleep(200)
 	Send('{Left}')
 	Send('+{Left 3}')
 	BlockInput(0)
 }
 #HotIf
-^#g::git_InstallAHKLibrary('https://github.com/Axlefublr/lib-v2/blob/1d1940095902e483a56bbdd8af6ab0642d8a9fe6/Scr/Keys/Trinity.ahk','Scr\Keys\')
+; ^#g::git_InstallAHKLibrary('https://github.com/Axlefublr/lib-v2/blob/1d1940095902e483a56bbdd8af6ab0642d8a9fe6/Scr/Keys/Trinity.ahk','Scr\Keys\')
 
 ; --------------------------------------------------------------------------------
 ; #HotIf WinActive(A_ScriptName)
@@ -160,132 +562,46 @@ CenterWindow(winTitle*) {
     hwnd := WinExist(winTitle*)
     WinGetPos( ,, &W, &H, hwnd)
     mon := GetNearestMonitorInfo(hwnd)
-    WinMove( mon.WALeft + mon.WAWidth // 2 - W // 2, mon.WATop + mon.WAHeight // 2 - H // 2,,, hwnd)
+    WinMove(mon.WALeft + mon.WAWidth // 2 - W // 2, mon.WATop + mon.WAHeight // 2 - H // 2,,, hwnd)
 }
-return
-
-; GetNearestMonitorInfo(winTitle*) {
-;     static MONITOR_DEFAULTTONEAREST := 0x00000002
-;     hwnd := WinExist(winTitle*)
-;     hMonitor := DllCall("MonitorFromWindow", "ptr", hwnd, "uint", MONITOR_DEFAULTTONEAREST, "ptr")
-;     NumPut("uint", 104, MONITORINFOEX := Buffer(104))
-;     if (DllCall("user32\GetMonitorInfo", "ptr", hMonitor, "ptr", MONITORINFOEX)) {
-;         Return  { Handle   : hMonitor
-;                 , Name     : Name := StrGet(MONITORINFOEX.ptr + 40, 32)
-;                 , Number   : RegExReplace(Name, ".*(\d+)$", "$1")
-;                 , Left     : L  := NumGet(MONITORINFOEX,  4, "int")
-;                 , Top      : T  := NumGet(MONITORINFOEX,  8, "int")
-;                 , Right    : R  := NumGet(MONITORINFOEX, 12, "int")
-;                 , Bottom   : B  := NumGet(MONITORINFOEX, 16, "int")
-;                 , WALeft   : WL := NumGet(MONITORINFOEX, 20, "int")
-;                 , WATop    : WT := NumGet(MONITORINFOEX, 24, "int")
-;                 , WARight  : WR := NumGet(MONITORINFOEX, 28, "int")
-;                 , WABottom : WB := NumGet(MONITORINFOEX, 32, "int")
-;                 , Width    : Width  := R - L
-;                 , Height   : Height := B - T
-;                 , WAWidth  : WR - WL
-;                 , WAHeight : WB - WT
-;                 , Primary  : NumGet(MONITORINFOEX, 36, "uint")
-;             }
-;     }
-;     throw Error("GetMonitorInfo: " A_LastError, -1)
-; }
-; return
 ; --------------------------------------------------------------------------------
 ; Section .....: Functions
 ; Function ....: Run scripts selection from the Script Tray Icon
 ; --------------------------------------------------------------------------------
 
 ; --------------------------------------------------------------------------------
-return
 ; ^+#1::
 GUIFE(*){
 	Run("GUI_FE.ahk")
 }
-return
 ; list
 
 ; ^+#3::
 WindowProbe(*){
 	Run("WindowProbe.ahk", "C:\Users\bacona\OneDrive - FM Global\3. AHK\")
 }
-return
 ; ^+#4::
 GUI_ListofFiles(*){
 	Run("GUI_ListofFiles.ahk")
 }
-return
 ; ^+#5::
 {
 Windows_Data_Types_offline(*){
 	Run("Windows_Data_Types_offline.ahk", "C:\Users\bacona\OneDrive - FM Global\3. AHK\AutoHotkey_MSDN_Types-master\src\v1.1_deprecated\")
 }
 }
-return
 ; #o::
 Detect_Window_Info(*){
 	Run("Detect_Window_Info.ahk")
 }
-return
 ; ^+#6::
 Detect_Window_Update(*){
 	Edit()
 }
-return
 ; ^+#7::
 test_script(*){
 	Run("test_script.ahk")
 }
-return
-
-; ; --------------------------------------------------------------------------------
-; ;                Ctrl+Shift+Alt+r Reload AutoHotKey Script (to load changes)
-; ; --------------------------------------------------------------------------------
-; ^+!r::ReloadAllAhkScripts()
-; ReloadAllAhkScripts()
-; {
-; 	DetectHiddenWindows(true)
-; 	static oList := WinGetList("ahk_class AutoHotkey",,,)
-; 	aList := Array()
-; 	List := oList.Length
-; 	For v in oList
-; 	{
-; 		aList.Push(v)
-; 	}
-; 	scripts := ""
-; 	Loop aList.Length
-; 		{
-; 			title := WinGetTitle("ahk_id " aList[A_Index])
-; 			;PostMessage(0x111,65414,0,,"ahk_id " aList[A_Index])
-; 			dnrList := [A_ScriptName, "Scriptlet_Library"]
-; 			rmList := InStr(title, "Scriptlet_Library", false)
-			
-; 			If (title = A_ScriptName) || (title = "Scriptlet_Library"){
-; 				continue
-; 			}
-; 			PostMessage(0x111,65400,0,,"ahk_id " aList[A_Index])
-; 			; Note: I think the 654*** is for v2 => avoid the 653***'s
-; 			; [x] Reload:		65400
-; 			; [x] Help: 		65411 ; 65401 doesn't really work or do anything that I can tell
-; 			; [x] Spy: 			65402
-; 			; [x] Pause: 		65403
-; 			; [x] Suspend: 		65404
-; 			; [x] Exit: 		65405
-; 			; [x] Variables:	65406
-; 			; [x] Lines Exec:	65407 & 65410
-; 			; [x] HotKeys:		65408
-; 			; [x] Key History:	65409
-; 			; [x] AHK Website:	65412 ; Opens https://www.autohotkey.com/ in default browser; and 65413
-; 			; [x] Save?:		65414
-; 			; Don't use these => ;//static a := { Open: 65300, Help:    65301, Spy: 65302, XXX (nonononono) Reload: 65303 [bad reload like Reload()], Edit: 65304, Suspend: 65305, Pause: 65306, Exit:   65307 }
-; 			; scripts .=  (scripts ? "`r`n" : "") . RegExReplace(title, " - AutoHotkey v[\.0-9]+$")
-; 			scripts .=  (scripts ? "`r`n" : "") . RegExReplace(title, " - AutoHotkey v[\.0-9]+$")
-; 		}
-; 	OutputDebug(scripts)
-; 	OutputDebug(rmList)
-; 	return
-; }
-
 ;---------------------------------------------------------------------------
 ;      Shift+WIN+m Button to Click on Window Anywhere to Drag
 ;---------------------------------------------------------------------------
@@ -301,7 +617,7 @@ return
 ;                       Time Stamp Code
 ;---------------------------------------------------------------------------
 }
-#HotIf WinActive('ahk_exe hznhorizon.exe')
+#HotIf WinActive('ahk_exe hznhorizon.exe') || WinActive('ahk_exe git.exe')
 :*:ts::
 ; format month and year
 {
@@ -317,76 +633,6 @@ return
 	Send("(AJB - " date ")")
 	return
 }
-
-;--------------------------------------------------------------------------
-;                    Quick Launch Websites (and Log In)
-;--------------------------------------------------------------------------
-
-; ^+g::Run("`"https://www.google.com/?safe=active&ssui=on`"") ; use ctrl+Shift+g
-; return
-
-;^+e::Run("`"https://engnet/Engnet/engnet/engnet.asp`"") ; use ctrl+Shift+e
-;return
-
-/* Commented out due to conflict with "reply to all keyboard shortcut in Outlook"
-	^+r::Run "http://riskview/RiskView_1_0/Home/MainPage" ; use ctrl+Shift+r
-	return
-*/
-/* Commented out JOL
-	^+j::
-{
-	Run "https://www.jurisdictiononline.com/" ; use ctrl+Shift+j
-	Sleep 3000
-	Send, {Tab}PASSWORD ;Note my username is saved in Edge and already populated. If yours is not, you will need to alter this script. Replace text after tab with your own credential
-	Sleep 50
-	Send, {Tab}
-	Sleep 50
-	Send, {Enter}
-	return
-*/
-
-;^+!f::
-;Run "https://portal.fcm.travel/Account/Login" ; use ctrl+Shift+f
-;Sleep 3000
-;Send, {Tab}{Tab}{Tab}{Tab}FIRST.LAST@fmglobal.com{Tab}PASSWORD{Tab} ;Replace text after tab with your own credential
-;Sleep 50
-;Send, {Enter}
-;return
-
-/*
-}
-	^+a::
-{
-	Run "https://www.approvalguide.com//" ; use ctrl+Shift+a
-	Sleep 3500
-	Send, {Tab}{Tab}{Enter}
-	Sleep 1500
-	Send,FIRST.LAST@fmglobal.com{Tab}{Enter} ;Replace email with your own credential
-	Sleep 2000
-	Send, PASSWORD{Enter} ;Replace text with your own credentials
-	return
-*/
-
-;--------------------------------------------------------------------------
-; Function:  Shift+Ctrl+C to Google Search for Highlighted Text
-; fixed => moved to Misc Scripts.v2.ahk
-;--------------------------------------------------------------------------
-
-; ^+c::
-; {
-; 	Send("^c")
-; 	Sleep(50)
-; 	Run("http://www.google.com/search?q=" A_Clipboard)
-; 	Return
-; }
-
-;--------------------------------------------------------------------------
-;                Win+Delete to Empty Recycle Bin
-; fixed => moved to Misc Scripts.v2.ahk
-;--------------------------------------------------------------------------
-
-; #Del::FileRecycleEmpty() ; win + del
-
 ;---------------------------------------------------------------------------
 ;                      Helpful Stuff
 ;---------------------------------------------------------------------------
@@ -483,7 +729,6 @@ Alt & ~LButton::EWD_MoveWindow()
 
 #HotIf WinExist(A_ScriptName)
 ; ; Current date and time
-/*
 FormatDateTime(format, datetime:="") {
 	if (datetime = "") {
 		datetime := A_Now
@@ -492,80 +737,24 @@ FormatDateTime(format, datetime:="") {
 	SendInput(CurrentDateTime)
 	return
 }
-*/
-; Hotstrings
-::/datetime::
-{
-    FormatDateTime("dddd, MMMM dd, yyyy, HH:mm")
-Return
-}
-
-::/datetimett::
-{
-    FormatDateTime("dddd, MMMM dd, yyyy hh:mm tt")
-Return
-}
-
+; ---------------------------------------------------------------------------
+;?			Hotstrings
+; ---------------------------------------------------------------------------
+:X:/datetime::FormatDateTime("dddd, MMMM dd, yyyy, HH:mm")
+:X:/datetimett::FormatDateTime("dddd, MMMM dd, yyyy hh:mm tt")
 :X:/cf::FormatDateTime("yyyy.MM.dd HH:mm")
-
-::/time::
-{
-    FormatDateTime("HH:mm")
-Return
-}
-::/timett::
-{
-    FormatDateTime("hh:mm tt")
-Return
-}
-::/date::
-{
-    FormatDateTime("MMMM dd, yyyy")
-Return
-}
-::/daten::
-{
-    FormatDateTime("MM/dd/yyyy")
-Return
-}
-::/datet::
-{
-    FormatDateTime("yy.MM.dd")
-Return
-}
-::/week::
-{
-    FormatDateTime("dddd")
-Return
-}
-::/day::
-{
-    FormatDateTime("dd")
-Return
-}
-::/month::
-{
-    FormatDateTime("MMMM")
-Return
-}
-::/monthn::
-{
-    FormatDateTime("MM")
-Return
-}
-::/year::
-{
-    FormatDateTime("yyyy")
-Return
-
-; Others
-}
+:X:/time::FormatDateTime("HH:mm")
+:X:/timett::FormatDateTime("hh:mm tt")
+:X:/date::FormatDateTime("MMMM dd, yyyy")
+:X:/daten::FormatDateTime("MM/dd/yyyy")
+:X:/datet::FormatDateTime("yy.MM.dd")
+:X:/week::FormatDateTime("dddd")
+:X:/day::FormatDateTime("dd")
+:X:/month::FormatDateTime("MMMM")
+:X:/monthn::FormatDateTime("MM")
+:X:/year::FormatDateTime("yyyy")
 ::wtf::Wow that's fantastic
-::/paste::
-{
-    Send(A_Clipboard)
-Return
-}
+:X:/paste::Send(A_Clipboard)
 ; ::/cud::
 ;     ; useful for WSLs
 ; {
@@ -584,223 +773,3 @@ Return
 ::/plankton::Plankton are the diverse collection of organisms found in water that are unable to propel themselves against a current. The individual organisms constituting plankton are called plankters. In the ocean, they provide a crucial source of food to many small and large aquatic organisms, such as bivalves, fish and whales.
 
 #HotIf
-
-; --------------------------------------------------------------------------------
-; ! --------------------------- Disabled Section ------------------------------- !
-; --------------------------------------------------------------------------------
-; ============================== ReloadAllAhkScripts() ==============================
-/*
-ReloadAllAhkScripts()
-{
-	DetectHiddenWindows(true)
-	static oList := WinGetList("ahk_class AutoHotkey",,,)
-	aList := Array()
-	List := oList.Length
-	For v in oList
-	{
-		aList.Push(v)
-	}
-	scripts := ""
-	Loop aList.Length
-		{
-			title := WinGetTitle("ahk_id " aList[A_Index])
-			;PostMessage(0x111,65414,0,,"ahk_id " aList[A_Index])
-			dnrList := [A_ScriptName, "Scriptlet_Library"]
-			rmList := InStr(title, "Scriptlet_Library", false)
-			
-			If (title = A_ScriptName)
-				Continue
-			If (title = "Scriptlet_Library")
-				continue
-			PostMessage(0x111,65400,0,,"ahk_id " aList[A_Index])
-			; Note: I think the 654*** is for v2 => avoid the 653***'s
-			; [x] Reload:		65400
-			; [x] Help: 		65411 ; 65401 doesn't really work or do anything that I can tell
-			; [x] Spy: 			65402
-			; [x] Pause: 		65403
-			; [x] Suspend: 		65404
-			; [x] Exit: 		65405
-			; [x] Variables:	65406
-			; [x] Lines Exec:	65407 & 65410
-			; [x] HotKeys:		65408
-			; [x] Key History:	65409
-			; [x] AHK Website:	65412 ; Opens https://www.autohotkey.com/ in default browser; and 65413
-			; [x] Save?:		65414
-			; Don't use these => ;//static a := { Open: 65300, Help:    65301, Spy: 65302, XXX (nonononono) Reload: 65303 [bad reload like Reload()], Edit: 65304, Suspend: 65305, Pause: 65306, Exit:   65307 }
-			; scripts .=  (scripts ? "`r`n" : "") . RegExReplace(title, " - AutoHotkey v[\.0-9]+$")
-			scripts .=  (scripts ? "`r`n" : "") . RegExReplace(title, " - AutoHotkey v[\.0-9]+$")
-		}
-	OutputDebug(scripts)
-	OutputDebug(rmList)
-	return
-}
-*/
-; --------------------------------------------------------------------------------
-; ============================== runAtStartup ==============================
-/*
-; runAtStartup() {
-;     if (FileExist(startup_shortcut)) {
-;         FileDelete, % startup_shortcut
-;         Menu, Tray, % "unCheck", Run at startup ; update the tray menu status on change
-;         trayNotify("Startup shortcut removed", "This script will not run when you turn on your computer.")
-;     } else {
-;         FileCreateShortcut, % A_ScriptFullPath, % startup_shortcut
-;         Menu, Tray, % "check", Run at startup ; update the tray menu status on change
-;         trayNotify("Startup shortcut added", "This script will now automatically run when your turn on your computer.")
-;     }
-
-; }
-*/
-; --------------------------------------------------------------------------------
-; ============================== Power Off | Suspend | Sleep ==============================
-/*
-#Numpad0::
-; Parameter #1: Pass 1 instead of 0 to hibernate rather than suspend.
-; Parameter #2: Pass 1 instead of 0 to suspend immediately rather than asking each application for permission.
-; Parameter #3: Pass 1 instead of 0 to disable all wake events.
-{
-	DllCall("PowrProf\SetSuspendState", "Int", 1, "Int", 0, "Int", 0)
-	Return
-}
-*/
-; --------------------------------------------------------------------------------
-
-; --------------------------------------------------------------------------------
-; ============================== Test Programs ==============================
-/*
-; ^!#g::
-; {
-; MsgBox("Desktop Window: " DllCall("GetDesktopWindow") "`nClassName: "DllCall("GetClassName") "`nWindowA: " DllCall("FindWindowA") "`nClassInfoA: "DllCall("GetClassInfoA") "`nClassLongA: " DllCall("GetClassLongA") "`nClassWord: " DllCall("GetClassWord") "`nNextWindow: " DllCall("GetNextWindow") "`nNextWindow: " DllCall("GetNextWindow") "`nTitleBarInfo: " DllCall("GetTitleBarInfo"))
-; ;msgbox % "Desktop Window: " dllCall("GetDesktopWindow")+0 "`nClassName: "dllCall("GetClassName")+0 "`nWindowA: " dllCall("FindWindowA")+0 "`nClassInfoA: "dllCall("GetClassInfoA")+0 "`nClassLongA: " dllCall("GetClassLongA")+0 "`nClassWord: " dllCall("GetClassWord")+0 "`nNextWindow: " dllCall("GetNextWindow")+0 "`nNextWindow: " dllCall("GetNextWindow")+0 "`nTitleBarInfo: " dllCall("GetTitleBarInfo")+0
-; ;msgbox % dllCall("GetDesktopWindow")+0
-; ;msgbox % dllCall("GetClassName")+0
-; ;msgbox % dllCall("FindWindowA")+0
-; ;msgbox % dllCall("GetClassInfoA")+0
-; ;msgbox % dllCall("GetClassLongA")+0
-; ;msgbox % dllCall("GetClassWord")+0
-; ;msgbox % dllCall("GetNextWindow")+0
-; ;msgbox % dllCall("GetNextWindow")+0
-; ;msgbox % dllCall("GetTitleBarInfo")+0
-; }
-; return
-*/
-; --------------------------------------------------------------------------------
-
-; --------------------------------------------------------------------------------
-;                     Shift+Ctrl+WIN+O to Open OS
-; --------------------------------------------------------------------------------
-/*
-^+#o::
-{
-	myGui := Gui(,"Quick OS/DS Open/Search",)
-	myGui.Opt("AlwaysOnTop")
-	myGui.SetFont("s12")
-	myGui.Add("Radio","vMyRadio Checked1", "Open Operating Standard")
-	myGui.Add("Radio",, "Open Data Sheet")
-	myGui.Add("Radio",, "Open Operating Requirement")
-	myGui.Add("Text",, "Desired OS/DS/OR `(i.e., 8-9`):")
-	myGui.Add("Edit","vSTDNumber x+m",,).Focus()
-	myGui.Add("Text","x15", "Search for: (optional):")
-	myGui.Add("Edit", "vSearchTerm x+m",,)
-	myGui.Add("Button","x15 +default", "Open/Search").OnEvent("Click", ClickedSearch)
-	myGui.Add("Button","x+m", "Cancel").OnEvent("Click", ClickedCancel)
-	myGui.Show("w600")
-
-	ClickedSearch(*)
-	{
-		Saved := myGui.Submit()  ; Save the contents of named controls into an object.
-
-		If Saved.MyRadio = 1
-		{
-			outputos1 := "C:\Users\"
-			outputos1a := "\FM Global\Operating Standards - Documents\opstds\"
-			outputos2 := "fm.pdf"
-			Run("AcroRd32.exe " outputos1 "" A_UserName "" outputos1a "" Saved.STDNumber "" outputos2)
-			
-			If (!Saved.SearchTerm)
-			{
-				return
-			}
-			
-			Else
-			{
-				Sleep(1200)
-				Send("^+f")
-				Send("^a")
-				Send("{Delete}")
-				Send(Saved.SearchTerm)
-				Send("{Enter}")
-				return 
-			}
-			
-		}
-
-		If Saved.MyRadio=2 
-		{
-			outputos1 := "C:\Program Files\FMGlobal\Operating Standards\ds\FMDS"
-			outputos2 := ".pdf"
-			
-			DSArray := StrSplit(Saved.STDNumber,"-")
-			
-			IF StrLen(DSArray[1])>1
-				DSS := DSArray[1]
-			else
-				DSS := "0" . DSArray[1]
-			
-			IF StrLen(DSArray[2])>1
-				DSN := DSArray[2]
-			else
-				DSN := "0" . DSArray[2]
-			
-			Run("AcroRd32.exe " outputos1 "" DSS "" DSN "" outputos2)
-			
-			If (!Saved.SearchTerm)
-			{
-				return
-			}
-			
-			Else 
-			{
-				Sleep(1200)
-				Send("^+f")
-				Send("^a")
-				Send("{Delete}")
-				Send(Saved.SearchTerm)
-				Send("{Enter}")
-				return
-			}
-		}
-		
-		If Saved.MyRadio=3
-		{
-			outputor1 := "C:\Program Files\FMGlobal\Operating Requirements with Guides\OR"
-			outputor2 := ".pdf"
-			
-			Run("AcroRd32.exe " outputor1 "" Saved.STDNumber "" outputor2)
-			
-			If (!Saved.SearchTerm)
-			{
-				return
-			}
-			
-			Else 
-			{
-				Sleep(1200)
-				Send("^+f")
-				Send("^a")
-				Send("{Delete}")
-				Send(Saved.SearchTerm)
-				Send("{Enter}")
-				return
-			}
-		}
-		myGui.Destroy()
-		return
-	}
-
-	ClickedCancel(*)
-	{
-		myGui.Destroy()
-	}
-}
-*/
