@@ -8,54 +8,28 @@
 
 #Requires AutoHotkey v2+
 #Include <Directives\__AE.v2>
+; ---------------------------------------------------------------------------
+; @i...: Create ahk_group ExplorerDesktopGroup
+; ---------------------------------------------------------------------------
+GroupAdd("ExplorerDesktopGroup", "ahk_class ExploreWClass")
+GroupAdd("ExplorerDesktopGroup", "ahk_class CabinetWClass")
+GroupAdd("ExplorerDesktopGroup", "ahk_class Progman")
+GroupAdd("ExplorerDesktopGroup", "ahk_class WorkerW")
+GroupAdd("ExplorerDesktopGroup", "ahk_class #32770")
+; --------------------------------------------------------------------------------
 ; --------------------------------------------------------------------------------
 TraySetIcon("shell32.dll","16", true) ; this changes the icon into a little laptop thing.
+pMakeTrayMenu()
 ; --------------------------------------------------------------------------------
-myScript := A_TrayMenu
-; TrayMenu := MenuBar()
-myScript.Delete() ; V1toV2: not 100% replacement of NoStandard, Only if NoStandard is used at the beginning
-myScript.Add("Made by OvercastBTC",madeBy)
-myScript.Add()
-; Tray.Add("Run at startup", "runAtStartup")
-; Tray.ToggleCheck(fileExist(startup_shortcut) ? "check" : "unCheck", Run at startup ; update the tray menu status on startup
-; TODO Finish updating Run at Startup
-; Tray.Add("Presentation mode {Win+Shift+P}", togglePresentationMode) ; => does not exist
-; Tray.Add("Keyboard shortcuts {Ctrl+Shift+Alt+\}", "viewKeyboardShortcuts")
-; Tray.Add("Open file location", "openFileLocation")
-; Tray.Add()
-; Tray.Add("Run GUI_FE", "GUIFE")
-myScript.Add('Run WindowsListMenu.ahk', WindowListMenu)
-myScript.Add()
-myScript.Add('Run GUI_ListofFiles.ahk', GUI_ListofFiles)
-myScript.Add("Run WindowProbe.ahk", WindowProbe)
-; Tray.Add("Run Windows_Data_Types_offline.ahk", Windows_Data_Types_offline)
-myScript.Add()
-; Tray.Add("View in GitHub", "viewInGitHub")
-; Tray.Add("See AutoHotKey documentation", "viewAHKDoc") ; => does not exist
-; Tray.Add()
-myScript.AddStandard()
-; Tray.Show
+#Include <Includes\Includes_Standard>
 ; --------------------------------------------------------------------------------
-madeBy(madeBy,*){
-}
-WindowListMenu(*){
-	Run("WindowListMenu.ahk")
-}
-; --------------------------------------------------------------------------------
-; #Include <Abstractions\Script>
-; Script.startup.CheckStartupStatus()
 #Include <Common\Common_Include>
-; #Include <WINDOWS.v2>
-#Include <Common\Misc Scripts.V2>
-#Include <Tools\Info>
-#Include <System\Web>
-#Include <Tools\CleanInputBox>
-#Include <App\Git>
-#Include <System\UIA>
-#Include <GetNearestMonitorInfo().v2>
-#Include <Utils\ClipSend>
-; #Include <WindowSpyDpi>
+#Include <Tools\explorerGetPath.v2>
+; --------------------------------------------------------------------------------
+; #Include <Includes\Includes_App> ;! Brackets
 ; ---------------------------------------------------------------------------
+; ---------------------------------------------------------------------------
+
 SetNumLockState("AlwaysOn")
 SetCapsLockState("AlwaysOff")
 SetScrollLockState("AlwaysOff")
@@ -66,129 +40,154 @@ SetScrollLockState("AlwaysOff")
 SaveCR(){
 	expRpt := UIA.ElementFromChromium('Chrome River - Google Chrome')
 	; Sleep(100)
-	expRpt.WaitElement({Type: '50000 (Button)', Name: "Save", LocalizedType: "button", AutomationId: "save-btn"}, 10000).Highlight(100).Invoke()
+	expRpt.WaitElement({Type: '50000 (Button)',	Name: "Save", LocalizedType: "button", AutomationId: "save-btn"}, 10000).Highlight(100).Invoke()
 }
 
 #HotIf
-~n::
-{
+; ---------------------------------------------------------------------------
+
+~n::{
 	If (A_PriorKey = '``'){
 		Sleep(100)
 		Send('{Right}')
 	}
 }
+
+#HotIf WinActive('ahk_exe Chrome.exe')
+Esc::bClose()
+bClose(){
+	expRpt := UIA.ElementFromChromium(' - Google Chrome')
+	; Sleep(100)
+	expRpt.WaitElement({Type: '50000 (Button)', Name: "", LocalizedType: "button"}, 10000).Highlight(100).Invoke()
+}
+!c::bContinue()
+bContinue(){
+	expRpt := UIA.ElementFromChromium(' - Google Chrome')
+	; Sleep(100)
+	expRpt.WaitElement({Type: '50000 (Button)', Name: "Continue", LocalizedType: "button"}, 10000).Highlight(100).Invoke()
+}
+!n::bNext()
+bNext(){
+	expRpt := UIA.ElementFromChromium(' - Google Chrome')
+	; Sleep(100)
+	expRpt.WaitElement({Type: '50000 (Button)',
+						Name: "Next",
+						LocalizedType: "button",
+						; AutomationId: "next-btn"
+					}, 10000).Highlight(100).Invoke()
+}
+^!n::bNextTopic()
+bNextTopic(){
+	expRpt := UIA.ElementFromChromium(' - Google Chrome')
+	; Sleep(100)
+	expRpt.WaitElement({Type: '50000 (Button)',
+						Name: "Next Topic",
+						LocalizedType: "button",
+						; AutomationId: "next-btn"
+					}, 10000).Highlight(100).Invoke()
+}
+#HotIf
+
 #HotIf WinActive("ahk_exe hznHorizon.exe")
 
-^+Down::
-{
-	bak := ClipboardAll()
-	d:=0, A_Clipboard := '', d := 15, text := '', aText := []
-	; if A_Clipboard != '' {
-	; 	loop {
-	; 		Sleep(d)
-	; 	} until A_Clipboard := ''
-	; }
-	cutline()
-	cutline()
-	cutline() {
-		Send('{End}{Shift Down}{Home}{Down}{Shift Up}')
-		Send('^x')
-		text := A_Clipboard
-		Sleep(d)
-		aText.Push(text)
-		Send('{Home}{Shift Down}{End}{Down}{Shift Up}')
-		Send('{Del}')
-		return aText
-	}
-	Send(aText[2])
-	Send(aText[1])
-	; Infos(atext[1] '`n' aText[2])
-	return
-	text := ''
-	loop text.Length {
-		Sleep(d)
-	} until text = ''
-	text .= (aText[2] '`n' aText[1])
-	loop text.Length {
-		Sleep(d)
-	} until text != ''
-	; Send('^x')
-	; Sleep(d)
-	Send('{Del 2}')
-	Sleep(d)
-	send('{End}')
-	Sleep(d)
-	Send('{Enter}')
-	Sleep(d)
-	send('^v')
-	Sleep(100)
-	A_Clipboard := bak
-}
-^+Up::
-{
-	bak := ClipboardAll()
-	d:=0, A_Clipboard := '', d := 15, text := ''
-	Send('{Home}+{End}')
-	Sleep(d)
-	Send('^x')
-	Sleep(d)
-	Send('{Del}')
-	Sleep(d)
-	send('{Home}{Up}')
-	Sleep(d)
-	Send('{Enter}')
-	Sleep(d)
-	send('^v')
-	Sleep(100)
-	A_Clipboard := bak
-}
-^+d::
-{
-	bak := ClipboardAll()
-	d:=0,text := '', txt := '', A_Clipboard := '', d := 15
+; ^+Down::
+; {
+; 	bak := ClipboardAll()
+; 	d:=0, A_Clipboard := '', d := 15, text := '', aText := []
+; 	; if A_Clipboard != '' {
+; 	; 	loop {
+; 	; 		Sleep(d)
+; 	; 	} until A_Clipboard := ''
+; 	; }
+; 	cutline()
+; 	cutline()
+; 	cutline() {
+; 		Send('{End}{Shift Down}{Home}{Down}{Shift Up}')
+; 		Send('^x')
+; 		text := A_Clipboard
+; 		Sleep(d)
+; 		aText.Push(text)
+; 		Send('{Home}{Shift Down}{End}{Down}{Shift Up}')
+; 		Send('{Del}')
+; 		return aText
+; 	}
+; 	Send(aText[2])
+; 	Send(aText[1])
+; 	; Infos(atext[1] '`n' aText[2])
+; 	return
+; 	text := ''
+; 	loop text.Length {
+; 		Sleep(d)
+; 	} until text = ''
+; 	text .= (aText[2] '`n' aText[1])
+; 	loop text.Length {
+; 		Sleep(d)
+; 	} until text != ''
+; 	; Send('^x')
+; 	; Sleep(d)
+; 	Send('{Del 2}')
+; 	Sleep(d)
+; 	send('{End}')
+; 	Sleep(d)
+; 	Send('{Enter}')
+; 	Sleep(d)
+; 	send('^v')
+; 	Sleep(100)
+; 	A_Clipboard := bak
+; }
+; ^+Up::
+; {
+; 	bak := ClipboardAll()
+; 	d:=0, A_Clipboard := '', d := 15, text := ''
+; 	Send('{Home}+{End}')
+; 	Sleep(d)
+; 	Send('^x')
+; 	Sleep(d)
+; 	Send('{Del}')
+; 	Sleep(d)
+; 	send('{Home}{Up}')
+; 	Sleep(d)
+; 	Send('{Enter}')
+; 	Sleep(d)
+; 	send('^v')
+; 	Sleep(100)
+; 	A_Clipboard := bak
+; }
+^+d::{
+	; bak := ClipboardAll()
+	; d:=0,
+	text := '', txt := ''
+	; , A_Clipboard := '', d := 15
 	; Sleep(d)
 	Send('{Home}+{End}')
 	; @step: Copy
-	; SndMsgCopy()
-	; Sleep(d)
-	; text := A_Clipboard
+	Send('^{sc2E}')
+	; sleep(100)
+	text := A_Clipboard
 	; Sleep(d)
 	; @step: Cut
-	SndMsgCut()
+	; SndMsgCut()
+	; Send('^{sc2D}')
 	; SendMessage('0x300',0,0,ControlGetFocus('A'),'A') ; Send('^x')
 	; Send('{End}{Enter}')
 	; @step Paste
 	; SendMessage('0x302',0,0,ControlGetFocus('A'),'A')
-	Send('^v')
-	Sleep(d)
+	; Send('^v')
+	; Send('^{sc2F}')
+	ClipSend(text)
+	; Sleep(100)
 	Send('{Enter}')
-	Sleep(d)
-	Send('^v')
-	Sleep(d)
-	A_Clipboard := bak
+	; Sleep(50)
+	; Send('^{sc2F}')
+	ClipSend(text)
+	; Sleep(d)
+	; A_Clipboard := bak
 }
 #HotIf
 ;! ---------------------------------------------------------------------------
 ;! ---------------------------------------------------------------------------
 ;! ---------------------------------------------------------------------------
-; ---------------------------------------------------------------------------
-SndMsgCopy(*) {
-	static WM_COPY := 0x0301, fCtl := 0
-	try fCtl := ControlGetFocus('A')
-	(fCtl = 0) ? SendEvent('^c') : SendMessage(WM_COPY,0,0,fCtl,'A')
-}
-; ---------------------------------------------------------------------------
-SndMsgCut(*) {
-	static WM_CUT := 0x0300, fCtl := 0
-	try fCtl := ControlGetFocus('A')
-	(fCtl = 0) ? SendEvent('^x') : SendMessage(WM_CUT,0,0,fCtl,'A')
-}
-; ---------------------------------------------------------------------------
-SndMsgPaste(*) {
-	static WM_PASTE := 0x0302, fCtl := 0
-	try fCtl := ControlGetFocus('A')
-	(fCtl = 0) ? SendEvent('^v') : SendMessage(WM_PASTE,0,0,fCtl,'A')
-}
+
 which_brackets(str, lChar, rChar, MapObj) {
 	bkts := []
 	for k, v in MapObj {
@@ -217,59 +216,52 @@ which_brackets(str, lChar, rChar, MapObj) {
 ; 	return ((bL || bR = true) ? true : false)
 ; }
 ; ---------------------------------------------------------------------------
-clip_empty(mode := false){
-	if A_Clipboard = '' {
-		while (A_Clipboard = '') {
-			Sleep(10)
-		}
-	} else {
-		while !(A_Clipboard = '') {
-			Sleep(10)
-		}
-	}
-}
+
 ; ---------------------------------------------------------------------------
-#HotIf !WinActive(" - Visual Studio Code")
-/************************************************************************
- * function ...: Mirror the VS Code hotkeys for the below params
- * @file AHK Script.v2.ahk
- * @author OvercastBTC
- * @date 2023/12/28
- * @version 0.5.0
- * @example By using the * => the key is intercepted and not sent to the window/control
- * 		Params:
- * 			1. ''
- * 			2. ""
- * 			3. ()
- * 			4. {}
- * 			5. []
- ***********************************************************************/
-*'::
-*"::
-*(::
-*{::
-*[::
+#HotIf !WinActive(" - Visual Studio Code") && WinActive('ahk_exe hznHorizon.exe')
+; ---------------------------------------------------------------------------
+; @Section ...: 		Mirror the VS Code hotkeys for the below params
+; @i ...: 	By using the * => the key is intercepted and not sent to the window/control
+; @i ...: Params:
+; @param .:	1. ''
+; @param .:	2. ""
+; @param .:	3. ()
+; @param .:	4. {}
+; @param .:	5. []
+; ---------------------------------------------------------------------------
+:*?:dotf::{U+2219}
+:X*?:greqf::chr(242) ;{U+2265}
+:X*?:...::chr(133) ;{U+2265}
+; :X*?:xf::chr(155) ;{U+2265}
+; :*?:of::[O] ;{U+2265}
+#+1::ControlSetStyle('^0x4', ControlGetFocus('A'))
+; *<::
+; *'::
+; *"::
+; *(::
+; *{::
+; *[::
 {
-	CoordMode('Caret','Window')
-	Infos.DestroyAll()
+	; CoordMode('Caret','Window')
+	cbak := _AE_BU_Clr_Clip()
 	_AE_bInpt_sLvl(1)
-	A_Clipboard := '', text := ''
-	SetTimer(clip_empty, -500)
-	t1 := '', t2 := '', t3 := '', t4 := '', t5 := '', t6 := '', t7 := '',
-	c1 := '', c2 := '', c3 := '', c4 := '', c5 := '', c6 := '', c7 := ''
-	bLeft := '', bRight := '', lChar := '', rChar := '',
+
+	; t1 := '', t2 := '', t3 := '', t4 := '', t5 := '', t6 := '', t7 := '',
+	; c1 := '', c2 := '', c3 := '', c4 := '', c5 := '', c6 := '', c7 := ''
+	bLeft := '', bRight := '', lChar := '', rChar := '', bL := '', bR := ''
 	; s := '', c := '',
 	bK := '', bV := '',
 	eK := '', eV := '', 
 	x  := 0, y  := 0,	xC := 0, yC := 0, w := 0, p := ''
-	control  := unset, fCtl := unset, WinA := unset, ClassNN := unset
+	control  := fCtl := WinA := ClassNN := ''
 	Selected := ''
 	bChar := '', bChars := '', bV1 := '', bV2 := '', b1 := '', b2 := ''
 	eChar := '', eChars := '', eV1 := '', eV2 := '', e1 := '', e2 := ''
 	cLen := 0, sLen := 0
+	text := '', endChars := '', s := 0, LP := 0, Len := 0, sel := ''
 	; toggle := 0
 	; ---------------------------------------------------------------------------
-	at := [], bkts := [], eChr := [], bChr := [], mbChr := [], meChr := []
+	mbH := [], bkts := [], eChr := [], bChr := [], mbChr := [], meChr := []
 	; ---------------------------------------------------------------------------
 	eMap := Map('"','"', "'", "'", '[', ']', '{', '}', '(', ')')
 	; ---------------------------------------------------------------------------
@@ -278,57 +270,114 @@ clip_empty(mode := false){
 	; @step ...: Try and get mouse position (includes window handle, and control handle)
 	; ---------------------------------------------------------------------------
 	try if WinActive('ahk_exe hznHorizon.exe'){
-		static fCtl := ControlGetFocus(), ClassNN := ControlGetClassNN(fCtl)
+		fCtl := ControlGetFocus('A'), ClassNN := ControlGetClassNN(fCtl), hWnd := tryHwnd()
 	}
-	; return
-	try (CaretGetPos(&xC, &yC))
-	try MouseGetPos(&x, &y, &w, &control, 2)
-	; el := UIA.ElementFromHandle('A').Length
-	; el := UIA.ElementFromHandle('A',true)
-	el := UIA.CreateCacheRequest({Type: 'edit'},{Type: 'text'})
-	for each, value in el {
-		; ele := value.FindElements({Type: '50020 (Text)', LocalizedType: "text"})
-		Infos(value)
-	}
-	; elinfo := el.Children
-
-	; Infos(
-	; 	'xC[' xC '] yC[' yC ']'
-	; 	'`n'
-	; 	'x[' x '] y[' y ']'
-	; 	'`n'
-	; 	'control: ' ClassNN ' Title: ' WinT 
-	; )
 	; ---------------------------------------------------------------------------
 	; @step: get the key pressed, removing the hotkey modifier, and trim whitespaces
 	; ---------------------------------------------------------------------------
-	str := StrSplit(A_ThisHotkey,'*', '*', 1), str := Trim(str[1])
+	; str := A_ThisHotkey
+	; str.RegExMatch('[\[\]\(\)\{\}\-\`'\`"\<\>]', &mbH)
+	str := RegExReplace(A_ThisHotkey, '\*', '')
+	; str := StrSplit(A_ThisHotkey,'*', '*', 1), str := Trim(str[1])
 	; ---------------------------------------------------------------------------
 	; @info ...: brackets identified => b := Array() 
 	; ---------------------------------------------------------------------------
-	bkts := which_brackets(str, lChar,rChar, eMap)
+	(str = '[') ? (bLeft := str, bRight := ']') : (str = '{') ? (bLeft := str, bRight := '}') : (str = '(') ? (bLeft := str, bRight := ')') : (str = '<') ? (bLeft := str, bRight := '>') : (str = '"') ? (bLeft := str, bRight := '"') : (str = "'") ? (bLeft := str, bRight := "'") : 0
+	
+	; bkts := which_brackets(str, lChar,rChar, eMap)
+	; static bLeft := mbH[], bRight := eMap.Get(mbh[])
 	; ---------------------------------------------------------------------------
-	bLeft := bkts.lChar, bRight := bkts.rChar
+	; bLeft := bkts.lChar, bRight := bkts.rChar
+	bL := '\' bLeft, bR := '\' bRight
 	; ---------------------------------------------------------------------------
 	; @step: Copy the selected text into the clipboard for evaluation
 	; ---------------------------------------------------------------------------
-	; WinActive('ahk_exe hznHorizon.exe') ? Send('+{Left}') : Click(2)
-	c1 := A_Clipboard.length
-	SndMsgCopy()
-	; c2 := A_Clipboard.length
-	; ---------------------------------------------------------------------------
-	; @step: store the clipboard into the variable text, see if text is empty
-	; @info: don't technically need to do that to see if the text is empty
-	; @info: however, two birds with one stone => set text variable
-	; ---------------------------------------------------------------------------
-	text := A_Clipboard, t1 := text
-	c2 := t1.length
-	; ---------------------------------------------------------------------------
-	; @info ...: set a short sleep cycle until the text = clipboard
-	; ---------------------------------------------------------------------------
-	Loop {
-		Sleep(15)
-	} until A_Clipboard = text
+	getSel := AE_GetSel()
+	stats := AE_GetStats(fCtl) ;! why does this give me a -1 for line position, but the below doesn't?
+	LP := stats.LinePos
+	; Len := stats.selL
+	; sel := stats.sel
+	; sel := RegExReplace(sel, '(\s)+$', '')
+	; Len := sel.Length
+	; Infos('sel: "' sel '"`nLen: ' Len ) ;! Add len to replace getSel.E???
+	; Infos('LP: ' LP)
+	; ToolTip(stats.LinePos)
+	((getSel.S - getSel.E) = 0) ? pasteit(text, bLeft, bRight, getSel.S, getSel.E, LP) : copyit(LP)
+	copyit(LP:=0){
+		; ---------------------------------------------------------------------------
+		; @step: store the clipboard into the variable text, see if text is empty
+		; @info: don't technically need to do that to see if the text is empty
+		; @info: however, two birds with one stone => set text variable
+		; ---------------------------------------------------------------------------
+		Send('{sc1D down}{sc2E}{sc1D up}') ; Send('^c')RCtrl := sc11D
+		sleep(30)
+		; ---------------------------------------------------------------------------
+		text := A_Clipboard
+		sleep(30)
+		getSel := AE_GetSel()
+		getCL := AE_GetCaretLine()
+		pasteit(text, bLeft, bRight, getSel.S, getSel.E, LP)
+	}
+	pasteit(text, bLeft, bRight, sPos?, ePos?, LP:=0, *){
+		; Infos(LP)
+		mS := [], count := 0
+		; eRegex := 'm)([\s:,.]+)$'
+		eRegex := 'm)((\v)|(\s+$|[:,.]+)$)'
+		RegExMatch(text, eRegex, &mS)
+		; Infos(mS[])
+		try s := mS.Count
+		if !IsObject(mS.Count) && (s > 0) {
+			; Infos('Not an object, or, there are endchars')
+			; endChars := mS[]
+			endChars := mS[]
+			text := RegExReplace(text, eRegex, '')
+		}
+		try {
+			If (text.length == 0) {
+				; ToolTip('If')
+				(LP == -1) ? (text := bLeft text bRight endChars '`n') : (text := bLeft text bRight endChars)
+				; if (eRtn == -1){
+				; 	text := bLeft text bRight endChars '`n'
+				; }
+				; text := bLeft text bRight endChars
+				; sleep(30)
+				A_Clipboard := text
+				Sleep(50)
+				Send('{sc1D down}{sc2F}{sc1D up}')
+				sleep(50)
+				Send('{sc14B}')
+				; _AE_RestoreClip(cBak)
+				; _AE_bInpt_sLvl(0)
+			}
+			else if ((text ~= '\' str )) { ;(text ~= bRegExNdl) {
+				text := RegExReplace(text, '\' bLeft, '') ;* works
+				text := RegExReplace(text, '\' bRight, '') ;* works
+				A_Clipboard := text
+				Sleep(50)
+				Send('{sc1D down}{sc2F}{sc1D up}')
+				Sleep(50)
+				; AE_Set_Sel((getSel.S), (getSel.E)-1, fCtl)
+				; _AE_RestoreClip(cBak)
+				; _AE_bInpt_sLvl(0)
+			} 
+			else {
+				; ToolTip('Else' '`n' 'T: ' true ' False: ' false '`n' (LP == -1))
+				(LP == -1) ? (text := bLeft text bRight endChars '`n') : (text := bLeft text bRight endChars)
+				A_Clipboard := text
+				Sleep(50)
+				Send('{sc1D down}{sc2F}{sc1D up}')
+				Sleep(50)
+				; AE_Set_Sel((getSel.S), ((getSel.E)-2), fCtl)
+				; _AE_RestoreClip(cBak)
+				; _AE_bInpt_sLvl(0)
+			}
+			_AE_RestoreClip(cBak)
+			_AE_bInpt_sLvl(0)
+		}
+		; Infos(A_PriorKey, 5000)
+		return
+	}
+	return
 	; ---------------------------------------------------------------------------
 	; @step ...: Set cLen (clipboard length, or initial cLen length)
 	; @step ...: Set sLen (string length, or initial sLen length)
@@ -342,30 +391,34 @@ clip_empty(mode := false){
 	; @why  ...: Can be used to determine the location of the text (line, total lines, etc.)
 	;! ---------------------------------------------------------------------------
 	; try stats := AE_GetStats()
-	stats := AE_GetStats()
+	; stats := AE_GetStats(fCtl, hWnd)
 	; ---------------------------------------------------------------------------
-	; (text.length = 0) ? l := 1 : l := 0
-	; needle:= "D)\s+$"
+	;! ---------------------------------------------------------------------------
+	; @step ...: Remove non-word end chars
+	; @why  ...: Can be used to determine the location of the text (line, total lines, etc.)
+	;! ---------------------------------------------------------------------------
+	e1 := eChars
 	; ---------------------------------------------------------------------------
-	; @step ...: Is there a space at the end?
-	; @step ...: If so, remove it and store it in s (s := ' ', or s := A_Space)
-	; @why  ...: If its a single line, no need to re-add
-	; @why  ...: If it's part of a sentance, need to add it back at the end
-	;! Moved to next section
+	; eChrNeedle := '[,.?:;\s]+$'
+	eChrNeedle := '(?:\b)[.\W]+$'
+	; eChrReplace := '$1'
+	eChrReplace := ''
 	; ---------------------------------------------------------------------------
-	; needle:= ('\s+$')
-	; spaceNeedle:= ('\s+\Q([^\s]+)\E\s+')
-	; spacereplace := "[$1]"
-	; spacereplace := ''
-	; if ((text ~= spaceNeedle) != 0) {
-	; 	text := RegExReplace(text, spaceNeedle, spacereplace)
-	; 	s := ' '
-	; } else {
-	; 	text := text
-	; 	s := ''
-	; }
+	; todo ---------------------------------------------------------------------------
+	; (text ~= eChrNeedle) ? (text.RegExMatch(eChrNeedle, &meChr), SafePushArray(eChr, meChr), eChars := eChr.ToString('')) : 1
+	if (text ~= eChrNeedle) {
+		; RegExMatch(text, eChrNeedle, &meChr)
+		text.RegExMatch(eChrNeedle, &meChr)
+		SafePushArray(eChr, meChr)
+		eChars := eChr.ToString('')
+		; text := RegExReplace(text, eChrNeedle,eChrReplace)
+		text.RegExReplace(eChrNeedle, eChrReplace) ; todo => this seems to fail to properly "replace" (remove)
+		; text.Replace(eChrNeedle,eChrReplace)
+	}
+	;* seems faster
+	; todo ---------------------------------------------------------------------------
+	; ---------------------------------------------------------------------------
 	t3 := text, c4 := t3.length
-	; ((text ~= needle) != 0) ? (text := RegExReplace(text, needle, ''), s := '') : s := ' '
 	; ---------------------------------------------------------------------------
 	; @step ...: Is there a dash, dash space, or space (or combo of) at the beginning?
 	; @step ...: If so, remove it/them and store it in bChars 
@@ -375,105 +428,128 @@ clip_empty(mode := false){
 	; @why  ...: If its a single word on the line, no need to re-add ; fix [identify if it's a single word on the line]
 	; @why  ...: If it's part of a sentance, need to add it back at the end
 	; ---------------------------------------------------------------------------
-	bChrNeedle := '^[ -]+'
-	bChrReplace := '$1'
+	bChrNeedle := '^[\d.)\s:-]+(?:\b)'
+	; bChrNeedle := '^[\d\W.\s):-]+\b'
+	; bChrReplace := '$1'
+	bChrReplace := ''
 	; ---------------------------------------------------------------------------
-	eChrNeedle := '[,.\s?:;]+$'
-	eChrReplace := '$1'
-	; ---------------------------------------------------------------------------
-	; cp := [], bcp := [], cpt := ''
 	b1 := bChars
-	if (text ~= bChrNeedle) {
-		RegExMatch(text, bChrNeedle,&mbChr)
-		; text := RegExReplace(text, bChrNeedle,'')
-		text := RegExReplace(text, bChrNeedle,bChrReplace)
-		try for each, bV1 in mbChr {
-			bChr.SafePush(bV1)
-			cpt .= bV1 '`n' ;? testing purposes only
-		}
-		try for each, bV2 in bChr {
-			bChars .= bV2
-		}
-	}
+	; todo ---------------------------------------------------------------------------
+	(text ~= bChrNeedle) ? (text.RegExMatch(bChrNeedle,&mbChr), SafePushArray(bChr, mbChr), bChars := bChr.ToString('')) : 0
+	; if (text ~= bChrNeedle) {
+		; text := RegExMatch(text, bChrNeedle,&mbChr)
+		; SafePushArray(bChr, mbChr
+		; bChars := bChr.ToString(''))
+		; text := RegExReplace(text, bChrNeedle,bChrReplace)
+		; text.RegExReplace(bChrNeedle,bChrReplace)
+	; }
+	;* seems faster
+	; todo ---------------------------------------------------------------------------
+	;! ---------------------------------------------------------------------------
+	; testtext := "()
+	; (
+	; - The visit was made to conduct a Boiler and Machinery Remote Special evaluation.
+	; 1. The thing is
+
+	; 1) This is what I was thinking
+
+	; 1 - This is the other thing I was thinking
+
+	; )"
+
+	; cp := [], bcp := [], cpt := ''
+
+	;! ---------------------------------------------------------------------------
 	b2 := bChars
 	t4 := text, c5 := t4.length
 	; ---------------------------------------------------------------------------
-	e1 := eChars
-	if (text ~= eChrNeedle) {
-		RegExMatch(text, eChrNeedle,&meChr)
-		; text := RegExReplace(text, eChrNeedle,'')
-		text := RegExReplace(text, eChrNeedle,eChrReplace)
-		try for each, eV1 in meChr {
-			eChr.SafePush(eV1)
-			cpt .= eV1 '`n'
-		}
-		try for each, eV2 in eChr {
-			eChars .= eV2
-		}
-	}
 	e2 := eChars
 	t5 := text, c6 := t5.length
 	; ---------------------------------------------------------------------------
 	; @step if text.length != 0 => do brackets exist? If so, remove them, if not, add them
 	; ---------------------------------------------------------------------------
 	bK := bLeft, bV := bRight
-	bktPattern := "\Q" bK "\E([^" bV "]+)\Q" bV "\E"
+	beC := '[\[\]\(\)\{\}\-\`'\`"\<\>]+'
+	; bktPattern := "\Q" bK "\E([^" bV "]+)\Q" bV "\E"
+	bktPattern := beC
 	bktRplc := '$1'
-	((text ~= eMap.Get(bLeft)) ? (text := RegExReplace(text, bktPattern, bktRplc)) : (text := bK text bV ))
+	; ---------------------------------------------------------------------------
+	; Infos(text.RegExReplace(bktPattern, bktRplc)) ; todo ...: finish this up 
+	if (text ~= bktPattern) {
+		text.RegExReplace(bktPattern,bktRplc)
+	}
+	; ---------------------------------------------------------------------------
+	else {
+		(text := bK text bV )
+	}
+	; ---------------------------------------------------------------------------
+	Infos(
+		't3: ' t3
+		'`n'
+		't4: ' t4
+		'`n'
+		't5: ' t5
+		'`n'
+		'bChars: ' bChars
+		'`n'
+		'eChars: ' eChars
+		'`n'
+		text
+	)
 	; ---------------------------------------------------------------------------
 	; @step Add the bChars and eChars back to the text
 	; ---------------------------------------------------------------------------
-	text := bChars text eChars
-	; (text ~= eMap.Get(bLeft)) ? (text := RegExReplace(text, pattern, replacement)
-	; 							; , text := text c s
-	; 						) 
-	; 	: (text := k text v c s)
+	text := bChars text eChars ; todo ...: finish this up using String2 class
 	; ---------------------------------------------------------------------------
 	A_Clipboard := text
 	t6 := A_Clipboard, c7 := t6.length
-	WinActive('ahk_exe hznHorizon.exe') ? SndMsgPaste() : Send('^v')
-	Infos(
-		'c1[' c1 ']' 
-		'`n'
-		'c2[' c2 ']' ' t1: ' t1
-		'`n'
-		'c3[' c3 ']' ' t2: ' t2
-		'`n'
-		'c4[' c4 ']' ' t3: ' t3
-		'`n'
-		'b1[' b1 ']'
-		'`n'
-		'b2[' b2 ']'
-		'`n'
-		'e1[' e1 ']'
-		'`n'
-		'e2[' e2 ']'
-		'`n'
-		'c5[' c5 ']' ' t4: ' t4
-		'`n'
-		'c6[' c6 ']' ' t5: ' t5
-		'`n'
-		'c7[' c7 ']' ' t6: ' t6
-		'`n'
-		't7: ' t7
-		'RegEx:'
-		'`n'
-		cpt
-		'`n'
-		'Control: ' ClassNN := ControlGetClassNN(control) '(' control ')'
-	)
+	WinActive('ahk_exe hznHorizon.exe') ? SndMsgPaste() : SendEvent('^v')
+
+	if (text.length = 2) {
+		Send('{Left}')
+	}
+	; Infos(
+		; text
+	; 	'c1[' c1 ']' 
+	; 	'`n'
+	; 	'c2[' c2 ']' ' t1: ' t1
+	; 	'`n'
+	; 	'c3[' c3 ']' ' t2: ' t2
+	; 	'`n'
+	; 	'c4[' c4 ']' ' t3: ' t3
+	; 	'`n'
+	; 	'b1[' b1 ']'
+	; 	'`n'
+	; 	'b2[' b2 ']'
+	; 	'`n'
+	; 	'e1[' e1 ']'
+	; 	'`n'
+	; 	'e2[' e2 ']'
+	; 	'`n'
+	; 	'c5[' c5 ']' ' t4: ' t4
+	; 	'`n'
+	; 	'c6[' c6 ']' ' t5: ' t5
+	; 	'`n'
+	; 	'c7[' c7 ']' ' t6: ' t6
+	; 	'`n'
+	; 	't7: ' t7
+	; 	; 'RegEx:'
+	; 	; '`n'
+	; 	; cpt
+	; 	; '`n'
+	; 	; 'Control: ' ClassNN := ControlGetClassNN(control) '(' control ')'
+	; )
 	; Sleep(100)
-	
 	; try Send('^v')
 	; A_Clipboard := text
 	; Send('^v')
-
+	; stats1 := AE_GetStats()
+	; getSel1 := AE_GetSel(fCtl, hWnd := tryHwnd())
+	; Infos('Start: ' getsel.S '`nEnd: ' getSel1.E)
+	; AE_Set_Sel(getsel.S, getsel1.E)
 	; ---------------------------------------------------------------------------
-	; SendEvent(l '}')
-	Send('+{Left ' text.length '}')
-	; WinActive('ahk_exe hznHorizon.exe') ? SendEvent('^{left}+^{right}') : SendEvent('^+{left 3}')
-	; Send('^{left}+^{right}')
-	; _AE_bInpt_sLvl(0)
+	; AE_HideSelection(true)
+	_AE_bInpt_sLvl(0)
 	; Run(A_ScriptName)
 }
 ; :*:`  ::{bs 1}{right}{Space} ;? testing purposes only
@@ -501,59 +577,128 @@ NotHznPaste(*) {
 
 #HotIf
 ; --------------------------------------------------------------------------------
-:*:;---::
-{
+; :B0*:;---:: {
+; 	; cBak := _AE_BU_Clr_Clip()
+; 	_AE_bInpt_sLvl(1)
+; 	Send('+{Left 4}')
+; 	t := '; ---------------------------------------------------------------------------'
+; 	ClipSend(t)
+; 	; A_Clipboard := t
+; 	; Sleep(30)
+; 	; Send('^{sc2F}')
+; 	; Sleep(30)
+; 	; Send('{enter}')
+; 	_AE_bInpt_sLvl(0)
+; 	; _AE_RestoreClip(cBak)
+; }
+:B0*:;---:: {
+	Sleep(100)
 	Send('+{Home}')
-	A_Clipboard := '; ---------------------------------------------------------------------------'
-	; Send('; {- 75}')
-	Send('^v')
+	Sleep(100)
+	t := '; ---------------------------------------------------------------------------'
+	ClipSend(t)
 }
 #HotIf WinActive(" - Visual Studio Code")
-; :CB0:function::
-:*C1:function...::
-{
-	BlockInput(1)
-	Send('^+{Left}')
-	; Sleep(10)
-	; Send('{Del}')
-	; Sleep(100)
-	Send('function ...:')
-	Sleep(100)
-	Send(A_Tab)
-	BlockInput(0)
 
-}
 ; --------------------------------------------------------------------------------
-:?C1*:{Ins::
+:?C1B0*:{Ins::
 {
-	BlockInput(1)
-	Send('^+{Left}')
-	Send('Insert')
+	cBak := _AE_BU_Clr_Clip()
+	_AE_bInpt_sLvl(1)
+	t := 'ert'
+	A_Clipboard := t
+	Sleep(30)
+	Send('^{sc2F}')
 	Send('{Esc}')
-	BlockInput(0)
+	Sleep(50)
+	Send('{Right}')
+	_AE_bInpt_sLvl(0)
+	_AE_RestoreClip(cBak)
 }
-:?C1*:{Ent::
+:?C1B0*:{Ent::
 {
-	BlockInput(1)
-	Send('^+{Left}')
-	SendText('Enter')
+	cBak := _AE_BU_Clr_Clip()
+	_AE_bInpt_sLvl(1)
+	t := 'er'
+	A_Clipboard := t
+	Sleep(30)
+	Send('^{sc2F}')
 	Send('{Esc}')
-	BlockInput(0)
+	Sleep(50)
+	Send('{Right}')
+	_AE_bInpt_sLvl(0)
+	_AE_RestoreClip(cBak)
+}
 
-}
-:*:sleep::
+:C1B0*:cBak ::
 {
-	BlockInput(1)
+	cBak := _AE_BU_Clr_Clip()
+	_AE_bInpt_sLvl(1)
 	Send('^+{Left}')
-	Send('Sleep(100)')
-	Sleep(200)
-	Send('{Left}')
+	t := 'cBak := _AE_BU_Clr_Clip()`n_AE_bInpt_sLvl(1)`n`n_AE_bInpt_sLvl(0)`n_AE_RestoreClip(cBak)'
+	t := '
+	(
+		cBak := _AE_BU_Clr_Clip()
+		_AE_bInpt_sLvl(1)
+		t := 
+		A_Clipboard := t
+		Sleep(30)
+
+		Send('^{sc2F}')
+		Send('{Esc}')
+		Sleep(50)
+		Send('{Right}')
+		_AE_bInpt_sLvl(0)
+		_AE_RestoreClip(cBak)
+	)'
+	A_Clipboard := t
+	Sleep(50)
+	Send('^{sc2F}')
+	Sleep(50)
+	Send('{Home}')
+	KeyWait('LControl', 'T3')
+	_AE_bInpt_sLvl(0)
+	_AE_RestoreClip(cBak)
+}
+
+
+; :*:sleep::
+; {
+; 	cBak := ClipboardAll()
+; 	_AE_bInpt_sLvl(1)
+; 	A_Clipboard := ''
+; 	Send('^+{Left}')
+; 	Sleep(100)
+; 	A_Clipboard := 'Sleep(100)'
+; 	sleep(100)
+; 	Send('^v')
+; 	Sleep(30)
+; 	Send('{Left}')
+; 	Send('+{Left 3}')
+; 	Sleep(1000)
+; 	A_Clipboard := cBak
+; 	_AE_bInpt_sLvl(0)
+; }
+
+:*B0:sleep::{
+	cBak := _AE_BU_Clr_Clip()
+	_AE_bInpt_sLvl(1)
+	t := '100'
+	A_Clipboard := t
+	Sleep(50)
+	Send('(')
+	Sleep(50)
+	Send('^{sc2F}')
+	Sleep(50)
 	Send('+{Left 3}')
-	BlockInput(0)
+	Sleep(50)
+	KeyWait('Right', 'D T5')
+	Send('{Right}')
+	_AE_bInpt_sLvl(0)
+	_AE_RestoreClip(cBak)
 }
-#HotIf
-; ^#g::git_InstallAHKLibrary('https://github.com/Axlefublr/lib-v2/blob/1d1940095902e483a56bbdd8af6ab0642d8a9fe6/Scr/Keys/Trinity.ahk','Scr\Keys\')
 
+#HotIf
 ; --------------------------------------------------------------------------------
 ; #HotIf WinActive(A_ScriptName)
 #c::try CenterWindow("A")
@@ -773,3 +918,36 @@ FormatDateTime(format, datetime:="") {
 ::/plankton::Plankton are the diverse collection of organisms found in water that are unable to propel themselves against a current. The individual organisms constituting plankton are called plankters. In the ocean, they provide a crucial source of food to many small and large aquatic organisms, such as bivalves, fish and whales.
 
 #HotIf
+
+pMakeTrayMenu(*){
+	myScript := A_TrayMenu
+	; TrayMenu := MenuBar()
+	myScript.Delete() ; V1toV2: not 100% replacement of NoStandard, Only if NoStandard is used at the beginning
+	myScript.Add("Made by OvercastBTC",madeBy)
+	myScript.Add()
+	; Tray.Add("Run at startup", "runAtStartup")
+	; Tray.ToggleCheck(fileExist(startup_shortcut) ? "check" : "unCheck", Run at startup ; update the tray menu status on startup
+	; TODO Finish updating Run at Startup
+	; Tray.Add("Presentation mode {Win+Shift+P}", togglePresentationMode) ; => does not exist
+	; Tray.Add("Keyboard shortcuts {Ctrl+Shift+Alt+\}", "viewKeyboardShortcuts")
+	; Tray.Add("Open file location", "openFileLocation")
+	; Tray.Add()
+	; Tray.Add("Run GUI_FE", "GUIFE")
+	myScript.Add('Run WindowsListMenu.ahk', WindowListMenu)
+	myScript.Add()
+	myScript.Add('Run GUI_ListofFiles.ahk', GUI_ListofFiles)
+	myScript.Add("Run WindowProbe.ahk", WindowProbe)
+	; Tray.Add("Run Windows_Data_Types_offline.ahk", Windows_Data_Types_offline)
+	myScript.Add()
+	; Tray.Add("View in GitHub", "viewInGitHub")
+	; Tray.Add("See AutoHotKey documentation", "viewAHKDoc") ; => does not exist
+	; Tray.Add()
+	myScript.AddStandard()
+	; Tray.Show
+	; --------------------------------------------------------------------------------
+	madeBy(madeBy,*){
+	}
+	WindowListMenu(*){
+		Run("WindowListMenu.ahk")
+	}
+}
