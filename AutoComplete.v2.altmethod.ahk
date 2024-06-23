@@ -17,7 +17,11 @@
 
 #Requires AutoHotkey v2.0
 #Include <Directives\__AE.v2>
-; #Include <Includes\Includes_Runner>
+;! ---------------------------------------------------------------------------
+; @i...: Add include of hBtn() (Misc\hBtn)
+;! ---------------------------------------------------------------------------
+#Include <Misc\hBtn.v2>
+#Include <Includes\Includes_Extensions>
 ; wordList := "
 ; (
 ; amanda
@@ -112,7 +116,7 @@ wordList := "
 5-14, Telecommunications
 5-17, Motors & Adjustable Speed Drives
 5-18, Protection of Electrical Equipment
-5-19, ^iSwitchgear and Circuit Breakers^i
+5-19, Switchgear and Circuit Breakers
 5-20, Electrical Testing
 5-21, Metal Halide High-Intensity Discharge Lighting
 5-23, Design and Fire Protection for Emergency and Standby Power Systems
@@ -562,82 +566,176 @@ for key, value in mList {
 
 inputStart()
 ; ---------------------------------------------------------------------------
-; @Step ...: Begin input collection
+; @Step...: Begin input collection
 ; ---------------------------------------------------------------------------
-inputStart() { 
+; inputStart() { 
+; 	AE.BISL(1)
+; 	AE.SM(&sm)
+; 	Global suffix := ""
+; 	ih :=   InputHook('IV*E', "{LControl}{RControl}{LAlt}{RAlt}{LWin}{RWin}{AppsKey}"
+; 					. "{F1}{F2}{F3}{F4}{F5}{F6}{F7}{F8}{F9}{F10}{F11}{F12}"
+; 					. "{Left}{Right}{Up}{Down}{Home}{End}{PgUp}{PgDn}{Del}{Ins}"
+; 					. "{BS}{CapsLock}{NumLock}{PrintScreen}{Pause}{Tab}{Esc}")
+; 	ih.Wait(.01)
+; 	; _AE_bInpt_sLvl(1)
+; 	ih.OnChar := (ih, char)   => SetTimer(inputMatch.Bind(ih, char), -750) ; Each char starts the timer
+; 	; _AE_bInpt_sLvl(0)
+; 	ih.OnEnd  := inputEnded    ; Call function when input is terminated
+; 	ih.Start()
+; 	AE.BISL(0)
+; 	AE.rSM(sm)
+; }
+inputStart() { ; Begin input collection
+	AE.BISL(1)
+	AE.SM(&sm)
 	Global suffix := ""
-	ih :=   InputHook('IV*E', "{LControl}{RControl}{LAlt}{RAlt}{LWin}{RWin}{AppsKey}"
-					. "{F1}{F2}{F3}{F4}{F5}{F6}{F7}{F8}{F9}{F10}{F11}{F12}"
-					. "{Left}{Right}{Up}{Down}{Home}{End}{PgUp}{PgDn}{Del}{Ins}"
-					. "{BS}{CapsLock}{NumLock}{PrintScreen}{Pause}{Tab}{Esc}")
-	ih.Wait(.01)
-	; _AE_bInpt_sLvl(1)
-	ih.OnChar := (ih, char)   => SetTimer(inputMatch.Bind(ih, char), -750) ; Each char starts the timer
-	; _AE_bInpt_sLvl(0)
+	ih        := InputHook('IVME', "{LControl}{RControl}{LAlt}{RAlt}{LWin}{RWin}{AppsKey}"
+							   . "{F1}{F2}{F3}{F4}{F5}{F6}{F7}{F8}{F9}{F10}{F11}{F12}"
+							   . "{Left}{Right}{Up}{Down}{Home}{End}{PgUp}{PgDn}{Del}{Ins}"
+							   . "{BS}{CapsLock}{NumLock}{PrintScreen}{Pause}{Tab}{Esc} ")
+	; ih.Wait(.01)							   
+	ih.OnChar := (ih, char)   => SetTimer(inputMatch.Bind(ih, char), -1000) ; Each char starts the timer
 	ih.OnEnd  := inputEnded    ; Call function when input is terminated
 	ih.Start()
-}
+	AE.BISL(0)
+	AE.rSM(sm)
+   }
 
 ; ---------------------------------------------------------------------------
-; @Section ...: Executes when typing ends & timer expires
+; @Section...: Executes when typing ends & timer expires
 ; ---------------------------------------------------------------------------
-inputMatch(ih, char) {
+; inputMatch(ih, char) {
+; 	Global suffix := ""
+; 	mMatch := []
+; 	static prev := ''
+; 	local txt := '', ctxt := '', hSplit := ''
+; 	; If RegExMatch(ih.Input, "D)\w+$", &prefix) &&                 ; If input ends in word chars,
+; 	; @i ...: If input ends in word chars, and chars match something in word list
+
+; 	if ((GetKeyState("Delete", "P")) || (GetKeyState("Backspace", "P"))){
+; 		return
+; 	}
+; 	; ---------------------------------------------------------------------------
+; 	; @i ...: To make sure ih.Input is fully a string, and simplify with shorter var
+; 	; ---------------------------------------------------------------------------
+; 	txt := String(ih.Input)
+; 	ctxt := String(ih.Input)
+; 	; ---------------------------------------------------------------------------
+; 	; @i ...: Get the Section number of the DS, and make it static (static prev := '') to remember between calls in the event you mess up and need to change the number.
+; 	; ---------------------------------------------------------------------------
+; 	; hSplit := txt.RegExReplace('(\d+?)\-[\d\w]+', '$1' )
+; 	needle := 'im)(\d{1,2})-[\d\w]+'
+; 	ctxt.RegExMatch(needle, &hSplit )
+; 	prev := hSplit[]
+; 	; ---------------------------------------------------------------------------
+; 	try tooltip(
+; 		'txt: ' txt
+; 		'`n'
+; 		'P: ' prev
+; 		'`n'
+; 		'T[' true '] | F[' false ']'
+; 		'`n'
+; 		'T|F: ' mList.Has(txt)
+; 		'`n'
+; 		'V: ' mList.Get(txt)
+; 		'`n'
+; 		mList[txt]
+; 	)
+; 	; If RegExMatch(ih.Input, "(\d{1,2}-\d{1,2})", &prefix) && RegExMatch(kL, "`nmi)^" prefix[] "\K.*", &suffix) {
+; 	; If RegExMatch(txt, '(\d+?\-[\d\w]+)', &prefix) && RegExMatch(mList.Get(txt), '\' mList[txt] "\K.*", &suffix) {
+; 	If RegExMatch(txt, '(\d+?\-[\d\w]+)', &prefix) && RegExMatch(mList.Get(txt), '\' mList[txt] ".*", &suffix) {
+; 		; ---------------------------------------------------------------------------
+; 		; @i ...: Send to AutoComplete()
+; 		; ---------------------------------------------------------------------------
+; 		; Infos(prefix[])
+; 		AutoComplete(txt,mList)
+; 		; Infos.DestroyAll()
+; 		; Infos('p: ' prev)
+; 	}
+; 	ih.KeyOpt("{Tab}{Esc}", suffix = "" ? "-S" : "+S")            ; If suffix exists, suppress these keys
+; 	; ToolTip 'Input = #' ih.Input '#`nSuffix = #' suffix '#'
+; }
+
+inputMatch(ih, char) {                                         ; Executes when typing ends & timer expires
+	AE.BISL(1)
+	AE.SM(&sm)
 	Global suffix := ""
-	mMatch := []
-	static prev := ''
-	local txt := '', ctxt := '', hSplit := ''
+	needle := 'im)(\d{1,2})-[\d\w]+$'
 	; If RegExMatch(ih.Input, "D)\w+$", &prefix) &&                 ; If input ends in word chars,
-	; @i ...: If input ends in word chars, and chars match something in word list
-
-	if ((GetKeyState("Delete", "P")) || (GetKeyState("Backspace", "P"))){
-		return
-	}
-	; ---------------------------------------------------------------------------
-	; @i ...: To make sure ih.Input is fully a string, and simplify with shorter var
-	; ---------------------------------------------------------------------------
-	txt := String(ih.Input)
-	ctxt := String(ih.Input)
-	; ---------------------------------------------------------------------------
-	; @i ...: Get the Section number of the DS, and make it static (static prev := '') to remember between calls in the event you mess up and need to change the number.
-	; ---------------------------------------------------------------------------
-	; hSplit := txt.RegExReplace('(\d+?)\-[\d\w]+', '$1' )
-	needle := '(\d{1,2})-[\d\w]+'
-	ctxt.RegExMatch(needle, &hSplit )
-	prev := hSplit[]
-	; ---------------------------------------------------------------------------
-	try tooltip(
-		'txt: ' txt
-		'`n'
-		'P: ' prev
-		'`n'
-		'T[' true '] | F[' false ']'
-		'`n'
-		'T|F: ' mList.Has(txt)
-		'`n'
-		'V: ' mList.Get(txt)
-		'`n'
-		mList[txt]
-	)
-	; If RegExMatch(ih.Input, "(\d{1,2}-\d{1,2})", &prefix) && RegExMatch(kL, "`nmi)^" prefix[] "\K.*", &suffix) {
-	; If RegExMatch(txt, '(\d+?\-[\d\w]+)', &prefix) && RegExMatch(mList.Get(txt), '\' mList[txt] "\K.*", &suffix) {
-	If RegExMatch(txt, '(\d+?\-[\d\w]+)', &prefix) && RegExMatch(mList.Get(txt), '\' mList[txt] ".*", &suffix) {
+	If RegExMatch(ih.Input, needle, &prefix) &&                 	; If input ends in word chars,
+	   RegExMatch(wordList, "`nmi)^" prefix[] "\K.*", &suffix) {  	;  and chars match something in word list
 		; ---------------------------------------------------------------------------
-		; @i ...: Send to AutoComplete()
+		; @i...: Block any input to prevent issues that would prevent this function from completing
+		; @i...: SendMode('Event') is MANDATORY!!!
+		; @i...: for this to work properly, without a bunch of sleeps, and SendLevel() changes.
 		; ---------------------------------------------------------------------------
-		Infos(prefix[])
-		AutoComplete(txt,mList)
-		; Infos.DestroyAll()
-		; Infos('p: ' prev)
+		AE.SM(&sm) ;! MANDATORY
+		AE.BISL(1)
+		; ---------------------------------------------------------------------------
+		; @i...: Excel needs to ensure you are editing the cell => Send F2
+		; ---------------------------------------------------------------------------
+		WinActive('- Excel') ? Send('{F2}') : 0 ;! Excel
+		; Sleep(200)
+		; ---------------------------------------------------------------------------
+		; @i...: Declare variables
+		; ---------------------------------------------------------------------------
+		d := a := b := s := n:= 0
+		tA := tN := []
+		t := suffix := suffix[]
+		static p := prefix[]
+		; ---------------------------------------------------------------------------
+		; @i...: For data sheets, split the string between the number and the text
+		; @i...: Identify the length of the text to select it
+		; ---------------------------------------------------------------------------
+		tA := StrSplit(t, ', ',,2)
+		tN := StrSplit(tA[2], ' ')
+		n := StrSplit(tA[2], ', ')
+		s := tN.Length
+		b := n.Length-1
+		; ---------------------------------------------------------------------------
+		d := ((s*15)+300) ;! Calculating a sleep delay based on chars
+		; ---------------------------------------------------------------------------
+		; @i...: Are there any additional commas in the text? if so, select more text
+		; ---------------------------------------------------------------------------
+		InStr(tA[2], ',') ? s := (s+b) : 0
+		; ---------------------------------------------------------------------------
+		Send(t)
+		Send(A_Space '{Left 1}')
+		; ---------------------------------------------------------------------------
+		; @i...: Change to SendMode('Input') => maybe faster for selecting the text.
+		; ---------------------------------------------------------------------------
+		; AE.rSM(sm) ;! Removed (OC - 2024.06.10)
+		; SendMode('Input') ;! Removed (OC - 2024.06.10)
+		; ---------------------------------------------------------------------------
+		; @i...: Select text by Control & Shift (not each character)
+		; ---------------------------------------------------------------------------
+		Send('^+{Left ' s '}')
+		Sleep(100) ;? (OC - 2024.05.14) Validated this is required
+		; ---------------------------------------------------------------------------
+		; @i...: SendMode('Event') is MANDATORY!!!
+		; ---------------------------------------------------------------------------
+		; AE.SM(&sm) ;! Removed (OC - 2024.06.10)
+		; ---------------------------------------------------------------------------
+		; @i...: For Horizon, using the button function is more reliable and faster.
+		; ---------------------------------------------------------------------------
+		WinActive('ahk_exe hznHorizon.exe') ? hBtn(101) : Send('^{sc17}') ; ^i
+		Sleep(100)
+		Send('^+{Left 2}')
 	}
 	ih.KeyOpt("{Tab}{Esc}", suffix = "" ? "-S" : "+S")            ; If suffix exists, suppress these keys
 	; ToolTip 'Input = #' ih.Input '#`nSuffix = #' suffix '#'
+	AE.BISL(0)
+	AE.rSM(sm)
 }
 
-; @Section ...: Executes when input is terminated
+; ---------------------------------------------------------------------------
+; @Section...: Executes when input is terminated
+; ---------------------------------------------------------------------------
 inputEnded(ih, vk := "", sc := "") {
 	; ToolTip( '#' ih.Input '# #' suffix '# #' ih.EndKey '#')
 	; @i ...: F4 = exit this script
-	(ih.EndKey = "F4") && (SoundBeep(1500), ExitApp())
+	; (ih.EndKey = "F4") && (SoundBeep(1500), ExitApp())
+	(ih.EndKey = "F8") && (SoundBeep(1500), ExitApp())
 	; @i ...: If suffix exists, handle these conditions
 	If suffix != "" {
 		Switch ih.EndKey {
@@ -648,8 +746,10 @@ inputEnded(ih, vk := "", sc := "") {
 		}
 	}
 	inputStart()
+	return
 }
 AutoComplete(CtlObj := '', ListObj := '', GuiObj?) {
+
 	; static CB_GETEDITSEL := 320, CB_SETEDITSEL := 322, valueFound := false
 	static EM_GETSEL := 176, EM_SETSEL := 177, valueFound := false
 	local Start :=0, End := 0, curr := ''

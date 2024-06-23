@@ -44,16 +44,16 @@ SetWorkingDir(A_ScriptDir)
 
 ;get ini file name and values
 SplitPath(A_ScriptName, , , , &OutNameNoExt)
-IniFile := OutNameNoExt . ".ini"
-Gui1Pos := IniRead(IniFile, "Settings", "Gui1Pos", A_Space)
-Gui1W := IniRead(IniFile, "Settings", "Gui1W", A_Space)
-Gui1H := IniRead(IniFile, "Settings", "Gui1H", A_Space)
-BolResizeTreeH := IniRead(IniFile, "Settings", "BolResizeTreeH", 0)
-BolRollUpDown := IniRead(IniFile, "Settings", "BolRollUpDown", 1)
-BolAlwaysOnTop := IniRead(IniFile, "Settings", "BolAlwaysOnTop", 0)
-IntGuiStyle := IniRead(IniFile, "Settings", "IntGuiStyle", 1)
-StrFontName := IniRead(IniFile, "Settings", "StrFontName", "Courier")
-IntFontSize := IniRead(IniFile, "Settings", "IntFontSize", A_Space)
+IniFile         := OutNameNoExt . ".ini"
+Gui1Pos         := IniRead(IniFile, "Settings", "Gui1Pos", A_Space)
+Gui1W           := IniRead(IniFile, "Settings", "Gui1W", A_Space)
+Gui1H           := IniRead(IniFile, "Settings", "Gui1H", A_Space)
+BolResizeTreeH  := IniRead(IniFile, "Settings", "BolResizeTreeH", 0)
+BolRollUpDown   := IniRead(IniFile, "Settings", "BolRollUpDown", 1)
+BolAlwaysOnTop  := IniRead(IniFile, "Settings", "BolAlwaysOnTop", 0)
+IntGuiStyle     := IniRead(IniFile, "Settings", "IntGuiStyle", 1)
+StrFontName     := IniRead(IniFile, "Settings", "StrFontName", "Courier")
+IntFontSize     := IniRead(IniFile, "Settings", "IntFontSize", A_Space)
 If IntFontSize
     FontSize := "S" . IntFontSize
 
@@ -75,18 +75,20 @@ Loop 0 {                       ;for each command line parameter
 If param_dock {
     myGui := Gui()
     myGui.OnEvent("Close", GuiEscape)
-myGui.OnEvent("Escape", GuiEscape)
-myGui.OnEvent("Size", GuiSize)
-myGui.Opt("+ToolWindow")              ;make library a toolwindow
+    myGui.OnEvent("Escape", GuiEscape)
+    myGui.OnEvent("Size", GuiSize)
+    myGui.Opt("+ToolWindow")              ;make library a toolwindow
     DockToWindow()              ;dock it to the editor upper left corner
-    SetTimer(DockToWindow,On)      ;make sure it stays there
-    If !BolAlwaysOnTop              ;enforce AOT
+    SetTimer(DockToWindow,'On')      ;make sure it stays there
+    If !BolAlwaysOnTop {             ;enforce AOT
         ToggleAlwaysOnTop()
+    }
     ContextMenu := Menu()
     ContextMenu.Disable("Always On Top")
     AOTState := True
-    If BolRollUpDown
-        RollGuiUp(ScriptName)       ;roll Gui Up when wanted
+    If BolRollUpDown{
+        RollGuiUp(ScriptName) ;roll Gui Up when wanted
+    }
   }
 Return
 

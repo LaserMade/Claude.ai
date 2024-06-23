@@ -29,12 +29,11 @@ pMakeTrayMenu()
 ; #Include <Includes\Includes_App> ;! Brackets
 ; ---------------------------------------------------------------------------
 ; ---------------------------------------------------------------------------
-
 SetNumLockState("AlwaysOn")
 SetCapsLockState("AlwaysOff")
 SetScrollLockState("AlwaysOff")
 ; --------------------------------------------------------------------------------
-#HotIf WinActive("Chrome River - Google Chrome")
+#HotIf WinActive("Chrome River - Google Chrome",)
 *^s::SaveCR()
 ; ---------------------------------------------------------------------------
 SaveCR(){
@@ -44,16 +43,63 @@ SaveCR(){
 }
 
 #HotIf
-; ---------------------------------------------------------------------------
 
-~n::{
-	If (A_PriorKey = '``'){
-		Sleep(100)
-		Send('{Right}')
-	}
+#HotIf WinActive('ahk_exe Excel.exe')
+
+^#c::CenterAcrossSelection()
+CenterAcrossSelection(){
+	AE.SM(&sm)
+	AE.DH(1)
+	Send('^1a')
+	Send('!hcc{Enter 2}')
+	AE.rSM(sm)
+}
+^#m::MoveOrCopy()
+MoveOrCopy(){
+	AE.SM(&sm)
+	AE.DH(1)
+	Send('{LButton}{RButton}m')
+	Send('{End}!c')
+	Send('{Enter}')
+	Sleep(100)
+	Send('{LButton}{RButton}r')
+	; Send('!hcc{Enter 2}')
+	AE.rSM(sm)
 }
 
-#HotIf WinActive('ahk_exe Chrome.exe')
+#HotIf
+
+^+t::
+^+l::
+^+u::ChangeCase()
+
+ChangeCase(i := SubStr(A_ThisHotkey, -1, 1)){
+	text := t := ''
+	AE.SM(&sm)
+	AE.cBakClr(&cBak)
+	Send('^{sc2E}')
+	AE.cSleep(100)
+	t := A_Clipboard
+	AE.cSleep(100)
+	switch {
+		case (i = 'u'): text := StrUpper(t)
+		case (i = 'l'): text := StrLower(t)
+		case (i = 't'): text := StrTitle(t)
+	}
+	ClipSend(text)
+	AE.cRestore(cBak)
+}
+; ---------------------------------------------------------------------------
+~n::ShiftRight()
+ShiftRight() => (AE.SM(&sm), A_PriorKey = '``' ? Send('{Right}') : 0, AE.rSM(sm))
+; ShiftRight(){
+; 	AE.SM(&sm)
+; 	A_PriorKey = '``' ? Send('{Right}') : 0
+; 	AE.rSM(sm)
+; }
+
+; #HotIf WinActive('ahk_exe Chrome.exe')
+#HotIf WinActive("Chrome River - Google Chrome",)
 Esc::bClose()
 bClose(){
 	expRpt := UIA.ElementFromChromium(' - Google Chrome')
@@ -153,35 +199,26 @@ bNextTopic(){
 ; 	Sleep(100)
 ; 	A_Clipboard := bak
 ; }
-^+d::{
-	; bak := ClipboardAll()
-	; d:=0,
+#HotIf !WinActive(' - Visual Studio Code')
+!d::{
+    AE.cBakClr(&cBak)
+    AE.SM_BISL(&sm)
+    m := []
 	text := '', txt := ''
-	; , A_Clipboard := '', d := 15
-	; Sleep(d)
 	Send('{Home}+{End}')
 	; @step: Copy
-	Send('^{sc2E}')
-	; sleep(100)
+	Send(key.copy) ; ^c
+	AE.cSleep(50)
 	text := A_Clipboard
-	; Sleep(d)
-	; @step: Cut
-	; SndMsgCut()
-	; Send('^{sc2D}')
-	; SendMessage('0x300',0,0,ControlGetFocus('A'),'A') ; Send('^x')
-	; Send('{End}{Enter}')
-	; @step Paste
-	; SendMessage('0x302',0,0,ControlGetFocus('A'),'A')
-	; Send('^v')
-	; Send('^{sc2F}')
-	ClipSend(text)
-	; Sleep(100)
-	Send('{Enter}')
-	; Sleep(50)
-	; Send('^{sc2F}')
-	ClipSend(text)
-	; Sleep(d)
-	; A_Clipboard := bak
+	AE.cSleep(50)
+    RegExMatch(text, 'im)\w\.\s(.*)', &m)
+    n := text.length
+    (m.Len != 0) ? text := m[] : 0
+    ; ClipSend(text '`n' text)
+    Send(text '`n' text)
+    Send('+{Left ' (n + (n+1)) '}')
+    AE.rSM_BISL(sm)
+    AE.cRestore(cBak)
 }
 #HotIf
 ;! ---------------------------------------------------------------------------
@@ -216,7 +253,6 @@ which_brackets(str, lChar, rChar, MapObj) {
 ; 	return ((bL || bR = true) ? true : false)
 ; }
 ; ---------------------------------------------------------------------------
-
 ; ---------------------------------------------------------------------------
 #HotIf !WinActive(" - Visual Studio Code") && WinActive('ahk_exe hznHorizon.exe')
 ; ---------------------------------------------------------------------------
@@ -234,7 +270,7 @@ which_brackets(str, lChar, rChar, MapObj) {
 :X*?:...::chr(133) ;{U+2265}
 ; :X*?:xf::chr(155) ;{U+2265}
 ; :*?:of::[O] ;{U+2265}
-#+1::ControlSetStyle('^0x4', ControlGetFocus('A'))
+
 ; *<::
 ; *'::
 ; *"::
@@ -243,8 +279,8 @@ which_brackets(str, lChar, rChar, MapObj) {
 ; *[::
 {
 	; CoordMode('Caret','Window')
-	cbak := _AE_BU_Clr_Clip()
-	_AE_bInpt_sLvl(1)
+	AE.SM(&sm)
+	AE.cBakClr(&cBak)
 
 	; t1 := '', t2 := '', t3 := '', t4 := '', t5 := '', t6 := '', t7 := '',
 	; c1 := '', c2 := '', c3 := '', c4 := '', c5 := '', c6 := '', c7 := ''
@@ -304,6 +340,8 @@ which_brackets(str, lChar, rChar, MapObj) {
 	; ToolTip(stats.LinePos)
 	((getSel.S - getSel.E) = 0) ? pasteit(text, bLeft, bRight, getSel.S, getSel.E, LP) : copyit(LP)
 	copyit(LP:=0){
+		AE.BISL(1,,&sl)
+		AE.SM(&sm)
 		; ---------------------------------------------------------------------------
 		; @step: store the clipboard into the variable text, see if text is empty
 		; @info: don't technically need to do that to see if the text is empty
@@ -317,9 +355,14 @@ which_brackets(str, lChar, rChar, MapObj) {
 		getSel := AE_GetSel()
 		getCL := AE_GetCaretLine()
 		pasteit(text, bLeft, bRight, getSel.S, getSel.E, LP)
+		AE.rBISL(sl)
+		AE.rSM(sm)
 	}
 	pasteit(text, bLeft, bRight, sPos?, ePos?, LP:=0, *){
 		; Infos(LP)
+		AE.BISL(1,,&sl)
+		AE.SM(&sm)
+		AE.cBakClr(&cBak)
 		mS := [], count := 0
 		; eRegex := 'm)([\s:,.]+)$'
 		eRegex := 'm)((\v)|(\s+$|[:,.]+)$)'
@@ -371,8 +414,9 @@ which_brackets(str, lChar, rChar, MapObj) {
 				; _AE_RestoreClip(cBak)
 				; _AE_bInpt_sLvl(0)
 			}
-			_AE_RestoreClip(cBak)
-			_AE_bInpt_sLvl(0)
+			AE.cRestore(cBak)
+			AE.rBISL(sl)
+			AE.rSM(sm)
 		}
 		; Infos(A_PriorKey, 5000)
 		return
@@ -549,31 +593,16 @@ which_brackets(str, lChar, rChar, MapObj) {
 	; AE_Set_Sel(getsel.S, getsel1.E)
 	; ---------------------------------------------------------------------------
 	; AE_HideSelection(true)
-	_AE_bInpt_sLvl(0)
+	AE.BISL(1,,&sl)
 	; Run(A_ScriptName)
 }
 ; :*:`  ::{bs 1}{right}{Space} ;? testing purposes only
 #HotIf
 #HotIf !WinActive('ahk_exe hznHorizon.exe')
-^!v::NotHznPaste()
-NotHznPaste(*) {
-	Static Msg := WM_PASTE := 770, wParam := 0, lParam := 0
-	; WinActive('ahk_exe WINWORD.exe') ? Send('+{Insert}') : hCtl := ControlGetFocus('A')
-	; Run('WINWORD.exe /x /q /a /w')
-
-	WinActive('ahk_exe Code.exe') ? Send('^v') : ((WinActive('ahk_exe WINWORD.exe') || WinActive('ahk_exe Teams.exe')) ? Send('+{Insert}') : tryDll())
-
-	tryDll() {
-		hCtl := tryHwnd()
-		try {
-			DllCall('SendMessage', 'Ptr', hCtl , 'UInt', Msg, 'UInt', wParam, 'UIntP', lParam)
-		} 
-		catch {
-			Send('+{Insert}')
-		}
-	}
-
-}
+GroupAdd('NotHznPaste', 'ahk_exe Code.exe')
+GroupAdd('NotHznPaste', 'ahk_exe WINWORD.exe')
+GroupAdd('NotHznPaste', 'ahk_exe Teams.exe')
+^!v::AE.smPaste
 
 #HotIf
 ; --------------------------------------------------------------------------------
@@ -603,8 +632,8 @@ NotHznPaste(*) {
 ; --------------------------------------------------------------------------------
 :?C1B0*:{Ins::
 {
-	cBak := _AE_BU_Clr_Clip()
-	_AE_bInpt_sLvl(1)
+	AE.cBakClr(&cBak)
+	AE.BISL(1)
 	t := 'ert'
 	A_Clipboard := t
 	Sleep(30)
@@ -612,13 +641,13 @@ NotHznPaste(*) {
 	Send('{Esc}')
 	Sleep(50)
 	Send('{Right}')
-	_AE_bInpt_sLvl(0)
-	_AE_RestoreClip(cBak)
+	AE.BISL(0)
+	AE.cRestore(cBak)
 }
 :?C1B0*:{Ent::
 {
-	cBak := _AE_BU_Clr_Clip()
-	_AE_bInpt_sLvl(1)
+	AE.cBakClr(&cBak)
+	AE.BISL(1)
 	t := 'er'
 	A_Clipboard := t
 	Sleep(30)
@@ -626,40 +655,40 @@ NotHznPaste(*) {
 	Send('{Esc}')
 	Sleep(50)
 	Send('{Right}')
-	_AE_bInpt_sLvl(0)
-	_AE_RestoreClip(cBak)
+	AE.BISL(0)
+	AE.cRestore(cBak)
 }
 
-:C1B0*:cBak ::
-{
-	cBak := _AE_BU_Clr_Clip()
-	_AE_bInpt_sLvl(1)
-	Send('^+{Left}')
-	t := 'cBak := _AE_BU_Clr_Clip()`n_AE_bInpt_sLvl(1)`n`n_AE_bInpt_sLvl(0)`n_AE_RestoreClip(cBak)'
-	t := '
-	(
-		cBak := _AE_BU_Clr_Clip()
-		_AE_bInpt_sLvl(1)
-		t := 
-		A_Clipboard := t
-		Sleep(30)
+; :C1B0*:cBak ::
+; {
+; 	AE.cBakClr(&cBak)
+; 	AE.BISL(1)
+; 	Send('^+{Left}')
+; 	t := 'cBak := _AE_BU_Clr_Clip()`n_AE_bInpt_sLvl(1)`n`n_AE_bInpt_sLvl(0)`n_AE_RestoreClip(cBak)'
+; 	t := '
+; 	(
+; 		cBak := _AE_BU_Clr_Clip()
+; 		_AE_bInpt_sLvl(1)
+; 		t := 
+; 		A_Clipboard := t
+; 		Sleep(30)
 
-		Send('^{sc2F}')
-		Send('{Esc}')
-		Sleep(50)
-		Send('{Right}')
-		_AE_bInpt_sLvl(0)
-		_AE_RestoreClip(cBak)
-	)'
-	A_Clipboard := t
-	Sleep(50)
-	Send('^{sc2F}')
-	Sleep(50)
-	Send('{Home}')
-	KeyWait('LControl', 'T3')
-	_AE_bInpt_sLvl(0)
-	_AE_RestoreClip(cBak)
-}
+; 		Send('^{sc2F}')
+; 		Send('{Esc}')
+; 		Sleep(50)
+; 		Send('{Right}')
+; 		_AE_bInpt_sLvl(0)
+; 		_AE_RestoreClip(cBak)
+; 	)'
+; 	A_Clipboard := t
+; 	Sleep(50)
+; 	Send('^{sc2F}')
+; 	Sleep(50)
+; 	Send('{Home}')
+; 	KeyWait('LControl', 'T3')
+; 	AE.BISL(0)
+; 	AE.cRestore(cBak)
+; }
 
 
 ; :*:sleep::
@@ -680,31 +709,28 @@ NotHznPaste(*) {
 ; 	_AE_bInpt_sLvl(0)
 ; }
 
-:*B0:sleep::{
-	cBak := _AE_BU_Clr_Clip()
-	_AE_bInpt_sLvl(1)
-	t := '100'
-	A_Clipboard := t
-	Sleep(50)
-	Send('(')
-	Sleep(50)
-	Send('^{sc2F}')
-	Sleep(50)
-	Send('+{Left 3}')
-	Sleep(50)
-	KeyWait('Right', 'D T5')
-	Send('{Right}')
-	_AE_bInpt_sLvl(0)
-	_AE_RestoreClip(cBak)
+:*B0C1:sleep::{
+	AE.SM(&sm)
+	; Sleep(50)
+	Send('(100')
+	; Sleep(50)
+	; ClipSend(100)
+	; Sleep(50)
+	Send('^+{Left}')
+	; Sleep(50)
+	AE.rSM(sm)
+	return
+	; KeyWait('Right', 'D T5') ? 0 :
+	; Send('{Right}')
 }
 
 #HotIf
 ; --------------------------------------------------------------------------------
 ; #HotIf WinActive(A_ScriptName)
-#c::try CenterWindow("A")
+#c::CenterWindow(WinActive('A'))
 
-CenterWindow(winTitle*) {
-    hwnd := WinExist(winTitle*)
+CenterWindow(wA := 0) {
+    hwnd := WinExist(wA)
     WinGetPos( ,, &W, &H, hwnd)
     mon := GetNearestMonitorInfo(hwnd)
     WinMove(mon.WALeft + mon.WAWidth // 2 - W // 2, mon.WATop + mon.WAHeight // 2 - H // 2,,, hwnd)
@@ -754,14 +780,14 @@ test_script(*){
 
 !LButton::
 {
-CoordMode("Mouse", "Screen")
-MouseGetPos(&x, &y)
-WinMove(x, y, , , "A")
-return
+    CoordMode("Mouse", "Screen")
+    MouseGetPos(&x, &y)
+    WinMove(x, y, , , "A")
+    return
+}
 ;---------------------------------------------------------------------------
 ;                       Time Stamp Code
 ;---------------------------------------------------------------------------
-}
 #HotIf WinActive('ahk_exe hznhorizon.exe') || WinActive('ahk_exe git.exe')
 :*:ts::
 ; format month and year
