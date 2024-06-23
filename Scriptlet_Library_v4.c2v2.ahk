@@ -1,10 +1,10 @@
-﻿#SingleInstance Force
+#SingleInstance Force
 #Warn All, OutputDebug
 ; -============================== Main Script ==============================
 ; Section: Scriptlet Library with TreeView to group the code snippets
 ; Authors: by toralf, original by Rajat
 ; Comment: requires AHK 1.0.44.09+
-; Source: www.autohotkey.com/forum/topic2510.html
+; Source: https://www.autohotkey.com/board/topic/2368-scriptlet-library-v4/page-6
 
 Version := "4"
 ScriptName := "Scriptlet_Library_" . Version . ".v2"
