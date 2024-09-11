@@ -1,0 +1,17 @@
+﻿{
+	"categoryOrder": [
+		"Travel",
+		"Meals / Entertainment",
+		"Telecom",
+		"Office Expenses",
+		"Company Car",
+		"Professional Development",
+		"Fees / Advances",
+		"Misc",
+		"Engineer / Equipment"
+	],
+	"classificationDisplay": "Display only selected category",
+	"columnLayout": 0,
+	"showInfoEnabled": 1,
+	"useOutputDebug": 0
+}

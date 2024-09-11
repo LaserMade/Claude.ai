@@ -13,15 +13,9 @@
 title := 'Chrome River - Google Chrome'
 cacheRequest := UIA.CreateCacheRequest()
 cacheRequest.TreeScope := 5
-cacheRequest := UIA.CreateCacheRequest(["Type", "LocalizedType", "AutomationId", "Name", "Value", "ClassName", "AcceleratorKey", "WindowCanMaximize"], ["Window"], "Subtree")
 npEl := UIA.ElementFromChromium(title, cacheRequest)
 MsgBox "Notepad window element with all descendants: `n`n" npEl.DumpAll() ; Display all the sub-elements for the Notepad window. 
-cbak := ClipboardAll
-sleep(300)
-A_Clipboard := ''
-sleep(100)
-A_Clipboard := npEl.DumpAll()
-return
+
 /*
     ElementFromHandle doesn't only access windows, but can use any handle: control handles can be
     used to get a part of the window. This is sometimes necessary when for some reason UIAutomation

@@ -1,16 +1,19 @@
 ﻿/************************************************************************
  * @description 
  * @file AHK Script.v2.ahk
- * @author 
+ * @author OvercastBTC
  * @date 2023/12/28
  * @version 0.0.0
  ***********************************************************************/
 
 #Requires AutoHotkey v2+
 #Include <Directives\__AE.v2>
-; ---------------------------------------------------------------------------
-; @i...: Create ahk_group ExplorerDesktopGroup
-; ---------------------------------------------------------------------------
+/************************************************************************
+ * @description Create ahk_group ExplorerDesktopGroup
+ * @author OvercastBTC
+ * @date 2023/12/28
+ * @version 0.0.0
+ ***********************************************************************/
 GroupAdd("ExplorerDesktopGroup", "ahk_class ExploreWClass")
 GroupAdd("ExplorerDesktopGroup", "ahk_class CabinetWClass")
 GroupAdd("ExplorerDesktopGroup", "ahk_class Progman")
@@ -21,29 +24,104 @@ GroupAdd("ExplorerDesktopGroup", "ahk_class #32770")
 TraySetIcon("shell32.dll","16", true) ; this changes the icon into a little laptop thing.
 pMakeTrayMenu()
 ; --------------------------------------------------------------------------------
+#Include <Common\Common_Include>
 #Include <Includes\Includes_Standard>
 ; --------------------------------------------------------------------------------
-#Include <Common\Common_Include>
 #Include <Tools\explorerGetPath.v2>
 ; --------------------------------------------------------------------------------
 ; #Include <Includes\Includes_App> ;! Brackets
-; ---------------------------------------------------------------------------
 ; ---------------------------------------------------------------------------
 SetNumLockState("AlwaysOn")
 SetCapsLockState("AlwaysOff")
 SetScrollLockState("AlwaysOff")
 ; --------------------------------------------------------------------------------
-#HotIf WinActive("Chrome River - Google Chrome",)
-*^s::SaveCR()
-; ---------------------------------------------------------------------------
-SaveCR(){
-	expRpt := UIA.ElementFromChromium('Chrome River - Google Chrome')
-	; Sleep(100)
-	expRpt.WaitElement({Type: '50000 (Button)',	Name: "Save", LocalizedType: "button", AutomationId: "save-btn"}, 10000).Highlight(100).Invoke()
+
+^!d::DSPMode.Toggle()  ; Ctrl+Alt+D to toggle DSP mode
+
+
+:X?*C1:prompt.ai::
+:X?*C1:p.ai::
+:X?*C1:ai.prompt::
+{
+
+
+	; key.SendVK('-{Space}')
+	; prompts := 'using AutoHotkey v2 or AHK v2:'
+	prompts := '
+	(
+You are an expert AHK v2 developer. Your role:
+- Coach on AHK v2 programming
+- Use concise communication
+- Clarify before providing code
+- Verify understanding before detailed responses
+Communication style:
+- Short, clear statements
+- Brief bullet points
+- Summarize and confirm user's request
+When unsure:
+- Provide short, concise summary
+- Verify user's intent before proceeding
+Goals:
+- Primary: Master AHK v2 for efficient, flexible automation tasks
+- Future (roadmap):
+ • Develop complex AHK v2 applications
+ • Optimize existing scripts for performance
+ • Create reusable AHK v2 libraries
+ • Implement flexible parameter handling system
+Development focus:
+- Create flexible, reusable classes with multiple instances
+- Implement both static and non-static methods
+- Design for modularity and adaptability
+- Integrate custom parameter handling in all builds
+- Utilize flexible input methods (CLI, file, direct input)
+- Leverage built-in AHK functions and DllCall for Win32 API
+- Account for non-standard behavior in legacy applications
+- Check for duplicates and similar built-in/custom methods
+- Combine similar methods when possible for efficiency
+- Provide complete functions/methods without placeholders
+- Exception: Placeholders allowed in intermediate steps
+- Use single quotes ('') instead of double quotes ("") wherever possible.
+- Predeclare all variables at the beginning of functions/methods.
+- Prefer regex functions (RegExMatch, RegExReplace, etc.) over string manipulation functions like InStr or StrSplit.
+- Always use curly braces {} for control structures (if, else, else if, etc.), even for single-line statements.
+- Always have a brief description using something like the following format which is part of the VS Code AutoHotkey v2 Language Support Extension:
+/**
+ * @example Convert keys to Virtual Key
+ * @param keys 
+ * @returns {String} 
+ */
+Core components:
+- Params class for flexible parameter management
+ • Custom methods: Get(), Set(), Load()
+ • Support multiple input sources
+ • Default values and type checking
+Legacy application support:
+- Horizon (pre-standardized msvb/VB6-based)
+ • Non-standard control classes
+ • Potential DllCall parameter variations
+When working with Horizon:
+- Specify "for Horizon" in requests
+- Be prepared for non-standard DllCall configurations
+Script sharing:
+- Can receive and analyze similar scripts or patterns
+- Indicate when sharing such scripts for analysis
+Prompt management:
+- Keep prompts concise
+- Use bullet points for clarity
+- Remove redundant information
+- Check for duplicate or similar functionality
+- Combine similar methods when possible
+Adhere to previous AHK v2 guidelines for code and explanations when appropriate.
+)'
+	key.Send(prompts)
+	key.SendVK('+{Enter}')
+	key.SendVK('+{Enter}')
+	key.SendVK('-{Space}')
 }
 
-#HotIf
 
+
+; ---------------------------------------------------------------------------
 #HotIf WinActive('ahk_exe Excel.exe')
 
 ^#c::CenterAcrossSelection()
@@ -77,7 +155,7 @@ ChangeCase(i := SubStr(A_ThisHotkey, -1, 1)){
 	text := t := ''
 	AE.SM(&sm)
 	AE.cBakClr(&cBak)
-	Send('^{sc2E}')
+	Send(key.copy)
 	AE.cSleep(100)
 	t := A_Clipboard
 	AE.cSleep(100)
@@ -91,7 +169,7 @@ ChangeCase(i := SubStr(A_ThisHotkey, -1, 1)){
 }
 ; ---------------------------------------------------------------------------
 ~n::ShiftRight()
-ShiftRight() => (AE.SM(&sm), A_PriorKey = '``' ? Send('{Right}') : 0, AE.rSM(sm))
+ShiftRight() => (sm:={}, AE.SM(&sm), A_PriorKey = '``' ? Send('{Right}') : 0, AE.rSM(sm))
 ; ShiftRight(){
 ; 	AE.SM(&sm)
 ; 	A_PriorKey = '``' ? Send('{Right}') : 0
@@ -100,17 +178,17 @@ ShiftRight() => (AE.SM(&sm), A_PriorKey = '``' ? Send('{Right}') : 0, AE.rSM(sm)
 
 ; #HotIf WinActive('ahk_exe Chrome.exe')
 #HotIf WinActive("Chrome River - Google Chrome",)
-Esc::bClose()
+; Esc::bClose()
 bClose(){
 	expRpt := UIA.ElementFromChromium(' - Google Chrome')
 	; Sleep(100)
-	expRpt.WaitElement({Type: '50000 (Button)', Name: "", LocalizedType: "button"}, 10000).Highlight(100).Invoke()
+	expRpt.WaitElement({Type: '50000 (Button)', Name: "", LocalizedType: "button"}, 10000).Invoke()
 }
 !c::bContinue()
 bContinue(){
 	expRpt := UIA.ElementFromChromium(' - Google Chrome')
 	; Sleep(100)
-	expRpt.WaitElement({Type: '50000 (Button)', Name: "Continue", LocalizedType: "button"}, 10000).Highlight(100).Invoke()
+	expRpt.WaitElement({Type: '50000 (Button)', Name: "Continue", LocalizedType: "button"}, 10000).Invoke()
 }
 !n::bNext()
 bNext(){
@@ -120,7 +198,7 @@ bNext(){
 						Name: "Next",
 						LocalizedType: "button",
 						; AutomationId: "next-btn"
-					}, 10000).Highlight(100).Invoke()
+					}, 10000).Invoke()
 }
 ^!n::bNextTopic()
 bNextTopic(){
@@ -130,83 +208,18 @@ bNextTopic(){
 						Name: "Next Topic",
 						LocalizedType: "button",
 						; AutomationId: "next-btn"
-					}, 10000).Highlight(100).Invoke()
+					}, 10000).Invoke()
 }
 #HotIf
 
-#HotIf WinActive("ahk_exe hznHorizon.exe")
-
-; ^+Down::
-; {
-; 	bak := ClipboardAll()
-; 	d:=0, A_Clipboard := '', d := 15, text := '', aText := []
-; 	; if A_Clipboard != '' {
-; 	; 	loop {
-; 	; 		Sleep(d)
-; 	; 	} until A_Clipboard := ''
-; 	; }
-; 	cutline()
-; 	cutline()
-; 	cutline() {
-; 		Send('{End}{Shift Down}{Home}{Down}{Shift Up}')
-; 		Send('^x')
-; 		text := A_Clipboard
-; 		Sleep(d)
-; 		aText.Push(text)
-; 		Send('{Home}{Shift Down}{End}{Down}{Shift Up}')
-; 		Send('{Del}')
-; 		return aText
-; 	}
-; 	Send(aText[2])
-; 	Send(aText[1])
-; 	; Infos(atext[1] '`n' aText[2])
-; 	return
-; 	text := ''
-; 	loop text.Length {
-; 		Sleep(d)
-; 	} until text = ''
-; 	text .= (aText[2] '`n' aText[1])
-; 	loop text.Length {
-; 		Sleep(d)
-; 	} until text != ''
-; 	; Send('^x')
-; 	; Sleep(d)
-; 	Send('{Del 2}')
-; 	Sleep(d)
-; 	send('{End}')
-; 	Sleep(d)
-; 	Send('{Enter}')
-; 	Sleep(d)
-; 	send('^v')
-; 	Sleep(100)
-; 	A_Clipboard := bak
-; }
-; ^+Up::
-; {
-; 	bak := ClipboardAll()
-; 	d:=0, A_Clipboard := '', d := 15, text := ''
-; 	Send('{Home}+{End}')
-; 	Sleep(d)
-; 	Send('^x')
-; 	Sleep(d)
-; 	Send('{Del}')
-; 	Sleep(d)
-; 	send('{Home}{Up}')
-; 	Sleep(d)
-; 	Send('{Enter}')
-; 	Sleep(d)
-; 	send('^v')
-; 	Sleep(100)
-; 	A_Clipboard := bak
-; }
-#HotIf !WinActive(' - Visual Studio Code')
+#HotIf !WinActive('ahk_exe CODE.EXE')
 !d::{
     AE.cBakClr(&cBak)
     AE.SM_BISL(&sm)
     m := []
 	text := '', txt := ''
-	Send('{Home}+{End}')
-	; @step: Copy
+	key.SendVK('{Home}+{End}')
+
 	Send(key.copy) ; ^c
 	AE.cSleep(50)
 	text := A_Clipboard
@@ -453,7 +466,7 @@ which_brackets(str, lChar, rChar, MapObj) {
 	if (text ~= eChrNeedle) {
 		; RegExMatch(text, eChrNeedle, &meChr)
 		text.RegExMatch(eChrNeedle, &meChr)
-		SafePushArray(eChr, meChr)
+		eChr.SafePushArray(meChr)
 		eChars := eChr.ToString('')
 		; text := RegExReplace(text, eChrNeedle,eChrReplace)
 		text.RegExReplace(eChrNeedle, eChrReplace) ; todo => this seems to fail to properly "replace" (remove)
@@ -479,10 +492,10 @@ which_brackets(str, lChar, rChar, MapObj) {
 	; ---------------------------------------------------------------------------
 	b1 := bChars
 	; todo ---------------------------------------------------------------------------
-	(text ~= bChrNeedle) ? (text.RegExMatch(bChrNeedle,&mbChr), SafePushArray(bChr, mbChr), bChars := bChr.ToString('')) : 0
+	(text ~= bChrNeedle) ? (text.RegExMatch(bChrNeedle,&mbChr), bChr.SafePushArray(mbChr), bChars := bChr.ToString('')) : 0
 	; if (text ~= bChrNeedle) {
 		; text := RegExMatch(text, bChrNeedle,&mbChr)
-		; SafePushArray(bChr, mbChr
+		; SafePushArray(bChr, mbChr)
 		; bChars := bChr.ToString(''))
 		; text := RegExReplace(text, bChrNeedle,bChrReplace)
 		; text.RegExReplace(bChrNeedle,bChrReplace)
@@ -527,19 +540,19 @@ which_brackets(str, lChar, rChar, MapObj) {
 		(text := bK text bV )
 	}
 	; ---------------------------------------------------------------------------
-	Infos(
-		't3: ' t3
-		'`n'
-		't4: ' t4
-		'`n'
-		't5: ' t5
-		'`n'
-		'bChars: ' bChars
-		'`n'
-		'eChars: ' eChars
-		'`n'
-		text
-	)
+	; Infos(
+	; 	't3: ' t3
+	; 	'`n'
+	; 	't4: ' t4
+	; 	'`n'
+	; 	't5: ' t5
+	; 	'`n'
+	; 	'bChars: ' bChars
+	; 	'`n'
+	; 	'eChars: ' eChars
+	; 	'`n'
+	; 	text
+	; )
 	; ---------------------------------------------------------------------------
 	; @step Add the bChars and eChars back to the text
 	; ---------------------------------------------------------------------------

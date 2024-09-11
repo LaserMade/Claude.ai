@@ -29,7 +29,7 @@ cacheRequest := UIA.CreateCacheRequest(["Type", "LocalizedType", "AutomationId",
 npEl := UIA.ElementFromChromium(title,,, cacheRequest)
 ; try {
 ; A single property condition consists of an object where the key is the property name, and value is the property value:
-Infos("The first MenuItem element: " npEl.FindElement({Type:"MenuItem"}).Highlight().Dump())
+; Infos("The first MenuItem element: " npEl.FindElement({Type:"MenuItem"}).Highlight().Dump())
 element := []
 ; element := npEl.FindAll({Type:"Group"}).Highlight().DumpAll()
 element := npEl.FindAll({Type:"Group"})
@@ -81,4 +81,3 @@ Infos("Waited for the first MenuItem element (which might have been useful if No
 ; }
 
 ; ExitApp()
-F5::ExitApp()

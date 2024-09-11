@@ -1,0 +1,88 @@
+{
+	"companyCar": [
+		"Fuel / Company Car",
+		"Mileage / Company Car",
+		"Wash / Company Car",
+		"Other / Company Car",
+		"Home Charger Installation",
+		"Home Charging Electricity Costs",
+		"EV Public Charging Station"
+	],
+	"engineer": [
+		"Engineering Supply / Tools",
+		"Maps",
+		"Safety Expenses",
+		"Sundry Service / Water Test"
+	],
+	"fees": [
+		"Bank / ATM Fees",
+		"Cash Advance",
+		"Foreign Transaction Fees"
+	],
+	"meals": [
+		"Client Gifts",
+		"Client Meals",
+		"Employee Meals",
+		"Entertainment",
+		"Events",
+		"Mkt Client Event",
+		"Other Client Related Expenses"
+	],
+	"menuCategories": [
+		"Travel",
+		"Meals / Entertainment",
+		"Telecom",
+		"Office Expenses",
+		"Company Car",
+		"Professional Memberships / Development",
+		"Fees / Advances",
+		"Misc",
+		"Engineer / Equipment"
+	],
+	"misc": [
+		"Employee Medical",
+		"Meeting Room",
+		"Personal / Amex Expense",
+		"SWE - Soc of Women Eng",
+		"Trade Show Expense",
+		"Other / Misc",
+		"Memorial / Expressions of Sympathy",
+		"Employee Gifts"
+	],
+	"office": [
+		"Office Supplies",
+		"Outside Printing / Photocopying Charges",
+		"Postage / Mail / Couriers",
+		"Software"
+	],
+	"professional": [
+		"Annual Membership Fees",
+		"Certification / Re-Certification",
+		"Conference / Seminar Fees",
+		"Professional Association Dues",
+		"Subscriptions"
+	],
+	"telecom": [
+		"Mobile Cellular / Data Charges",
+		"Cellular Broadband / MiFi",
+		"Home Internet",
+		"Hot Spot / Wifi Charges",
+		"Phone / Business Calls"
+	],
+	"travel": [
+		"Airfare",
+		"Airline Fee",
+		"Business Mileage - Personal Car",
+		"Car Rental",
+		"Car Rental - Fuel",
+		"Car Service",
+		"Gift in Lieu of Hotel",
+		"Ground Travel",
+		"Hotel",
+		"Parking and Tolls",
+		"Passport / Visa / Immigration Fees",
+		"Rail",
+		"Tips / Gratuities",
+		"Travel Agency Transaction Fees - TMC"
+	]
+}

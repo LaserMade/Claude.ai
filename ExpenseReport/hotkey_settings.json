@@ -1,0 +1,32 @@
+{
+	"FindFirstUnclassifiedExpense": {
+		"key": "Down",
+		"modifiers": {
+			"alt": 1
+		}
+	},
+	"FindLastUnclassifiedExpense": {
+		"key": "Up",
+		"modifiers": {
+			"alt": 1
+		}
+	},
+	"NavigateNext": {
+		"key": "n",
+		"modifiers": {
+			"alt": 1
+		}
+	},
+	"NavigatePrevious": {
+		"key": "p",
+		"modifiers": {
+			"alt": 1
+		}
+	},
+	"OpenSettings": {
+		"key": "s",
+		"modifiers": {
+			"alt": 1
+		}
+	}
+}

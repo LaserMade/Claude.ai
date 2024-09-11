@@ -9,30 +9,20 @@
 ; Run "notepad.exe"
 ; WinWaitActive "ahk_exe notepad.exe"
 ; npEl := UIA.ElementFromHandle("ahk_exe notepad.exe") ; Get the element for the Notepad window
-    ; Get the Chrome River element
-title := 'Chrome River - Google Chrome'
-cacheRequest := UIA.CreateCacheRequest()
-cacheRequest.TreeScope := 5
-cacheRequest := UIA.CreateCacheRequest(["Type", "LocalizedType", "AutomationId", "Name", "Value", "ClassName", "AcceleratorKey", "WindowCanMaximize"], ["Window"], "Subtree")
-npEl := UIA.ElementFromChromium(title, cacheRequest)
+npEl := UIA.ElementFromChromium()
 MsgBox "Notepad window element with all descendants: `n`n" npEl.DumpAll() ; Display all the sub-elements for the Notepad window. 
-cbak := ClipboardAll
-sleep(300)
-A_Clipboard := ''
-sleep(100)
-A_Clipboard := npEl.DumpAll()
-return
+
 /*
     ElementFromHandle doesn't only access windows, but can use any handle: control handles can be
     used to get a part of the window. This is sometimes necessary when for some reason UIAutomation
     hasn't been implemented properly and not all elements are displayed in the UIA tree.
 */
-; try editHandle := ControlGetHwnd("Edit1", "ahk_exe notepad.exe")
-; catch
-;     editHandle := ControlGetHwnd("RichEditD2DPT1")
+try editHandle := ControlGetHwnd("Edit1", "ahk_exe notepad.exe")
+catch
+    editHandle := ControlGetHwnd("RichEditD2DPT1")
 
-; editEl := UIA.ElementFromHandle(editHandle)
-; MsgBox "Edit control element with all descendants: `n`n" editEl.DumpAll()
+editEl := UIA.ElementFromHandle(editHandle)
+MsgBox "Edit control element with all descendants: `n`n" editEl.DumpAll()
 
 /*
     A special case for ElementFromHandle using a control is ElementFromChromium, which gets the
@@ -41,8 +31,7 @@ return
 
     For this example you need to have Chrome open.
 */
-; chromiumEl := UIA.ElementFromChromium("ahk_exe chrome.exe")
-chromiumEl := UIA.ElementFromChromium(title)
+chromiumEl := UIA.ElementFromChromium("ahk_exe chrome.exe")
 MsgBox "Chromium control element without descendants: `n`n" chromiumEl.Dump()
 
 /*

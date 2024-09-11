@@ -1,8 +1,8 @@
 ﻿;#include <UIA> ; Uncomment if you have moved UIA.ahk to your main Lib folder
 ; #include ..\Lib\UIA.ahk
-; #Include <System\UIA>
-; #Include <Tools\Info>
-#Include <Directives\__AE.v2>
+#Include <System\UIA>
+#Include <Tools\Info>
+
 /*  To find elements we have a few methods available: FindElement, FindElements, WaitElement, ElementFromPath, and TreeWalkers.
     This file will demonstrate use of FindElement, FindElements, WaitElement, and using conditions.
     To see examples on ElementFromPath and TreeWalkers, see Example4.
@@ -26,18 +26,10 @@ title := 'Chrome River - Google Chrome'
 cacheRequest := UIA.CreateCacheRequest()
 cacheRequest.TreeScope := 5
 cacheRequest := UIA.CreateCacheRequest(["Type", "LocalizedType", "AutomationId", "Name", "Value", "ClassName", "AcceleratorKey", "WindowCanMaximize"], ["Window"], "Subtree")
-npEl := UIA.ElementFromChromium(title,,, cacheRequest)
-; try {
+npEl := UIA.ElementFromChromium(title, cacheRequest)
+try {
 ; A single property condition consists of an object where the key is the property name, and value is the property value:
 Infos("The first MenuItem element: " npEl.FindElement({Type:"MenuItem"}).Highlight().Dump())
-element := []
-; element := npEl.FindAll({Type:"Group"}).Highlight().DumpAll()
-element := npEl.FindAll({Type:"Group"})
-; Infos("The first MenuItem element: " npEl.FindElement({Type:"Group", LocalizedType: 'group'}).Highlight().DumpAll())
-for each, value in element {
-    Infos(value)
-
-}
 
 ; Everything inside curly brackets creates an "and" condition, which means the element has to match all the conditions at once:
 try {
@@ -78,7 +70,6 @@ Infos("All elements with type MenuItem: `n`n" matches)
 ; a webpage might still be loading.
 ; It works exactly like FindElement, only the second argument is the timeout.
 Infos("Waited for the first MenuItem element (which might have been useful if Notepad were slow to load): " npEl.WaitElement({Type:"MenuItem"}).Highlight().Dump())
-; }
+}
 
 ; ExitApp()
-F5::ExitApp()

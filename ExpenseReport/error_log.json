@@ -1,0 +1,438 @@
+[
+	{
+		"message": "Log file created",
+		"timestamp": "2024-08-03 17:13:09"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 17:16:44"
+	},
+	{
+		"message": "Main window created",
+		"timestamp": "2024-08-03 17:17:03"
+	},
+	{
+		"message": "Error updating expense info: An element matching the condition was not found",
+		"timestamp": "2024-08-03 17:17:03"
+	},
+	{
+		"message": "Expense info updated",
+		"timestamp": "2024-08-03 17:17:03"
+	},
+	{
+		"message": "Expense info populated",
+		"timestamp": "2024-08-03 17:17:03"
+	},
+	{
+		"message": "Action buttons created",
+		"timestamp": "2024-08-03 17:17:03"
+	},
+	{
+		"message": "Expense list created",
+		"timestamp": "2024-08-03 17:17:03"
+	},
+	{
+		"message": "Attachments section created",
+		"timestamp": "2024-08-03 17:17:03"
+	},
+	{
+		"message": "Comments section created",
+		"timestamp": "2024-08-03 17:17:03"
+	},
+	{
+		"message": "Main GUI created successfully",
+		"timestamp": "2024-08-03 17:17:03"
+	},
+	{
+		"message": "Main GUI shown",
+		"timestamp": "2024-08-03 17:17:03"
+	},
+	{
+		"message": "Chrome River GUI application started successfully",
+		"timestamp": "2024-08-03 17:17:03"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 17:19:13"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 17:19:31"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 17:21:11"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 17:21:34"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 17:21:46"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 17:22:29"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 17:23:11"
+	},
+	{
+		"message": "Main window created",
+		"timestamp": "2024-08-03 17:23:11"
+	},
+	{
+		"message": "Error updating expense info: Chrome River window not found.",
+		"timestamp": "2024-08-03 17:23:11"
+	},
+	{
+		"message": "Expense info updated",
+		"timestamp": "2024-08-03 17:23:11"
+	},
+	{
+		"message": "Expense info populated",
+		"timestamp": "2024-08-03 17:23:11"
+	},
+	{
+		"message": "Action buttons created",
+		"timestamp": "2024-08-03 17:23:11"
+	},
+	{
+		"message": "Error updating expense list: Chrome River window not found.",
+		"timestamp": "2024-08-03 17:23:11"
+	},
+	{
+		"message": "Expense list created",
+		"timestamp": "2024-08-03 17:23:11"
+	},
+	{
+		"message": "Attachments section created",
+		"timestamp": "2024-08-03 17:23:11"
+	},
+	{
+		"message": "Comments section created",
+		"timestamp": "2024-08-03 17:23:11"
+	},
+	{
+		"message": "Main GUI created successfully",
+		"timestamp": "2024-08-03 17:23:11"
+	},
+	{
+		"message": "Main GUI shown",
+		"timestamp": "2024-08-03 17:23:11"
+	},
+	{
+		"message": "Chrome River GUI application started successfully",
+		"timestamp": "2024-08-03 17:23:11"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 17:34:32"
+	},
+	{
+		"message": "Main window created",
+		"timestamp": "2024-08-03 17:34:32"
+	},
+	{
+		"message": "Error updating expense info: Chrome River window not found.",
+		"timestamp": "2024-08-03 17:34:32"
+	},
+	{
+		"message": "Expense info updated",
+		"timestamp": "2024-08-03 17:34:33"
+	},
+	{
+		"message": "Expense info populated",
+		"timestamp": "2024-08-03 17:34:33"
+	},
+	{
+		"message": "Action buttons created",
+		"timestamp": "2024-08-03 17:34:33"
+	},
+	{
+		"message": "Error updating expense list: Chrome River window not found.",
+		"timestamp": "2024-08-03 17:34:33"
+	},
+	{
+		"message": "Expense list created",
+		"timestamp": "2024-08-03 17:34:33"
+	},
+	{
+		"message": "Attachments section created",
+		"timestamp": "2024-08-03 17:34:33"
+	},
+	{
+		"message": "Comments section created",
+		"timestamp": "2024-08-03 17:34:33"
+	},
+	{
+		"message": "Main GUI created successfully",
+		"timestamp": "2024-08-03 17:34:33"
+	},
+	{
+		"message": "Main GUI shown",
+		"timestamp": "2024-08-03 17:34:33"
+	},
+	{
+		"message": "Chrome River GUI application started successfully",
+		"timestamp": "2024-08-03 17:34:33"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 17:37:13"
+	},
+	{
+		"message": "Main window created",
+		"timestamp": "2024-08-03 17:37:13"
+	},
+	{
+		"message": "Error updating expense info: Chrome River window not found.",
+		"timestamp": "2024-08-03 17:37:14"
+	},
+	{
+		"message": "Expense info updated",
+		"timestamp": "2024-08-03 17:37:14"
+	},
+	{
+		"message": "Expense info populated",
+		"timestamp": "2024-08-03 17:37:14"
+	},
+	{
+		"message": "Action buttons created",
+		"timestamp": "2024-08-03 17:37:14"
+	},
+	{
+		"message": "Error updating expense list: Chrome River window not found.",
+		"timestamp": "2024-08-03 17:37:14"
+	},
+	{
+		"message": "Expense list created",
+		"timestamp": "2024-08-03 17:37:14"
+	},
+	{
+		"message": "Attachments section created",
+		"timestamp": "2024-08-03 17:37:14"
+	},
+	{
+		"message": "Comments section created",
+		"timestamp": "2024-08-03 17:37:14"
+	},
+	{
+		"message": "Main GUI created successfully",
+		"timestamp": "2024-08-03 17:37:14"
+	},
+	{
+		"message": "Main GUI shown",
+		"timestamp": "2024-08-03 17:37:14"
+	},
+	{
+		"message": "Chrome River GUI application started successfully",
+		"timestamp": "2024-08-03 17:37:14"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 17:48:06"
+	},
+	{
+		"message": "Main window created",
+		"timestamp": "2024-08-03 17:48:06"
+	},
+	{
+		"message": "Error updating expense info: Chrome River window not found.",
+		"timestamp": "2024-08-03 17:48:06"
+	},
+	{
+		"message": "Expense info updated",
+		"timestamp": "2024-08-03 17:48:06"
+	},
+	{
+		"message": "Expense info populated",
+		"timestamp": "2024-08-03 17:48:06"
+	},
+	{
+		"message": "Action buttons created",
+		"timestamp": "2024-08-03 17:48:06"
+	},
+	{
+		"message": "Error updating expense list: Chrome River window not found.",
+		"timestamp": "2024-08-03 17:48:06"
+	},
+	{
+		"message": "Expense list created",
+		"timestamp": "2024-08-03 17:48:06"
+	},
+	{
+		"message": "Attachments section created",
+		"timestamp": "2024-08-03 17:48:06"
+	},
+	{
+		"message": "Comments section created",
+		"timestamp": "2024-08-03 17:48:06"
+	},
+	{
+		"message": "Main GUI created successfully",
+		"timestamp": "2024-08-03 17:48:06"
+	},
+	{
+		"message": "Main GUI shown",
+		"timestamp": "2024-08-03 17:48:06"
+	},
+	{
+		"message": "Chrome River GUI application started successfully",
+		"timestamp": "2024-08-03 17:48:06"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 17:53:50"
+	},
+	{
+		"message": "Main window created",
+		"timestamp": "2024-08-03 17:53:50"
+	},
+	{
+		"message": "Error updating expense info: Chrome River window not found.",
+		"timestamp": "2024-08-03 17:53:50"
+	},
+	{
+		"message": "Expense info updated",
+		"timestamp": "2024-08-03 17:53:50"
+	},
+	{
+		"message": "Expense info populated",
+		"timestamp": "2024-08-03 17:53:50"
+	},
+	{
+		"message": "Action buttons created",
+		"timestamp": "2024-08-03 17:53:50"
+	},
+	{
+		"message": "Error updating expense list: Chrome River window not found.",
+		"timestamp": "2024-08-03 17:53:50"
+	},
+	{
+		"message": "Expense list created",
+		"timestamp": "2024-08-03 17:53:50"
+	},
+	{
+		"message": "Attachments section created",
+		"timestamp": "2024-08-03 17:53:50"
+	},
+	{
+		"message": "Comments section created",
+		"timestamp": "2024-08-03 17:53:50"
+	},
+	{
+		"message": "Main GUI created successfully",
+		"timestamp": "2024-08-03 17:53:50"
+	},
+	{
+		"message": "Main GUI shown",
+		"timestamp": "2024-08-03 17:53:51"
+	},
+	{
+		"message": "Chrome River GUI application started successfully",
+		"timestamp": "2024-08-03 17:53:51"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 18:05:24"
+	},
+	{
+		"message": "Main window created",
+		"timestamp": "2024-08-03 18:05:24"
+	},
+	{
+		"message": "Error updating expense info: An element matching the condition was not found",
+		"timestamp": "2024-08-03 18:05:24"
+	},
+	{
+		"message": "Expense info updated",
+		"timestamp": "2024-08-03 18:05:24"
+	},
+	{
+		"message": "Expense info populated",
+		"timestamp": "2024-08-03 18:05:24"
+	},
+	{
+		"message": "Action buttons created, including Add New Expense button",
+		"timestamp": "2024-08-03 18:05:24"
+	},
+	{
+		"message": "Expense list created",
+		"timestamp": "2024-08-03 18:05:25"
+	},
+	{
+		"message": "Attachments section created",
+		"timestamp": "2024-08-03 18:05:25"
+	},
+	{
+		"message": "Comments section created",
+		"timestamp": "2024-08-03 18:05:25"
+	},
+	{
+		"message": "Main GUI created successfully",
+		"timestamp": "2024-08-03 18:05:25"
+	},
+	{
+		"message": "Main GUI shown",
+		"timestamp": "2024-08-03 18:05:25"
+	},
+	{
+		"message": "Chrome River GUI application started successfully",
+		"timestamp": "2024-08-03 18:05:25"
+	},
+	{
+		"message": "Starting Chrome River GUI application",
+		"timestamp": "2024-08-03 18:11:04"
+	},
+	{
+		"message": "Main window created",
+		"timestamp": "2024-08-03 18:11:04"
+	},
+	{
+		"message": "Error updating expense info: An element matching the condition was not found",
+		"timestamp": "2024-08-03 18:11:04"
+	},
+	{
+		"message": "Expense info updated",
+		"timestamp": "2024-08-03 18:11:04"
+	},
+	{
+		"message": "Expense info populated",
+		"timestamp": "2024-08-03 18:11:04"
+	},
+	{
+		"message": "Action buttons created, including Add New Expense button",
+		"timestamp": "2024-08-03 18:11:04"
+	},
+	{
+		"message": "Expense list created",
+		"timestamp": "2024-08-03 18:11:04"
+	},
+	{
+		"message": "Attachments section created",
+		"timestamp": "2024-08-03 18:11:04"
+	},
+	{
+		"message": "Comments section created",
+		"timestamp": "2024-08-03 18:11:04"
+	},
+	{
+		"message": "Main GUI created successfully",
+		"timestamp": "2024-08-03 18:11:04"
+	},
+	{
+		"message": "Main GUI shown",
+		"timestamp": "2024-08-03 18:11:05"
+	},
+	{
+		"message": "Chrome River GUI application started successfully",
+		"timestamp": "2024-08-03 18:11:05"
+	},
+	{
+		"message": "Exiting application",
+		"timestamp": "2024-08-03 18:14:35"
+	}
+]
