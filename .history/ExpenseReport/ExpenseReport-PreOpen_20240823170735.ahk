@@ -51,7 +51,6 @@ class ChromeRiverGUI {
     currentCategory := ""
     classificationButtons := Map()
 	classificationGroup := {}
-	classificationTabs := ""
 	
     __New() {
         this.settingsManager := SettingsManager()
@@ -1244,42 +1243,26 @@ class ChromeRiverGUI {
         }
     }
 
-	; SelectCategory(category) {
-	; 	menuitem := {Type: '50011 (MenuItem)', Name: category, LocalizedType: "menu item"}
-	; 	if (this.GetChromeRiverElement(&expRpt)) {
-	; 		categoryElement := expRpt.FindFirst(menuitem)
-	; 		if (categoryElement) {
-	; 			this.FocusElement(categoryElement)
-	; 			categoryElement.SetFocus()
-	; 			Sleep(100)
-	; 			categoryElement.ScrollIntoView()
-	; 			Sleep(100)
-	; 			categoryElement.Invoke()
-	; 			this.ShowInfo('Selected category: ' . category)
-				
-	; 			; Switch to the appropriate tab
-	; 			tabIndex := this._categories.GetCategories().IndexOf(category)
-	; 			if (tabIndex > 0) {
-	; 				this.classificationTabs.Choose(tabIndex + 1)  ; +1 because the first tab is "Main"
-	; 			} else {
-	; 				this.classificationTabs.Choose(1)  ; Default to "Main" tab
-	; 			}
-	; 		} else {
-	; 			this.ShowInfo('Category not found: ' . category)
-	; 		}
-	; 	}
-	; }
-
 	SelectCategory(category) {
+		menuitem := {Type: '50011 (MenuItem)', Name: category, LocalizedType: "menu item"}
 		if (this.GetChromeRiverElement(&expRpt)) {
-			categoryElement := expRpt.FindCachedElement({Type: '50026 (Group)', Name: category, LocalizedType: 'group'})
+			categoryElement := expRpt.FindFirst(menuitem)
 			if (categoryElement) {
 				this.FocusElement(categoryElement)
+				categoryElement.SetFocus()
+				Sleep(100)
+				categoryElement.ScrollIntoView()
+				Sleep(100)
 				categoryElement.Invoke()
 				this.ShowInfo('Selected category: ' . category)
 				
-				; Create or update classification tabs
-				this.CreateClassificationTabs(category)
+				; Switch to the appropriate tab
+				tabIndex := this._categories.GetCategories().IndexOf(category)
+				if (tabIndex > 0) {
+					this.classificationTabs.Choose(tabIndex + 1)  ; +1 because the first tab is "Main"
+				} else {
+					this.classificationTabs.Choose(1)  ; Default to "Main" tab
+				}
 			} else {
 				this.ShowInfo('Category not found: ' . category)
 			}
