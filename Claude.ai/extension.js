@@ -1,8 +1,7 @@
-// File: src/extension.ts
 import * as vscode from 'vscode';
-import { queryClaude } from './claudeApi';
+import { queryClaude } from './claudeAPI';
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context) {
     console.log('Claude AI Assistant is now active!');
 
     let disposable = vscode.commands.registerCommand('vscode-claude-extension.queryClaude', async () => {
