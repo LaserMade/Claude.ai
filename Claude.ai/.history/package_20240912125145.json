@@ -1,5 +1,3 @@
-// This artifact will contain multiple files. I'll separate them with comments.
-
 // File: package.json
 {
   "name": "vscode-claude-extension",
