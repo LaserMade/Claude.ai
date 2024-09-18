@@ -1,3 +1,4 @@
+// File: src/extension.ts
 import * as vscode from 'vscode';
 import { queryClaude } from './claudeAPI';
 

@@ -801,12 +801,20 @@ test_script(*){
 ;---------------------------------------------------------------------------
 ;                       Time Stamp Code
 ;---------------------------------------------------------------------------
-#HotIf WinActive('ahk_exe hznhorizon.exe') || WinActive('ahk_exe git.exe')
+#HotIf WinActive('ahk_exe hznhorizon.exe')
 :*:ts::
 ; format month and year
 {
 	date := FormatTime(A_Now, "yyyy.MM")
 	Send("(AJB - " date ")")
+	return
+}
+#HotIf WinActive('ahk_exe git.exe')
+:*:ts::
+; format month and year
+{
+	date := FormatTime(A_Now, "yyyy.MM")
+	Send("(OC - " date ")")
 	return
 }
 #HotIf
@@ -815,7 +823,14 @@ test_script(*){
 {
 	date := FormatTime(A_Now, "yyyy.MM.dd")
 	Send("(AJB - " date ")")
-	return
+	; return
+}
+:*:tsoc::
+; format month and year
+{
+	date := FormatTime(A_Now, "yyyy.MM.dd")
+	Send("(OC - " date ")")
+	; return
 }
 ;---------------------------------------------------------------------------
 ;                      Helpful Stuff
